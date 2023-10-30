@@ -20,8 +20,9 @@ class Window:
             raise Exception(f'Window "{self.name}" not found!')
 
         _, self.pid = win32process.GetWindowThreadProcessId(self.hwnd)
-        if self.pid in Window.managed_windows:
-            raise Exception(f'Window "{self.name}" with PID "{self.pid}" is already being managed.')
+
+        # if self.pid in Window.managed_windows:
+        #     raise Exception(f'Window "{self.name}" with PID "{self.pid}" is already being managed.')
 
 
         self.gw_object = gw.getWindowsWithTitle(self.name)[0]
@@ -36,6 +37,9 @@ class Window:
 
         self.cropped_x = border
         self.cropped_y = title_bar
+
+        self.open_window_await_time = 10
+        self.window_open_click_time = None
 
         pythoncom.CoInitialize()
         win32gui.ShowWindow(self.hwnd, 5)
@@ -61,24 +65,34 @@ class Window:
             if win32gui.GetWindowText(hwnd) == self.name:
                 return hwnd
         return None
+    def _check_if_hwnd_exits(self, hwnd):
+        def window_enum_callback(hwnd, output):
+            if win32gui.GetWindowText(hwnd) == self.name:
+                output.append(hwnd)
+            return True
+        
+        hwnds = []
+
+        win32gui.EnumWindows(window_enum_callback, hwnds)
+        print(hwnds)
+        if hwnd in hwnds:
+            return True
+        else: return False
     
     def set_window_foreground(self):
-        self.hwnd = self._get_hwnd_from_pid()
-        if self.hwnd:
+        if self._check_if_hwnd_exits(self.hwnd):
             win32gui.ShowWindow(self.hwnd, 5)
             shell = win32com.client.Dispatch("WScript.Shell")
             shell.SendKeys('%')
             win32gui.SetForegroundWindow(self.hwnd)
 
     def close_window(self):
-        self.hwnd = self._get_hwnd_from_pid()
-        if self.hwnd:
+        if self._check_if_hwnd_exits(self.hwnd):
             win32gui.PostMessage(self.hwnd, win32con.WM_CLOSE, 0, 0)
             print(f"The window '{self.name}' with PID {self.pid} is now closed")
 
     def move_window(self, x, y):
-        self.hwnd = self._get_hwnd_from_pid()
-        if self.hwnd:
+        if self._check_if_hwnd_exits(self.hwnd):
             rect = win32gui.GetWindowRect(self.hwnd)
             win32gui.MoveWindow(self.hwnd, x, y, rect[2]-rect[0], rect[3]-rect[1], True)
 

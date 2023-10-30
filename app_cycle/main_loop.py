@@ -21,18 +21,18 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        window_names = [1,2,3]
-        self.capt_detect = CaptureAndDetect(self.metin_window, r'C:\Users\Filip\Desktop\tob2tm\Metin2-Bot-main\metin_farm_bot\ml\data\yolo\best.pt', None)
-        self.handler = MultiWindowBotHandler(capture_and_detect=self.capt_detect)
-        for window_name in window_names:
+        self.window_names = ['Ervelia','Ervelia']
+        self.handler = MultiWindowBotHandler()
+
+        for window_name in self.window_names:
             self.handler.add_instance(window_name)
         self.scheduler = BotScheduler()
         for _, instance in self.handler.instances.items():
             self.scheduler.add_bot(instance['bot'])
         # add initialization after tkinter ui START with tkinter options
 
-
-        self.metin_window = MetinWindow('Ervelia')
+        self.capt_detect = self.handler.get_capture_and_detect()
+       
         # self.bot = MetinBot(self.metin_window)
 
 
@@ -65,38 +65,38 @@ class MainLoop():
                     #change the window in the capt_detect 
                     current_instance['bot'].start()
 
+                    self.capt_detect.change_window_of_detection(current_instance['window'])
+
                     current_instance['window'].set_window_foreground()
 
                     last_switch_time = current_time
 
-                
-                
 
-                    state_of_detection = current_instance['bot'].get_object_detector_state()
+                state_of_detection = current_instance['bot'].get_object_detector_state()
 
-                    self.capt_detect.set_object_detector_state(state_of_detection)
-                    # Get new detections
-                    screenshot, screenshot_time, detection, detection_time, detection_image = self.capt_detect.get_info()
+                self.capt_detect.set_object_detector_state(state_of_detection)
+                # Get new detections
+                screenshot, screenshot_time, detection, detection_time, detection_image = self.capt_detect.get_info()
 
-                    # Update bot with new image
-                    current_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
+                # Update bot with new image
+                current_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
 
-                    if detection_image is None:
-                        continue
+                if detection_image is None:
+                    continue
 
-                    # Draw bot state on image
-                    overlay_image = current_instance['bot'].get_overlay_image() 
-                    detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
+                # Draw bot state on image
+                overlay_image = current_instance['bot'].get_overlay_image() 
+                detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
 
-                    # Display image
-                    cv.imshow('Matches', detection_image)
+                # Display image
+                cv.imshow('Matches', detection_image)
 
-                    # press 'q' with the output window focused to exit.
-                    # waits 1 ms every loop to process key presses
-                    if key == ord('w') and not pause: ## w as wait
-                        self.capt_detect.stop()
-                        current_instance['bot'].stop()
-                        pause = True
+                # press 'q' with the output window focused to exit.
+                # waits 1 ms every loop to process key presses
+                if key == ord('w') and not pause: ## w as wait
+                    self.capt_detect.stop()
+                    current_instance['bot'].stop()
+                    pause = True
 
             if pause:
                 key = cv.waitKey(5)
@@ -107,7 +107,9 @@ class MainLoop():
 
             if key == ord('q'):
                 self.capt_detect.stop()
-                current_instance['bot'].stop()
+                for window_name in self.window_names:
+                    current_instance = self.handler.get_next_instance()
+                    current_instance['bot'].stop()
                 cv.destroyAllWindows()
                 break
 

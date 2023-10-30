@@ -49,7 +49,11 @@ class CaptureAndDetect:
     def run(self):
         while not self.stopped:
             # Take screenshot
-            screenshot = self.metin_window.capture()
+            try:
+                screenshot = self.metin_window.capture()
+            except:
+                print("error capturing screenshot")
+                continue
 
             start_x = (1024 - 70) // 2
             end_x = start_x + 70

@@ -1,4 +1,5 @@
 
+import time
 import psutil
 import win32gui, win32ui, win32con, win32com.client, win32process
 from time import sleep
@@ -8,13 +9,22 @@ from window.window import Window
 interception.inputs.keyboard = 1
 interception.inputs.mouse = 10
 import ctypes
+import pythoncom
+
 
 
 class MetinWindow(Window):
     def __init__(self, window_name):   
         self.name = window_name
+        self.open_window_await_time = 10
+        self.window_open_click_time = None
+        pythoncom.CoInitialize()
+
+        self.open_new_window_first_time()
         self.hwnd = self._get_hwnd_by_name()
         self.pid = self._get_pid_by_hwnd(self.hwnd)
+        
+        
 
         if self.hwnd == 0:
             self.open_new_window()
@@ -32,6 +42,20 @@ class MetinWindow(Window):
         hwnds = []
         win32gui.EnumWindows(window_enum_callback, hwnds)
         return hwnds[0] if hwnds else None
+    
+    def _check_if_hwnd_exits(self, hwnd):
+        def window_enum_callback(hwnd, output):
+            if win32gui.GetWindowText(hwnd) == self.name:
+                output.append(hwnd)
+            return True
+        
+        hwnds = []
+
+        win32gui.EnumWindows(window_enum_callback, hwnds)
+        print(hwnds)
+        if hwnd in hwnds:
+            return True
+        else: return False
 
     def _get_pid_by_hwnd(self, hwnd):
         _, pid = win32process.GetWindowThreadProcessId(hwnd)
@@ -54,39 +78,82 @@ class MetinWindow(Window):
             return False
         else:
             return True
-    def open_new_window(self):
+        
+    def open_new_window_first_time(self):
         
         #game_path = r"C:\Users\Filip\Desktop\Ervelia_official_011\Ervelia.pl\metin2client.exe"
         game_path = r"C:\Users\Filip\Desktop\Ervelia_official_011\Ervelia.pl\Ervelia Patcher.exe"
         game_dir = r"C:\Users\Filip\Desktop\Ervelia_official_011\Ervelia.pl"
         # Request UAC elevation
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", game_path, None, game_dir, 1)
-        sleep(60)
+        patcher_hwnd = win32gui.FindWindow(None, "Ervelia Patcher")
+
+        if not patcher_hwnd:
+            
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", game_path, None, game_dir, 1)
+            time.sleep(2)
         
+        print("XXXXXXXXX")
+        interception.move_to(1440,1059)
+        sleep(0.03)
+        interception.left_click(1)
+        sleep(0.03)
         interception.move_to(1100,650)
         patcher = win32gui.FindWindow(None, "Ervelia Patcher")
         win32gui.ShowWindow(patcher, 5)
         shell = win32com.client.Dispatch("WScript.Shell")
         shell.SendKeys('%')
         win32gui.SetForegroundWindow(patcher)
-        sleep(0.5)
+        sleep(0.1)
         interception.left_click(1)
-        sleep(20)
-        max_wait_time = 200
-        time_passed = 0
+        time.sleep(10)
 
-        possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == self.name]
+        possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == "metin2client.exe"]
         possible_pids.sort(key=lambda p: psutil.Process(p).create_time())
         self.pid = possible_pids[0] if possible_pids else None
+        print(self.pid)
         self.hwnd = self._get_hwnd_by_name()
+        self.window_open_click_time = None
 
-        while not self.check_if_window_is_opened():
-            sleep(1)
-            time_passed += 1
-            if time_passed > max_wait_time:
-                break
-        if not self.check_if_window_is_opened():
-            self.open_new_window()
+    def open_new_window(self):
+        
+        #game_path = r"C:\Users\Filip\Desktop\Ervelia_official_011\Ervelia.pl\metin2client.exe"
+        game_path = r"C:\Users\Filip\Desktop\Ervelia_official_011\Ervelia.pl\Ervelia Patcher.exe"
+        game_dir = r"C:\Users\Filip\Desktop\Ervelia_official_011\Ervelia.pl"
+        # Request UAC elevation
+        patcher_hwnd = win32gui.FindWindow(None, "Ervelia Patcher")
+
+        if not patcher_hwnd:
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", game_path, None, game_dir, 1)
+            return
+        
+        if self.window_open_click_time == None:
+            interception.move_to(1440,1059)
+            sleep(0.03)
+            interception.left_click(1)
+            sleep(0.03)
+            print("WTF")
+            interception.move_to(1100,650)
+            patcher = win32gui.FindWindow(None, "Ervelia Patcher")
+            pythoncom.CoInitialize()
+            win32gui.ShowWindow(patcher, 5)
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shell.SendKeys('%')
+            win32gui.SetForegroundWindow(patcher)
+            sleep(0.1)
+            interception.left_click(1)
+            self.window_open_click_time = time.time()
+
+        if time.time() - self.window_open_click_time > self.open_window_await_time:
+            print("WOW")
+            possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == "metin2client.exe"]
+            possible_pids.sort(key=lambda p: psutil.Process(p).create_time())
+            self.pid = possible_pids[0] if possible_pids else None
+            self.hwnd = self._get_hwnd_by_name()
+            print(self.hwnd)
+            self.window_open_click_time = None
+
+        
+        
         
         
         
@@ -96,6 +163,11 @@ class MetinWindow(Window):
     def capture(self):
         # https://stackoverflow.com/questions/6312627/windows-7-how-to-bring-a-window-to-the-front-no-matter-what-other-window-has-fo\
         try:
+            time.sleep(1)
+            print("Hwnd")
+            print(self.hwnd)
+            if self.hwnd == None:
+                raise Exception("None")
             wDC = win32gui.GetWindowDC(self.hwnd)
             dcObj = win32ui.CreateDCFromHandle(wDC)
             cDC = dcObj.CreateCompatibleDC()
@@ -124,19 +196,18 @@ class MetinWindow(Window):
 
             return img
         except Exception as e:
-            try:
-                print(str(e))
-                print("Failed to capture window, will try to open a new window")
-
-                self.hwnd = win32gui.FindWindow(None, self.name)
-                if self.hwnd != 0:
+                time.sleep(0.1)
+                hwnd_exists = self._check_if_hwnd_exits(self.hwnd)
+                print(hwnd_exists)
+                if hwnd_exists:
+                    print("OKAY")
                     #self.open_new_window()
                     self.set_window_foreground()
                     return self.capture()
-                if self.hwnd == 0:
+                if not hwnd_exists:
+                    print("NIE OKAY")
                     self.open_new_window()
-                    self.set_window_foreground()
-                    return self.capture()
-                return self.capture()
-            except:
-                return self.capture()
+                    #self.set_window_foreground()
+                    raise Exception("trying to open new window")
+                
+            
