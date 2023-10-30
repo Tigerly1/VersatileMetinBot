@@ -38,9 +38,10 @@ class BotState(enum.Enum):
 
 class MetinBot:
 
-    def __init__(self, metin_window: MetinWindow):
+    def __init__(self, metin_window: MetinWindow, bot_id, main_loop):
         self.metin_window = metin_window
-
+        self.bot_id = bot_id
+        self.main_loop = main_loop
         self.osk_window = InterceptionInput("Ervelia")
         #self.osk_window.move_window(x=-1495, y=810)
 
@@ -108,7 +109,12 @@ class MetinBot:
         self.time_entered_state = time.time()
         self.health_checks_iterations = 0
         self.state = None
+        
         self.switch_state(DangeonState.DEBUG)
+
+        self.login_state = False
+        self.login_time = None
+
 
     def run(self):
         while not self.stopped:

@@ -42,22 +42,30 @@ class Actions:
     def enter_the_dangeon(self):
         if self.metin_bot.dangeon_end_time > time.time() - 60 and self.metin_bot.dangeons_count > 0:
             self.metin_bot.game_actions.tp_to_dangeon_again()
+            time.sleep(0.1)
         else:
             if self.tp_to_dangeon:
                 self.metin_bot.game_actions.teleport_to_x_respawn(1,1)
                 self.tp_to_dangeon = False
+                self.metin_bot.main_loop.change_window = True
+                time.sleep(0.1)
+                return 
             if self.change_channel:
                 self.metin_bot.current_channel = (self.metin_bot.current_channel % 8) + 1
                 self.metin_bot.game_actions.change_channel(self.metin_bot.current_channel)
                 self.change_channel = False
+                self.metin_bot.main_loop.change_window = True
+                time.sleep(0.1)
+                return
             next_action = self.metin_bot.detect_and_click('guard')
             if not next_action:
                 return
             self.metin_bot.game_actions.tp_to_dangeon()
         self.metin_bot.dangeon_entered_time = time.time()
         # code to enter the dungeon
-        time.sleep(4)
         self.metin_bot.game_actions.calibrate_view()
+        time.sleep(0.1)
+        self.metin_bot.main_loop.change_window = True
         self.metin_bot.increment_state()
     
     def first_arena(self):
@@ -73,10 +81,10 @@ class Actions:
         # #     if random_number <= 0.1:
         # #         self.metin_bot.game_actions.calibrate_view()
         # # else:
-      
-        time.sleep(1.3)
+
+        time.sleep(0.5)
         self.metin_bot.osk_window.activate_horse_dodge()
-        time.sleep(2)
+        self.metin_bot.main_loop.change_window = True
         # code to move to the next room
         self.metin_bot.increment_state()
 
@@ -93,6 +101,8 @@ class Actions:
         time.sleep(13)
         self.metin_bot.osk_window.stop_hitting()
         # code to attack the monster
+
+        self.metin_bot.main_loop.change_window = True
         self.metin_bot.increment_state()
     
     def kill_metins(self):

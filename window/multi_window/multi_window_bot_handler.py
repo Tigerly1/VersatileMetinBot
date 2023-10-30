@@ -5,12 +5,13 @@ from detectors.yolo.capture_and_detect import CaptureAndDetect
 from window.metin.metin_window import MetinWindow
 
 class MultiWindowBotHandler:
-    def __init__(self, max_instances=6):
+    def __init__(self, main_loop, max_instances=6):
 
         self.instances = {}
         self.lock = Lock()
         self.max_instances = max_instances
         self.counter = 0  # Added counter for unique key generation
+        self.main_loop = main_loop
 
     def add_instance(self, window_name):
         with self.lock:
@@ -22,7 +23,7 @@ class MultiWindowBotHandler:
                 instance = {
                     'window': metin_window,
                     'capt_detect': self.capture_and_detect,
-                    'bot': MetinBot(metin_window),
+                    'bot': MetinBot(metin_window, self.counter, self.main_loop),
                     'window_name': window_name  # Store window_name within the instance
                 }
                 self.instances[self.counter] = instance  # Use counter as the key

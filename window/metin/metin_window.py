@@ -131,7 +131,6 @@ class MetinWindow(Window):
             sleep(0.03)
             interception.left_click(1)
             sleep(0.03)
-            print("WTF")
             interception.move_to(1100,650)
             patcher = win32gui.FindWindow(None, "Ervelia Patcher")
             pythoncom.CoInitialize()
@@ -144,7 +143,6 @@ class MetinWindow(Window):
             self.window_open_click_time = time.time()
 
         if time.time() - self.window_open_click_time > self.open_window_await_time:
-            print("WOW")
             possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == "metin2client.exe"]
             possible_pids.sort(key=lambda p: psutil.Process(p).create_time())
             self.pid = possible_pids[0] if possible_pids else None
@@ -163,9 +161,6 @@ class MetinWindow(Window):
     def capture(self):
         # https://stackoverflow.com/questions/6312627/windows-7-how-to-bring-a-window-to-the-front-no-matter-what-other-window-has-fo\
         try:
-            time.sleep(1)
-            print("Hwnd")
-            print(self.hwnd)
             if self.hwnd == None:
                 raise Exception("None")
             wDC = win32gui.GetWindowDC(self.hwnd)

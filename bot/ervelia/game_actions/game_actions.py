@@ -144,7 +144,7 @@ class GameActions:
         logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
         logged_out_info = pytesseract.image_to_string(logged_out_info)
         possible_logged_out_info = ["ZALOG", "TNOGUI"]
-        if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info:
+        if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or self.metin_bot.login_state:
             # self.metin_bot.set_object_detector_state(False)
             print(logged_out_info)
             self.login_user()
@@ -169,21 +169,33 @@ class GameActions:
         self.metin_bot.osk_window.stop_hitting()
 
     def login_user(self):
-        time.sleep(11)
-        self.metin_bot.metin_window.mouse_move(511,405)
-        time.sleep(0.3)
-        self.metin_bot.metin_window.mouse_click()
-        time.sleep(0.5)
-        self.metin_bot.metin_window.mouse_move(865,395)
-        time.sleep(0.2)
-        self.metin_bot.metin_window.mouse_click()
-        time.sleep(10)
-        self.metin_bot.metin_window.mouse_move(239,616)
-        time.sleep(0.07)
-        self.metin_bot.metin_window.mouse_click()
-        time.sleep(15)
-        #self.metin_bot.switch_state(DangeonState.INITIALIZING)
-        self.check_if_player_is_logged_out()
+        #time.sleep(11)
+        account_save_button = [(),(511,405),(),(),(),()]
+
+        if self.metin_bot.login_state == False:
+            self.metin_bot.metin_window.mouse_move(511,405)
+            time.sleep(0.3)
+            self.metin_bot.metin_window.mouse_click()
+            time.sleep(0.1)
+            self.metin_bot.metin_window.mouse_move(account_save_button[self.metin_bot.bot_id][0],account_save_button[self.metin_bot.bot_id][1])
+            time.sleep(0.2)
+            self.metin_bot.metin_window.mouse_click()
+            self.metin_bot.login_time = time.time()
+            self.metin_bot.login_state = True
+
+        #######
+        elif self.metin_bot.login_state == True and time.time() - self.metin_bot.login_time > 10:
+            self.metin_bot.metin_window.mouse_move(239,616)
+            time.sleep(0.07)
+            self.metin_bot.metin_window.mouse_click()
+
+
+        ######
+        
+        if time.time() - self.metin_bot.login_time > 25:
+            self.metin_bot.login_state = False
+            self.metin_bot.switch_state(DangeonState.INITIALIZING)
+        # self.check_if_player_is_logged_out()
 
     def tp_to_dangeon(self, tp_back=False):
         self.metin_bot.metin_window.activate()
@@ -197,7 +209,7 @@ class GameActions:
         self.metin_bot.metin_window.mouse_move(517,401)
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
-        time.sleep(4)
+        #time.sleep(4)
 
     def tp_to_dangeon_again(self):
         self.metin_bot.metin_window.activate()
@@ -248,7 +260,7 @@ class GameActions:
         self.metin_bot.metin_window.mouse_move(coords[respawn-1][0], coords[respawn-1][1])
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
-        time.sleep(4)
+        #time.sleep(4)
 
     def teleport_to_next_metin_respawn(self, respawn_number=1):
        
@@ -267,7 +279,7 @@ class GameActions:
         self.metin_bot.metin_window.mouse_move(coords[(respawn_number-1)%8][0], coords[(respawn_number-1)%8][1])
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
-        time.sleep(4)
+        #time.sleep(4)
 
     def change_channel(self, channel):
            
@@ -281,7 +293,7 @@ class GameActions:
         self.metin_bot.metin_window.mouse_move(channel_cords[channel-1][0], channel_cords[channel-1][1])
         time.sleep(0.1)
         self.metin_bot.metin_window.mouse_click()
-        time.sleep(9)
+        #time.sleep(9)
         self.metin_bot.osk_window.heal_yourself()
 
     def change_metin_respawn_or_channel(self):
@@ -317,7 +329,7 @@ class GameActions:
                     respawn = True
             
             if respawn == True:
-                time.sleep(10)
+                #time.sleep(10)
                 time.sleep(0.2)
                 self.metin_bot.metin_window.mouse_move(156,80)
                 time.sleep(0.04)

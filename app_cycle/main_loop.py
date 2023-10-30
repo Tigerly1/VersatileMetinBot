@@ -22,7 +22,10 @@ class MainLoop():
     def __init__(self):
 
         self.window_names = ['Ervelia','Ervelia']
-        self.handler = MultiWindowBotHandler()
+
+        self.change_window = False
+
+        self.handler = MultiWindowBotHandler(self)
 
         for window_name in self.window_names:
             self.handler.add_instance(window_name)
@@ -55,7 +58,8 @@ class MainLoop():
             if not pause:
             # Check if it's time to switch to the next instance
                 current_time = time.time()
-                if current_time - last_switch_time >= switch_interval:
+                if current_time - last_switch_time >= switch_interval or self.change_window:
+                    self.change_window = False
                     # Stop current bot and capture
                     current_instance['bot'].stop()
 
