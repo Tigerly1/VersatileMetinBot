@@ -354,6 +354,16 @@ class GameActions:
             return True
         else:
             return False
+        
+    def collect_the_event_card_drop(self):
+        self.metin_bot.metin_window.activate()
+
+        time.sleep(0.4)
+        self.metin_bot.metin_window.mouse_move(570,490)
+        time.sleep(0.04)
+        self.metin_bot.metin_window.mouse_click()
+
+        time.sleep(0.1)
 
 
     def health_checks(self):
