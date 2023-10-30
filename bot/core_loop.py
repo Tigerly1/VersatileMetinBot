@@ -106,12 +106,14 @@ class MetinBot:
 
         self.time_of_new_screen = None
         self.time_entered_state = time.time()
+        self.health_checks_iterations = 0
         self.state = None
         self.switch_state(DangeonState.INITIALIZING)
+        
 
     def run(self):
         while not self.stopped:
-
+            self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
             if self.state == DangeonState.INITIALIZING:
                 time.sleep(0.7)
                 self.metin_window.activate()
@@ -120,13 +122,14 @@ class MetinBot:
 
             if self.state == DangeonState.DEBUG:
                 time.sleep(0.1)
+                self.switch_state(DangeonState.FIRST_ARENA)
                 #self.game_actions.check_if_equipment_is_on()
                 #self.metin_window.activate()
                 # self.switch_state(DangeonState.FIRST_ARENA)
 
 
-
-            self.game_actions.health_checks()
+            if self.health_checks_iterations == 6:
+                self.game_actions.health_checks()
 
             if self.state == DangeonState.ENTER_THE_DANGEON:
                 self.dangeon_actions.enter_the_dangeon()
@@ -162,10 +165,13 @@ class MetinBot:
 
     def detect_and_click(self, label, check_match=False, rotate_before_click=False):
         try:
+            time.sleep(0.01)
             if self.screenshot is not None and self.detection_time is not None and \
-                            self.detection_time > self.time_of_new_screen + 0.06:
+                            self.detection_time > self.time_of_new_screen + 0.05:
                 #If no matches were found
+                print("X")
                 if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
+                    print("D")
                     self.put_info_text('No metin found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
@@ -179,6 +185,7 @@ class MetinBot:
                         self.time_of_new_screen = time.time()
                     return False
                 else:
+                    print("AA")
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
@@ -191,7 +198,9 @@ class MetinBot:
                     else:
                         is_correct = self.check_match_after_detection(label)
                         return is_correct
+            return False
         except Exception as e:
+            print("XD")
             print(e)
             return False
             

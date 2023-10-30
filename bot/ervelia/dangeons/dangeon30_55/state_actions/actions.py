@@ -230,12 +230,15 @@ class Actions:
         self.metin_bot.osk_window.stop_hitting()
 
         self.metin_bot.dangeon_end_time = time.time()
+        self.metin_bot.dangeons_count += 1
+        print("Avarage time per dangeon {} seconds".format(self.metin_bot.started / self.metin_bot.dangeons_count))
+        print("{} dangeon ended".format(self.metin_bot.dangeons_count))
         print("dangeon finished in {} minutes".format((self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time) / 60))
         self.metin_bot.osk_window.pick_up()
         
         self.restart_class_props()
 
-        self.metin_bot.dangeons_count += 1
+        
         # code to loot items
         self.metin_bot.increment_state()
 
