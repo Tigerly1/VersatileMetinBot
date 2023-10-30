@@ -21,9 +21,9 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.window_names = ['Ervelia','Ervelia']
+        self.window_names = ['Ervelia']
 
-        self.change_window = False
+        self.change_window = True
 
         self.handler = MultiWindowBotHandler(self)
 
@@ -36,17 +36,18 @@ class MainLoop():
 
         self.capt_detect = self.handler.get_capture_and_detect()
        
+        self.last_switch_time = time.time()
+        self.switch_interval = 2  # seconds
         # self.bot = MetinBot(self.metin_window)
 
+    def swap_window(self):
+        self.change_window = True
+        self.last_switch_time = time.time()
+        print("Window changed")
 
     def start_loop(self):
         
         self.capt_detect.start()
-        
-        # self.bot.start()
-
-        last_switch_time = time.time()
-        switch_interval = 2.0  # seconds
 
         current_instance = self.handler.get_next_instance()
 
@@ -58,22 +59,28 @@ class MainLoop():
             if not pause:
             # Check if it's time to switch to the next instance
                 current_time = time.time()
-                if current_time - last_switch_time >= switch_interval or self.change_window:
+
+                if current_time - self.last_switch_time >= self.switch_interval or self.change_window:
                     self.change_window = False
                     # Stop current bot and capture
-                    current_instance['bot'].stop()
+                    current_instance['bot'].stop(swap_window=False)
 
                     # Move to next instance
                     current_instance = self.handler.get_next_instance()
 
-                    #change the window in the capt_detect 
-                    current_instance['bot'].start()
+                    print("window is being changed")
+                    time.sleep(0.2)
 
                     self.capt_detect.change_window_of_detection(current_instance['window'])
 
                     current_instance['window'].set_window_foreground()
+                    #change the window in the capt_detect 
+                    current_instance['bot'].start()
 
-                    last_switch_time = current_time
+
+                    
+
+                    self.last_switch_time = current_time
 
 
                 state_of_detection = current_instance['bot'].get_object_detector_state()
@@ -91,7 +98,7 @@ class MainLoop():
                 # Draw bot state on image
                 overlay_image = current_instance['bot'].get_overlay_image() 
                 detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
-
+ 
                 # Display image
                 cv.imshow('Matches', detection_image)
 
@@ -116,5 +123,3 @@ class MainLoop():
                     current_instance['bot'].stop()
                 cv.destroyAllWindows()
                 break
-
-        print('Done.')

@@ -110,7 +110,7 @@ class MetinBot:
         self.health_checks_iterations = 0
         self.state = None
         
-        self.switch_state(DangeonState.DEBUG)
+        self.switch_state(DangeonState.INITIALIZING)
 
         self.login_state = False
         self.login_time = None
@@ -118,9 +118,12 @@ class MetinBot:
 
     def run(self):
         while not self.stopped:
-            self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
+            self.health_checks_iterations = (self.health_checks_iterations + 1) % 2
+            if self.health_checks_iterations == 0:
+                self.game_actions.health_checks()
+
             if self.state == DangeonState.INITIALIZING:
-                time.sleep(0.7)
+                time.sleep(0.2)
                 self.metin_window.activate()
                 self.game_actions.calibrate_view()
                 self.switch_state(DangeonState.ENTER_THE_DANGEON)
@@ -131,10 +134,6 @@ class MetinBot:
                 #self.game_actions.check_if_equipment_is_on()
                 #self.metin_window.activate()
                 # self.switch_state(DangeonState.FIRST_ARENA)
-
-
-            # if self.health_checks_iterations == 6:
-            #     self.game_actions.health_checks()
 
             if self.state == DangeonState.ENTER_THE_DANGEON:
                 self.dangeon_actions.enter_the_dangeon()
@@ -339,8 +338,10 @@ class MetinBot:
         self.state_lock.release()
         return state
 
-    def stop(self):
+    def stop(self, swap_window=True):
         self.stopped = True
+        self.main_loop.swap_window()
+
 
     def close_window_if_not_working(self):
         total = int(time.time() - self.started)
@@ -369,6 +370,7 @@ class MetinBot:
         self.time_entered_state = time.time()
         self.state_lock.release()
         self.put_info_text()
+        self.stop()
 
     def increment_state(self):
         self.state_lock.acquire()
@@ -379,7 +381,7 @@ class MetinBot:
         self.time_entered_state = time.time()
         self.state_lock.release()
         self.put_info_text()
-
+        self.stop()
 
     def get_state(self):
         self.state_lock.acquire()

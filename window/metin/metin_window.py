@@ -62,7 +62,7 @@ class MetinWindow(Window):
         return pid
 
     def activate(self):
-        self.mouse_move(self.x, self.y-10)
+        interception.click(self.x, self.y-25)
         sleep(0.1)
         self.mouse_click()
 
@@ -105,7 +105,7 @@ class MetinWindow(Window):
         win32gui.SetForegroundWindow(patcher)
         sleep(0.1)
         interception.left_click(1)
-        time.sleep(10)
+        time.sleep(6)
 
         possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == "metin2client.exe"]
         possible_pids.sort(key=lambda p: psutil.Process(p).create_time())

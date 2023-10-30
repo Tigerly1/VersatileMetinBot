@@ -18,6 +18,7 @@ class DangeonState(enum.Enum):
     SECOND_MINI_BOSS = 8
     END_BOSS = 9
     DEBUG = 10
+    LOGGING = 11
     INITIALIZING = 999
 
 LABELS = ['metin', 'boss', 'guard', 'first_arena', 'second_arena']
@@ -47,14 +48,14 @@ class Actions:
             if self.tp_to_dangeon:
                 self.metin_bot.game_actions.teleport_to_x_respawn(1,1)
                 self.tp_to_dangeon = False
-                self.metin_bot.main_loop.change_window = True
+                self.metin_bot.stop()
                 time.sleep(0.1)
                 return 
             if self.change_channel:
                 self.metin_bot.current_channel = (self.metin_bot.current_channel % 8) + 1
                 self.metin_bot.game_actions.change_channel(self.metin_bot.current_channel)
                 self.change_channel = False
-                self.metin_bot.main_loop.change_window = True
+                self.metin_bot.stop()
                 time.sleep(0.1)
                 return
             next_action = self.metin_bot.detect_and_click('guard')
@@ -65,7 +66,6 @@ class Actions:
         # code to enter the dungeon
         self.metin_bot.game_actions.calibrate_view()
         time.sleep(0.1)
-        self.metin_bot.main_loop.change_window = True
         self.metin_bot.increment_state()
     
     def first_arena(self):
@@ -84,7 +84,7 @@ class Actions:
 
         time.sleep(0.5)
         self.metin_bot.osk_window.activate_horse_dodge()
-        self.metin_bot.main_loop.change_window = True
+        
         # code to move to the next room
         self.metin_bot.increment_state()
 
@@ -102,7 +102,6 @@ class Actions:
         self.metin_bot.osk_window.stop_hitting()
         # code to attack the monster
 
-        self.metin_bot.main_loop.change_window = True
         self.metin_bot.increment_state()
     
     def kill_metins(self):

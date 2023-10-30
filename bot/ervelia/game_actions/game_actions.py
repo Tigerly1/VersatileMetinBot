@@ -146,6 +146,7 @@ class GameActions:
         possible_logged_out_info = ["ZALOG", "TNOGUI"]
         if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or self.metin_bot.login_state:
             # self.metin_bot.set_object_detector_state(False)
+            self.metin_bot.switch_state(DangeonState.LOGGING)
             print(logged_out_info)
             self.login_user()
         else:
@@ -170,7 +171,7 @@ class GameActions:
 
     def login_user(self):
         #time.sleep(11)
-        account_save_button = [(),(511,405),(),(),(),()]
+        account_save_button = [(870,363),(870,400),(870,437),(870,474),(870,501),(870,538)]
 
         if self.metin_bot.login_state == False:
             self.metin_bot.metin_window.mouse_move(511,405)
@@ -180,14 +181,18 @@ class GameActions:
             self.metin_bot.metin_window.mouse_move(account_save_button[self.metin_bot.bot_id][0],account_save_button[self.metin_bot.bot_id][1])
             time.sleep(0.2)
             self.metin_bot.metin_window.mouse_click()
+            time.sleep(0.1)
             self.metin_bot.login_time = time.time()
             self.metin_bot.login_state = True
+            self.metin_bot.stop()
 
         #######
         elif self.metin_bot.login_state == True and time.time() - self.metin_bot.login_time > 10:
+            self.metin_bot.main_loop.swap_window()
             self.metin_bot.metin_window.mouse_move(239,616)
             time.sleep(0.07)
             self.metin_bot.metin_window.mouse_click()
+            self.metin_bot.stop()
 
 
         ######
@@ -198,6 +203,7 @@ class GameActions:
         # self.check_if_player_is_logged_out()
 
     def tp_to_dangeon(self, tp_back=False):
+
         self.metin_bot.metin_window.activate()
 
         time.sleep(0.17)

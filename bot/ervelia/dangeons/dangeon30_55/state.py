@@ -12,4 +12,6 @@ class DangeonState(enum.Enum):
     SECOND_MINI_BOSS = 8
     END_BOSS = 9
     DEBUG = 10
+    LOGGING = 11
     INITIALIZING = 999
+    

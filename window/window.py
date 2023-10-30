@@ -38,7 +38,7 @@ class Window:
         self.cropped_x = border
         self.cropped_y = title_bar
 
-        self.open_window_await_time = 10
+        self.open_window_await_time = 6
         self.window_open_click_time = None
 
         pythoncom.CoInitialize()
