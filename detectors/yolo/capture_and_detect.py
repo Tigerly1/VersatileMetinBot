@@ -154,6 +154,12 @@ class CaptureAndDetect:
     def stop(self):
         self.stopped = True
 
+    def change_window_of_detection(self, window):
+
+        self.lock.acquire()
+        self.metin_window = window
+        self.lock.release()
+
     def get_info(self):
         self.lock.acquire()
         screenshot = None if self.screenshot is None else self.screenshot.copy()

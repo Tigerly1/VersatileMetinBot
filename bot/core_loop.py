@@ -107,7 +107,7 @@ class MetinBot:
         self.time_of_new_screen = None
         self.time_entered_state = time.time()
         self.state = None
-        self.switch_state(DangeonState.INITIALIZING)
+        self.switch_state(DangeonState.DEBUG)
 
     def run(self):
         while not self.stopped:

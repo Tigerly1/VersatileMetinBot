@@ -1,6 +1,6 @@
 
 import pyautogui
-import win32gui, win32ui, win32con, win32com.client
+import win32gui, win32ui, win32con, win32com.client, win32process
 from time import sleep
 import subprocess
 import pygetwindow as gw
@@ -18,6 +18,11 @@ class Window:
         self.hwnd = win32gui.FindWindow(None, window_name)
         if self.hwnd == 0:
             raise Exception(f'Window "{self.name}" not found!')
+
+        _, self.pid = win32process.GetWindowThreadProcessId(self.hwnd)
+        if self.pid in Window.managed_windows:
+            raise Exception(f'Window "{self.name}" with PID "{self.pid}" is already being managed.')
+
 
         self.gw_object = gw.getWindowsWithTitle(self.name)[0]
 
@@ -38,18 +43,44 @@ class Window:
         self.shell.SendKeys('%')
         win32gui.SetForegroundWindow(self.hwnd)
 
+    def _get_hwnd_from_pid(self):
+        """
+        Get HWND from PID. Since a PID can be associated with multiple windows,
+        this function returns the HWND whose window title matches the name.
+        """
+        def callback(hwnd, hwnds):
+            if win32gui.IsWindowVisible(hwnd) and win32gui.IsWindowEnabled(hwnd):
+                _, pid = win32process.GetWindowThreadProcessId(hwnd)
+                if pid == self.pid:
+                    hwnds.append(hwnd)
+            return True
+        
+        hwnds = []
+        win32gui.EnumWindows(callback, hwnds)
+        for hwnd in hwnds:
+            if win32gui.GetWindowText(hwnd) == self.name:
+                return hwnd
+        return None
+    
     def set_window_foreground(self):
-        self.hwnd = win32gui.FindWindow(None, self.name)
-        win32gui.ShowWindow(self.hwnd, 5)
-        self.shell = win32com.client.Dispatch("WScript.Shell")
-        self.shell.SendKeys('%')
-        win32gui.SetForegroundWindow(self.hwnd)
+        self.hwnd = self._get_hwnd_from_pid()
+        if self.hwnd:
+            win32gui.ShowWindow(self.hwnd, 5)
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shell.SendKeys('%')
+            win32gui.SetForegroundWindow(self.hwnd)
 
     def close_window(self):
-        self.hwnd = win32gui.FindWindow(None, self.name)
-        #win32gui.PostMessage(self.hwnd, win32con.WM_CLOSE, 0, 0)
-        #win32gui.CloseWindow(self.hwnd)
-        print("The windows is now closed")
+        self.hwnd = self._get_hwnd_from_pid()
+        if self.hwnd:
+            win32gui.PostMessage(self.hwnd, win32con.WM_CLOSE, 0, 0)
+            print(f"The window '{self.name}' with PID {self.pid} is now closed")
+
+    def move_window(self, x, y):
+        self.hwnd = self._get_hwnd_from_pid()
+        if self.hwnd:
+            rect = win32gui.GetWindowRect(self.hwnd)
+            win32gui.MoveWindow(self.hwnd, x, y, rect[2]-rect[0], rect[3]-rect[1], True)
 
     def find_process_and_kill_window(self):
     # Find the window by title
