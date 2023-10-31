@@ -21,7 +21,7 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.window_names = ['Ervelia', "Ervelia", "Ervelia",'Ervelia', "Ervelia", "Ervelia"]
+        self.window_names = ['Ervelia', "Ervelia"]
 
         self.change_window = True
 
@@ -61,8 +61,8 @@ class MainLoop():
             if not pause:
             # Check if it's time to switch to the next instance
                 current_time = time.time()
-
-                if current_time - self.last_switch_time >= self.switch_interval or self.change_window:
+                #current_time - self.last_switch_time >= self.switch_interval or
+                if self.change_window:
                     self.change_window = False
                     # Stop current bot and capture
                     current_instance['bot'].stop(swap_window=False)
@@ -70,18 +70,18 @@ class MainLoop():
                     print("time of stopped thread {}".format(time.time()))
                     # Move to next instance
                     time.sleep(1.4)
-                    if time.time() - self.handler.get_next_instance_last_run_time() > self.seconds_between_same_runs:
-                        print("window is being changed")
-                        current_instance = self.handler.get_next_instance()
-                        self.capt_detect.change_window_of_detection(current_instance['window'])
+                    #if time.time() - self.handler.get_next_instance_last_run_time() > self.seconds_between_same_runs:
+                    print("window is being changed")
+                    current_instance = self.handler.get_next_instance()
+                    self.capt_detect.change_window_of_detection(current_instance['window'])
 
-                        current_instance['window'].set_window_foreground()
-                        #current_instance['window'].activate()
-                        time.sleep(0.2)
-                        #change the window in the capt_detect 
-                        current_instance['bot'].start()
-                        print("time of started thread {}".format(time.time()))
-                        self.handler.set_current_instance_last_run_time()
+                    current_instance['window'].set_window_foreground()
+                    #current_instance['window'].activate()
+                    time.sleep(0.6)
+                    #change the window in the capt_detect 
+                    current_instance['bot'].start()
+                    print("time of started thread {}".format(time.time()))
+                    self.handler.set_current_instance_last_run_time()
 
                     self.last_switch_time = time.time()
 

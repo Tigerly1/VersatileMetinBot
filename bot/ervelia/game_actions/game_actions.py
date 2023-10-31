@@ -23,7 +23,7 @@ class GameActions:
         time.sleep(zooming_time)
         self.metin_bot.osk_window.stop_zooming_out()
 
-    def calibrate_view(self):
+    def calibrate_view(self, calibration_type="guard"):
         self.metin_bot.metin_window.activate()
         # Camera option: Near, Perspective all the way to the right
         # self.metin_bot.osk_window.start_rotating_up()
@@ -38,8 +38,9 @@ class GameActions:
         # self.metin_bot.osk_window.stop_zooming_out()
         # #self.osk_window.start_zooming_in()
         # time.sleep(0.03)
+        time.sleep(0.07)
         self.zoom_out()
-        self.metin_bot.osk_window.calibrate_with_mouse()
+        self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
         #self.osk_window.stop_zooming_in()
 
     def calibrate_view_after_dangeon(self):
@@ -271,9 +272,9 @@ class GameActions:
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
 
-        time.sleep(0.2)
+        time.sleep(0.22)
         self.metin_bot.metin_window.mouse_move(coords[respawn-1][0], coords[respawn-1][1])
-        time.sleep(0.08)
+        time.sleep(0.1)
         self.metin_bot.metin_window.mouse_click()
         time.sleep(0.1)
         #time.sleep(4)

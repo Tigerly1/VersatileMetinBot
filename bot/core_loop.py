@@ -125,9 +125,9 @@ class MetinBot:
                 self.game_actions.health_checks()
 
             if self.state == DangeonState.INITIALIZING:
-                time.sleep(0.2)
+                time.sleep(0.1)
                 self.metin_window.activate()
-                self.game_actions.calibrate_view()
+                self.game_actions.calibrate_view("guard")
                 self.switch_state(DangeonState.ENTER_THE_DANGEON)
 
             if self.state == DangeonState.DEBUG:
@@ -189,7 +189,7 @@ class MetinBot:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
                         self.calibrate_count += 1
                         self.rotate_count = 0
-                        self.game_actions.calibrate_view()
+                        self.game_actions.calibrate_view("guard")
                         self.time_of_new_screen = time.time()
                     else:
                         self.rotate_count += 1
@@ -375,15 +375,17 @@ class MetinBot:
         return screenshot
 
     def switch_state(self, state):
+        self.stop()
         self.state_lock.acquire()
         self.state = state
         self.time_of_new_screen = time.time()
         self.time_entered_state = time.time()
         self.state_lock.release()
         self.put_info_text()
-        self.stop()
+       
 
     def increment_state(self):
+        self.stop()
         self.state_lock.acquire()
         if self.state != DangeonState.DEBUG and self.state != DangeonState.END_BOSS:
             self.state = DangeonState(self.state.value + 1)
@@ -392,7 +394,7 @@ class MetinBot:
         self.time_entered_state = time.time()
         self.state_lock.release()
         self.put_info_text()
-        self.stop()
+        
 
     def get_state(self):
         self.state_lock.acquire()

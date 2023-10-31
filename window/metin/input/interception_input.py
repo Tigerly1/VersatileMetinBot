@@ -111,7 +111,8 @@ class InterceptionInput(Window):
     def stop_rotating_up(self):
         interception.key_up("g")
 
-    def calibrate_with_mouse(self):
+    def calibrate_with_mouse(self, calibration_type):
+        sleep(0.03)
         self.mouse_move(random.randint(280, 400), random.randint(260, 360))
         sleep(0.03)
         interception.mouse_down('right')
@@ -124,7 +125,12 @@ class InterceptionInput(Window):
         sleep(0.2)
         interception.mouse_down('right')
         sleep(0.02)
-        interception.move_relative(0, -random.randint(29, 31))
+        if calibration_type=="guard":
+            interception.move_relative(0, -random.randint(34, 36))
+        elif calibration_type=="first_arena":
+            interception.move_relative(0, -random.randint(29, 31))
+        elif calibration_type=="second_arena":
+            interception.move_relative(0, -random.randint(31, 33))
         sleep(0.1)
         interception.mouse_up('right')
         sleep(0.03)
