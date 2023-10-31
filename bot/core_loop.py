@@ -130,6 +130,8 @@ class MetinBot:
 
             if self.state == DangeonState.DEBUG:
                 time.sleep(0.1)
+                self.game_actions.calibrate_view()
+                #self.switch_state(DangeonState.FIRST_ARENA)
                 #self.switch_state(DangeonState.FIRST_ARENA)
                 #self.game_actions.check_if_equipment_is_on()
                 #self.metin_window.activate()
@@ -244,11 +246,11 @@ class MetinBot:
             #self.set_object_detector_state(False)
             self.put_info_text('Metin found!')
             #self.game_actions.turn_on_buffs()
-            # is_moving_to_enemy = True
-            # while is_moving_to_enemy:
-            #     is_moving_to_enemy = self.moving_to_enemy()
-            #     if not is_moving_to_enemy:
-            #         return True
+            is_moving_to_enemy = True
+            while is_moving_to_enemy:
+                is_moving_to_enemy = self.moving_to_enemy()
+                if not is_moving_to_enemy:
+                    return True
             time.sleep(7.5)
             return True
             #self.osk_window.ride_through_units()

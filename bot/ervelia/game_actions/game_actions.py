@@ -26,18 +26,19 @@ class GameActions:
     def calibrate_view(self):
         self.metin_bot.metin_window.activate()
         # Camera option: Near, Perspective all the way to the right
-        self.metin_bot.osk_window.start_rotating_up()
-        time.sleep(1.1)
-        self.metin_bot.osk_window.stop_rotating_up()
-        self.metin_bot.osk_window.start_rotating_down()
-        time.sleep(random.uniform(0.58, 0.63))
-        self.metin_bot.osk_window.stop_rotating_down()
-        time.sleep(0.1)
-        self.metin_bot.osk_window.start_zooming_out()
-        time.sleep(1.3)
-        self.metin_bot.osk_window.stop_zooming_out()
-        #self.osk_window.start_zooming_in()
-        time.sleep(0.03)
+        # self.metin_bot.osk_window.start_rotating_up()
+        # time.sleep(1.1)
+        # self.metin_bot.osk_window.stop_rotating_up()
+        # self.metin_bot.osk_window.start_rotating_down()
+        # time.sleep(random.uniform(0.58, 0.63))
+        # self.metin_bot.osk_window.stop_rotating_down()
+        # time.sleep(0.1)
+        # self.metin_bot.osk_window.start_zooming_out()
+        # time.sleep(1.3)
+        # self.metin_bot.osk_window.stop_zooming_out()
+        # #self.osk_window.start_zooming_in()
+        # time.sleep(0.03)
+        self.metin_bot.osk_window.calibrate_with_mouse()
         #self.osk_window.stop_zooming_in()
 
     def calibrate_view_after_dangeon(self):
@@ -372,6 +373,16 @@ class GameActions:
             return True
         else:
             return False
+        
+    def collect_the_event_card_drop(self):
+        self.metin_bot.metin_window.activate()
+
+        time.sleep(0.4)
+        self.metin_bot.metin_window.mouse_move(570,490)
+        time.sleep(0.04)
+        self.metin_bot.metin_window.mouse_click()
+
+        time.sleep(0.1)
 
 
     def health_checks(self):

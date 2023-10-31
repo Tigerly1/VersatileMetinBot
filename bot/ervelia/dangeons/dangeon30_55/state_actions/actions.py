@@ -240,11 +240,13 @@ class Actions:
 
         self.metin_bot.dangeon_end_time = time.time()
         self.metin_bot.dangeons_count += 1
-        print("Avarage time per dangeon {} seconds".format(self.metin_bot.started / self.metin_bot.dangeons_count))
+        print("Avarage time per dangeon {} seconds".format((time.time() - self.metin_bot.started) / self.metin_bot.dangeons_count))
         print("{} dangeon ended".format(self.metin_bot.dangeons_count))
         print("dangeon finished in {} minutes".format((self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time) / 60))
         self.metin_bot.osk_window.pick_up()
         
+        self.metin_bot.game_actions.collect_the_event_card_drop()
+
         self.restart_class_props()
 
         

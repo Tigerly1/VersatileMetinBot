@@ -111,9 +111,26 @@ class InterceptionInput(Window):
     def stop_rotating_up(self):
         interception.key_up("g")
 
+    def calibrate_with_mouse(self):
+        self.mouse_move(random.randint(280, 400), random.randint(260, 360))
+        sleep(0.03)
+        interception.mouse_down('right')
+        sleep(0.02)
+        interception.move_relative(0, random.randint(65, 75))
+        sleep(0.02)
+        interception.mouse_up('right')
+        sleep(0.06)
+        self.mouse_move(random.randint(280, 400), random.randint(260, 360))
+        sleep(0.1)
+        interception.mouse_down('right')
+        sleep(0.02)
+        interception.move_relative(0, -random.randint(29, 31))
+        sleep(0.02)
+        interception.mouse_up('right')
+        sleep(0.03)
     def rotate_with_mouse(self):
         
-        self.mouse_move(random.randint(300, 400), random.randint(300, 400))
+        self.mouse_move(random.randint(300, 400), random.randint(400, 500))
         sleep(0.03)
         # with interception.hold_mouse("right"):
         #     sleep(0.10)
