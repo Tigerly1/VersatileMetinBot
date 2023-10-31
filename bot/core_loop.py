@@ -170,9 +170,9 @@ class MetinBot:
             if self.screenshot is not None and self.detection_time is not None and \
                             self.detection_time > self.time_of_new_screen + 0.05:
                 #If no matches were found
-                print("X")
+                
                 if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
-                    print("D")
+                    
                     self.put_info_text('No metin found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
@@ -186,7 +186,7 @@ class MetinBot:
                         self.time_of_new_screen = time.time()
                     return False
                 else:
-                    print("AA")
+                
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')

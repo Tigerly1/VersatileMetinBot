@@ -124,7 +124,7 @@ class InterceptionInput(Window):
         sleep(0.1)
         interception.mouse_down('right')
         sleep(0.02)
-        interception.move_relative(0, -random.randint(29, 31))
+        interception.move_relative(0, -random.randint(30, 35))
         sleep(0.02)
         interception.mouse_up('right')
         sleep(0.03)
