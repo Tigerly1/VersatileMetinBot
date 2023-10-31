@@ -118,8 +118,10 @@ class MetinBot:
 
     def run(self):
         while not self.stopped:
-            self.health_checks_iterations = (self.health_checks_iterations + 1) % 2
-            if self.health_checks_iterations == 0:
+            time.sleep(0.01)
+            self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
+
+            if self.health_checks_iterations == 1:
                 self.game_actions.health_checks()
 
             if self.state == DangeonState.INITIALIZING:
@@ -136,6 +138,9 @@ class MetinBot:
                 #self.game_actions.check_if_equipment_is_on()
                 #self.metin_window.activate()
                 # self.switch_state(DangeonState.FIRST_ARENA)
+            if self.state == DangeonState.LOGGING:
+                self.game_actions.check_if_player_is_logged_out()
+                time.sleep(0.1)
 
             if self.state == DangeonState.ENTER_THE_DANGEON:
                 self.dangeon_actions.enter_the_dangeon()
@@ -171,9 +176,10 @@ class MetinBot:
 
     def detect_and_click(self, label, check_match=False, rotate_before_click=False):
         try:
-            time.sleep(0.01)
+            time.sleep(0.001)
+            print("XDXD")
             if self.screenshot is not None and self.detection_time is not None and \
-                            self.detection_time > self.time_of_new_screen + 0.05:
+                            self.detection_time > self.time_of_new_screen + 0.07:
                 #If no matches were found
                 print("X")
                 if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
@@ -341,8 +347,11 @@ class MetinBot:
         return state
 
     def stop(self, swap_window=True):
+        self.state_lock.acquire()
         self.stopped = True
-        self.main_loop.swap_window()
+        if swap_window:
+            self.main_loop.swap_window()
+        self.state_lock.release()
 
 
     def close_window_if_not_working(self):

@@ -38,8 +38,7 @@ class Actions:
         self.tp_to_dangeon = True
         self.change_channel = False
 
-       
-    
+
     def enter_the_dangeon(self):
         if self.metin_bot.dangeon_end_time > time.time() - 60 and self.metin_bot.dangeons_count > 0:
             self.metin_bot.game_actions.tp_to_dangeon_again()

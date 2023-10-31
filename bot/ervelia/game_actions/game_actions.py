@@ -38,6 +38,7 @@ class GameActions:
         # self.metin_bot.osk_window.stop_zooming_out()
         # #self.osk_window.start_zooming_in()
         # time.sleep(0.03)
+        self.zoom_out()
         self.metin_bot.osk_window.calibrate_with_mouse()
         #self.osk_window.stop_zooming_in()
 
@@ -137,21 +138,25 @@ class GameActions:
     def check_if_player_is_logged_out(self):
         top_left = (450, 509)
         bottom_right = (560, 549)
+        try:
+            self.metin_bot.info_lock.acquire()
+            logged_out_info = self.metin_bot.vision.extract_section(self.metin_bot.screenshot, top_left, bottom_right)
+            self.metin_bot.info_lock.release()
 
-        self.metin_bot.info_lock.acquire()
-        logged_out_info = self.metin_bot.vision.extract_section(self.metin_bot.screenshot, top_left, bottom_right)
-        self.metin_bot.info_lock.release()
-
-        logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-        logged_out_info = pytesseract.image_to_string(logged_out_info)
-        possible_logged_out_info = ["ZALOG", "TNOGUI"]
-        if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or self.metin_bot.login_state:
-            # self.metin_bot.set_object_detector_state(False)
-            self.metin_bot.switch_state(DangeonState.LOGGING)
-            print(logged_out_info)
-            self.login_user()
-        else:
-            return "user is logged in"
+            logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
+            logged_out_info = pytesseract.image_to_string(logged_out_info)
+            possible_logged_out_info = ["ZALOG", "TNOGUI"]
+            if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or self.metin_bot.login_state:
+                # self.metin_bot.set_object_detector_state(False)
+                
+                self.metin_bot.dangeon_actions.restart_class_props()
+                print(logged_out_info)
+                self.login_user()
+            else:
+                return "user is logged in"
+        except:
+            self.metin_bot.info_lock.release()
+            print("error z logowaniem ale essa")
         #return logged_out_info
 
     def click_inventory_stash_x(self, inventory_number):
@@ -185,14 +190,16 @@ class GameActions:
             time.sleep(0.1)
             self.metin_bot.login_time = time.time()
             self.metin_bot.login_state = True
-            self.metin_bot.stop()
+            time.sleep(0.4)
+            self.metin_bot.switch_state(DangeonState.LOGGING)
 
         #######
         elif self.metin_bot.login_state == True and time.time() - self.metin_bot.login_time > 10:
-            self.metin_bot.main_loop.swap_window()
+            time.sleep(0.1)
             self.metin_bot.metin_window.mouse_move(239,616)
             time.sleep(0.07)
             self.metin_bot.metin_window.mouse_click()
+            time.sleep(0.4)
             self.metin_bot.stop()
 
 
@@ -200,6 +207,7 @@ class GameActions:
         
         if time.time() - self.metin_bot.login_time > 25:
             self.metin_bot.login_state = False
+            self.metin_bot.dangeon_actions.restart_class_props()
             self.metin_bot.switch_state(DangeonState.INITIALIZING)
         # self.check_if_player_is_logged_out()
 
@@ -263,10 +271,11 @@ class GameActions:
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
 
-        time.sleep(0.1)
+        time.sleep(0.2)
         self.metin_bot.metin_window.mouse_move(coords[respawn-1][0], coords[respawn-1][1])
-        time.sleep(0.04)
+        time.sleep(0.08)
         self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.1)
         #time.sleep(4)
 
     def teleport_to_next_metin_respawn(self, respawn_number=1):
@@ -300,8 +309,9 @@ class GameActions:
         self.metin_bot.metin_window.mouse_move(channel_cords[channel-1][0], channel_cords[channel-1][1])
         time.sleep(0.1)
         self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.1)
         #time.sleep(9)
-        self.metin_bot.osk_window.heal_yourself()
+        #self.metin_bot.osk_window.heal_yourself()
 
     def change_metin_respawn_or_channel(self):
        
@@ -386,8 +396,11 @@ class GameActions:
 
 
     def health_checks(self):
-        self.check_if_player_is_logged_out()
-        self.respawn_if_dead()
-        self.check_if_bot_is_stuck_in_dangeon(390)
+        try:
+            self.check_if_player_is_logged_out()
+            self.respawn_if_dead()
+            self.check_if_bot_is_stuck_in_dangeon(390)
+        except:
+            print("health checks needs image first")
 
 

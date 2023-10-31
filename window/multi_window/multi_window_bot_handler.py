@@ -1,4 +1,5 @@
 from threading import Lock
+import time
 from bot.core_loop import MetinBot
 from detectors.yolo.capture_and_detect import CaptureAndDetect
 
@@ -24,7 +25,8 @@ class MultiWindowBotHandler:
                     'window': metin_window,
                     'capt_detect': self.capture_and_detect,
                     'bot': MetinBot(metin_window, self.counter, self.main_loop),
-                    'window_name': window_name  # Store window_name within the instance
+                    'window_name': window_name,  # Store window_name within the instance
+                    'last_run_time': time.time()
                 }
                 self.instances[self.counter] = instance  # Use counter as the key
                 self.counter += 1  # Increment counter for the next instance
@@ -36,7 +38,7 @@ class MultiWindowBotHandler:
         with self.lock:
             return self.instances.get(key, None)
 
-    def get_next_instance(self):
+    def get_next_instance(self, with_setting_key = True):
         keys = list(self.instances.keys())
         if not keys:
             return None
@@ -45,5 +47,24 @@ class MultiWindowBotHandler:
         else:
             current_index = keys.index(self.current_key)
             next_index = (current_index + 1) % len(keys)
-            self.current_key = keys[next_index]
+            if with_setting_key:
+                self.current_key = keys[next_index]
+            else:
+                return self.instances[keys[next_index]]
         return self.instances[self.current_key]
+    
+    def set_current_instance_last_run_time(self):
+        self.instances[self.current_key]["last_run_time"] = time.time()
+
+    def get_current_instance_last_run_time(self):
+        return self.instances[self.current_key]["last_run_time"]
+    
+    # def set_next_instance_last_run_time(self):
+    #     self.get_next_instance(False)
+    #     self.instances[self.current_key]["last_run_time"] = time.time()
+
+    def get_next_instance_last_run_time(self):
+        next_instance = self.get_next_instance(False)
+        return next_instance["last_run_time"]
+    
+    
