@@ -122,7 +122,8 @@ class MetinBot:
 
             if self.state == DangeonState.DEBUG:
                 time.sleep(0.1)
-                self.switch_state(DangeonState.FIRST_ARENA)
+                self.game_actions.calibrate_view()
+                #self.switch_state(DangeonState.FIRST_ARENA)
                 #self.game_actions.check_if_equipment_is_on()
                 #self.metin_window.activate()
                 # self.switch_state(DangeonState.FIRST_ARENA)
