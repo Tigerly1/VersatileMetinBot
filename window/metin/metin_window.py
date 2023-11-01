@@ -65,6 +65,7 @@ class MetinWindow(Window):
         interception.click(self.x, self.y-25)
         sleep(0.3)
         self.mouse_click()
+        sleep(0.05)
 
     def is_admin(self):
         try:

@@ -43,8 +43,7 @@ class MetinBot:
         self.bot_id = bot_id
         self.main_loop = main_loop
         self.osk_window = InterceptionInput("Ervelia")
-        #self.osk_window.move_window(x=-1495, y=810)
-
+        #metin_window.move_window(0,0)
         self.vision = Vision()
         self.mob_info_hsv_filter = MobInfoFilter()
 
@@ -129,10 +128,12 @@ class MetinBot:
                 self.metin_window.activate()
                 self.game_actions.calibrate_view("guard")
                 self.switch_state(DangeonState.ENTER_THE_DANGEON)
+                continue
 
             if self.state == DangeonState.DEBUG:
                 time.sleep(0.1)
                 self.game_actions.calibrate_view()
+                continue
                 #self.switch_state(DangeonState.FIRST_ARENA)
                 #self.switch_state(DangeonState.FIRST_ARENA)
                 #self.game_actions.check_if_equipment_is_on()
@@ -141,36 +142,47 @@ class MetinBot:
             if self.state == DangeonState.LOGGING:
                 self.game_actions.check_if_player_is_logged_out()
                 time.sleep(0.1)
+                continue
 
             if self.state == DangeonState.ENTER_THE_DANGEON:
                 self.dangeon_actions.enter_the_dangeon()
+                continue
 
             if self.state == DangeonState.FIRST_ARENA:
                 self.dangeon_actions.first_arena()
+                continue
 
             if self.state == DangeonState.KILL_MOBS:
                 self.dangeon_actions.kill_mobs()
+                continue
 
             if self.state == DangeonState.KILL_METINS:
                 self.dangeon_actions.kill_metins()
+                continue
 
             if self.state == DangeonState.KILL_MINI_BOSS:
                 self.dangeon_actions.kill_mini_boss()
+                continue
 
             if self.state == DangeonState.SECOND_ARENA:
                 self.dangeon_actions.second_arena()
+                continue
 
             if self.state == DangeonState.GATHER_ITEMS:
                 self.dangeon_actions.gather_items()
+                continue
 
             if self.state == DangeonState.SECOND_METINS:
                 self.dangeon_actions.second_metins()
+                continue
 
             if self.state == DangeonState.SECOND_MINI_BOSS:
                 self.dangeon_actions.second_mini_boss()
+                continue
             
             if self.state == DangeonState.END_BOSS:
                 self.dangeon_actions.end_boss()
+                continue
             
            
 

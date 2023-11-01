@@ -219,27 +219,39 @@ class Actions:
                     #time.sleep(5)
                     self.second_metins_killed += 1
         else:
-            self.metin_bot.osk_window.start_hitting()
             time.sleep(0.8)
+            self.metin_bot.osk_window.start_hitting()
+            time.sleep(0.2)
+            self.metin_bot.game_actions.turn_on_buffs()
+            time.sleep(0.05)
+            self.metin_bot.osk_window.pull_mobs()
+            time.sleep(0.05)
             self.metin_bot.increment_state()
 
     def second_mini_boss(self):
        
+        if self.time_of_starting_hitting is None:
+            self.time_of_starting_hitting = time.time()
+            time.sleep(0.2)
+            self.metin_bot.osk_window.start_hitting()
+            time.sleep(0.03)
+            self.metin_bot.osk_window.pull_mobs()
+            time.sleep(0.05)
+            self.metin_bot.stop()
+
         
         self.metin_bot.osk_window.pull_mobs()
         time.sleep(0.2)
 
-        if self.metin_bot.time_entered_state + 15 <= time.time() and (self.metin_bot.detection_result is not None and "boss" in self.metin_bot.detection_result['labels']):
-
-            self.metin_bot.osk_window.stop_hitting()
+        if self.time_of_starting_hitting + 15 <= time.time() and (self.metin_bot.detection_result is not None and "boss" in self.metin_bot.detection_result['labels']):
+            self.time_of_starting_hitting = None
             time.sleep(1)
             self.metin_bot.increment_state()
 
 
 
-        elif self.metin_bot.time_entered_state + 27 <= time.time():
-        
-            self.metin_bot.osk_window.stop_hitting()
+        elif self.time_of_starting_hitting + 27 <= time.time():
+            self.time_of_starting_hitting = None
             time.sleep(1)
             self.metin_bot.increment_state()
 
@@ -250,31 +262,39 @@ class Actions:
         # while self.detect_boss_tries > 0:
         #     is_clicked = self.metin_bot.detect_and_click('boss')
         #     if is_clicked:
-        #         time.sleep(14)
+        #         time.sleep(14)1
         #     else:
         #         self.metin_bot.game_actions.rotate_view()
         #         self.detect_boss_tries -= 1
 
         # if not is_clicked:
-        time.sleep(0.05)
-        self.metin_bot.osk_window.start_hitting()
-        time.sleep(16)
-        self.metin_bot.osk_window.stop_hitting()
+        if self.time_of_starting_hitting is None:
+            self.time_of_starting_hitting = time.time()
+            time.sleep(0.2)
+            self.metin_bot.osk_window.start_hitting()
+            time.sleep(0.03)
+            self.metin_bot.osk_window.pull_mobs()
+            time.sleep(0.05)
+            self.metin_bot.stop()
 
-        self.metin_bot.dangeon_end_time = time.time()
-        self.metin_bot.dangeons_count += 1
-        print("Avarage time per dangeon {} seconds".format((time.time() - self.metin_bot.started) / self.metin_bot.dangeons_count))
-        print("{} dangeon ended".format(self.metin_bot.dangeons_count))
-        print("dangeon finished in {} minutes".format((self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time) / 60))
-        self.metin_bot.osk_window.pick_up()
-        
-        self.metin_bot.game_actions.collect_the_event_card_drop()
+        if self.time_of_starting_hitting + 16 <= time.time():
+            self.time_of_starting_hitting = None
+            time.sleep(1)
+            self.metin_bot.osk_window.stop_hitting()
+            self.metin_bot.dangeon_end_time = time.time()
+            self.metin_bot.dangeons_count += 1
+            print("Avarage time per dangeon {} seconds".format((time.time() - self.metin_bot.started) / self.metin_bot.dangeons_count))
+            print("{} dangeon ended".format(self.metin_bot.dangeons_count))
+            print("dangeon finished in {} minutes".format((self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time) / 60))
+            self.metin_bot.osk_window.pick_up()
+            
+            self.metin_bot.game_actions.collect_the_event_card_drop()
 
-        self.restart_class_props()
+            self.restart_class_props()
 
-        
-        # code to loot items
-        self.metin_bot.increment_state()
+            
+            # code to loot items
+            self.metin_bot.increment_state()
 
 
     def debug(self):

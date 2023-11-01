@@ -26,21 +26,21 @@ class GameActions:
     def calibrate_view(self, calibration_type="guard"):
         self.metin_bot.metin_window.activate()
         # Camera option: Near, Perspective all the way to the right
-        # self.metin_bot.osk_window.start_rotating_up()
-        # time.sleep(1.1)
-        # self.metin_bot.osk_window.stop_rotating_up()
-        # self.metin_bot.osk_window.start_rotating_down()
-        # time.sleep(random.uniform(0.58, 0.63))
-        # self.metin_bot.osk_window.stop_rotating_down()
-        # time.sleep(0.1)
-        # self.metin_bot.osk_window.start_zooming_out()
-        # time.sleep(1.3)
-        # self.metin_bot.osk_window.stop_zooming_out()
-        # #self.osk_window.start_zooming_in()
-        # time.sleep(0.03)
-        time.sleep(0.07)
-        self.zoom_out()
-        self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
+        self.metin_bot.osk_window.start_rotating_up()
+        time.sleep(1.1)
+        self.metin_bot.osk_window.stop_rotating_up()
+        self.metin_bot.osk_window.start_rotating_down()
+        time.sleep(random.uniform(0.58, 0.63))
+        self.metin_bot.osk_window.stop_rotating_down()
+        time.sleep(0.1)
+        self.metin_bot.osk_window.start_zooming_out()
+        time.sleep(1.3)
+        self.metin_bot.osk_window.stop_zooming_out()
+        #self.osk_window.start_zooming_in()
+        time.sleep(0.03)
+        # time.sleep(0.07)
+        # self.zoom_out()
+        # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
         #self.osk_window.stop_zooming_in()
 
     def calibrate_view_after_dangeon(self):
@@ -264,19 +264,23 @@ class GameActions:
         metin_tp_page = [(338,519),(455,518)]
         coords = [(718,272),(718,302), (718,331), (718, 363), (718, 392), (718, 421), (718,453), (718, 482), (718, 512)]
 
-        self.metin_bot.metin_window.activate()
+        time.sleep(0.2)
         self.metin_bot.osk_window.activate_teleports()
 
-        time.sleep(0.1)
+        time.sleep(0.15)
         self.metin_bot.metin_window.mouse_move(metin_tp_page[tp_page-1][0], metin_tp_page[tp_page-1][1])
-        time.sleep(0.04)
+        time.sleep(0.13)
         self.metin_bot.metin_window.mouse_click()
 
-        time.sleep(0.22)
+        time.sleep(0.12)
         self.metin_bot.metin_window.mouse_move(coords[respawn-1][0], coords[respawn-1][1])
-        time.sleep(0.1)
+        time.sleep(0.12)
         self.metin_bot.metin_window.mouse_click()
-        time.sleep(0.1)
+        time.sleep(0.09)
+        self.metin_bot.metin_window.mouse_move(coords[respawn-1][0]+10, coords[respawn-1][1]+4)
+        time.sleep(0.50)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.22)
         #time.sleep(4)
 
     def teleport_to_next_metin_respawn(self, respawn_number=1):

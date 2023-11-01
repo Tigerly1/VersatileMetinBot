@@ -78,16 +78,19 @@ class Window:
         if hwnd in hwnds:
             return True
         else: return False
-    
-    def set_window_foreground(self):
-        if self._check_if_hwnd_exits(self.hwnd):
-            win32gui.ShowWindow(self.hwnd, 5)
-            shell = win32com.client.Dispatch("WScript.Shell")
-            shell.SendKeys('%')
-            win32gui.SetForegroundWindow(self.hwnd)
+   
 
+    def set_window_foreground(self,  second_try = True):
+        if self._check_if_hwnd_exits(self.hwnd):
+                win32gui.ShowWindow(self.hwnd, 5)
+                self.shell = win32com.client.Dispatch("WScript.Shell")
+                self.shell.SendKeys('%')
+                win32gui.SetForegroundWindow(self.hwnd)
+           
+            
     def close_window(self):
         if self._check_if_hwnd_exits(self.hwnd):
+            
             win32gui.PostMessage(self.hwnd, win32con.WM_CLOSE, 0, 0)
             print(f"The window '{self.name}' with PID {self.pid} is now closed")
 
@@ -154,10 +157,6 @@ class Window:
         if x is None and y is None:
             x, y = self.get_relative_mouse_pos()
         interception.right_click(1)
-
-    def move_window(self, x, y):
-        win32gui.MoveWindow(self.hwnd, x - 7, y, self.width, self.height, True)
-        self.x, self.y = x, y
 
     def limit_coordinate(self, pos):
         pos = list(pos)
