@@ -404,7 +404,7 @@ class GameActions:
         try:
             self.check_if_player_is_logged_out()
             self.respawn_if_dead()
-            self.check_if_bot_is_stuck_in_dangeon(390)
+            self.check_if_bot_is_stuck_in_dangeon(800)
         except:
             print("health checks needs image first")
 

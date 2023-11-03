@@ -1,5 +1,6 @@
 from email import utils
 import math
+import random
 import pyautogui
 import time
 import cv2 as cv
@@ -20,6 +21,11 @@ from window.metin.input.interception_input import InterceptionInput
 from window.metin.metin_window import MetinWindow
 #from credentials import bot_token, chat_id
 #import telegram
+
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class BotState(enum.Enum):
@@ -42,7 +48,8 @@ class MetinBot:
         self.metin_window = metin_window
         self.bot_id = bot_id
         self.main_loop = main_loop
-        self.osk_window = InterceptionInput("Ervelia")
+        print(metin_window.hwnd)
+        self.osk_window = InterceptionInput("Ervelia", metin_window.hwnd)
         #metin_window.move_window(0,0)
         self.vision = Vision()
         self.mob_info_hsv_filter = MobInfoFilter()
@@ -116,8 +123,9 @@ class MetinBot:
 
 
     def run(self):
+        time.sleep(0.2)
         while not self.stopped:
-            time.sleep(0.01)
+            
             self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
 
             if self.health_checks_iterations == 1:
@@ -131,8 +139,13 @@ class MetinBot:
                 continue
 
             if self.state == DangeonState.DEBUG:
-                time.sleep(0.1)
-                self.game_actions.calibrate_view()
+                time.sleep(0.01)
+                print("this is window nr {}".format(self.bot_id))
+                #self.game_actions.calibrate_view()
+                time.sleep(random.randint(1,5))
+                self.stop()
+                #is_clicked = self.detect_and_click('metin', True)
+                #print("XD")
                 continue
                 #self.switch_state(DangeonState.FIRST_ARENA)
                 #self.switch_state(DangeonState.FIRST_ARENA)
@@ -185,17 +198,13 @@ class MetinBot:
                 continue
             
            
-
     def detect_and_click(self, label, check_match=False, rotate_before_click=False):
         try:
             time.sleep(0.001)
-            print("XDXD")
             if self.screenshot is not None and self.detection_time is not None and \
-                            self.detection_time > self.time_of_new_screen + 0.07:
+                            self.detection_time > self.time_of_new_screen + 0.05:
                 #If no matches were found
-                print("X")
                 if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
-                    print("D")
                     self.put_info_text('No metin found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
@@ -209,7 +218,6 @@ class MetinBot:
                         self.time_of_new_screen = time.time()
                     return False
                 else:
-                    print("AA")
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
@@ -235,25 +243,24 @@ class MetinBot:
         height = 150
         top_left = self.metin_window.limit_coordinate((int(pos[0] - width / 2), pos[1] - height))
         bottom_right = self.metin_window.limit_coordinate((int(pos[0] + width / 2), pos[1]))
-        self.info_lock.acquire()
-        time.sleep(0.02)
-        new_screen_after_hovering = []
-        new_screen_after_hovering = self.metin_window.capture()
-        time.sleep(0.02)
+        match_loc = None
+        try:
+            self.info_lock.acquire()
+            logging.debug("Lock acquired for check_match_after_detection.")
+            time.sleep(0.02)
+            new_screen_after_hovering = self.metin_window.capture()
+            time.sleep(0.02)
 
-        if len(new_screen_after_hovering) > 0:
-            mob_title_box = self.vision.extract_section(new_screen_after_hovering, top_left, bottom_right)
-            
-            match_loc = ""
-            
-            try:
-                match_loc, match_val = self.vision.template_match_alpha(mob_title_box, get_ervelia_metin_needle(), 2400000)
-            except Exception as e:
+            if len(new_screen_after_hovering) > 0:
+                mob_title_box = self.vision.extract_section(new_screen_after_hovering, top_left, bottom_right)
                 
-                print(e)
-                return False
-                pass
-        self.info_lock.release()
+                logging.debug("Template matching for label.")
+                match_loc, match_val = self.vision.template_match_alpha(mob_title_box, get_ervelia_metin_needle(), 2400000)
+        except Exception as e:
+            logging.error("Exception occurred in check_match_after_detection: %s", e, exc_info=True)
+        finally:
+            self.info_lock.release()
+            logging.debug("Lock released after check_match_after_detection.")
 
         if match_loc is not None:
             self.metin_window.mouse_click()
@@ -291,8 +298,9 @@ class MetinBot:
                 self.put_info_text('No metin found -> rotate and search again!')
                 self.game_actions.rotate_view()
                 self.rotate_count += 1
-                return False
-                
+                return False            
+
+
 
     def moving_to_enemy(self):
         if self.started_moving_time is None:
@@ -311,7 +319,7 @@ class MetinBot:
                     return False
             
 
-        elif time.time() - self.started_moving_time >= 7:
+        elif time.time() - self.started_moving_time >= 9:
             self.started_moving_time = None
             return None
             #self.osk_window.pick_up()
@@ -329,7 +337,7 @@ class MetinBot:
         self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or time.time() - self.started_hitting_time >= 7:
+        if result is None or time.time() - self.started_hitting_time >= 9:
             self.started_hitting_time = None
             self.put_info_text('Finished -> Collect drop')
             self.metin_count += 1
@@ -396,8 +404,8 @@ class MetinBot:
         self.put_info_text()
        
 
-    def increment_state(self):
-        self.stop()
+    def increment_state(self, stop_thread=True):
+        
         self.state_lock.acquire()
         if self.state != DangeonState.DEBUG and self.state != DangeonState.END_BOSS:
             self.state = DangeonState(self.state.value + 1)
@@ -406,6 +414,8 @@ class MetinBot:
         self.time_entered_state = time.time()
         self.state_lock.release()
         self.put_info_text()
+        if stop_thread:
+            self.stop()
         
 
     def get_state(self):

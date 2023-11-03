@@ -10,32 +10,48 @@ interception.inputs.keyboard = 1
 interception.inputs.mouse = 10
 import ctypes
 import pythoncom
+import threading
 
 
 
 class MetinWindow(Window):
+    _used_hwnds = set() 
+
     def __init__(self, window_name):   
         self.name = window_name
         self.open_window_await_time = 10
         self.window_open_click_time = None
         pythoncom.CoInitialize()
-
-        self.open_new_window_first_time()
-        self.hwnd = self._get_hwnd_by_name()
+    
+        if not self._set_hwnd_of_window_by_name():
+            self.open_new_window_first_time()
+        
         self.pid = self._get_pid_by_hwnd(self.hwnd)
-        
-        
-
+        self.temp_hwnd = 0
         if self.hwnd == 0:
-            self.open_new_window()
+            self.open_new_window_first_time()
             #raise Exception(f'Window "{self.name}" not found!')
         
-        super().__init__(window_name)
+        super().__init__(window_name, self.hwnd)
         self.set_window_foreground()
+
+        self.capture_lock = threading.Lock()
+
+
+    def _set_hwnd_of_window_by_name(self):
+        hwnd = self._get_hwnd_by_name()
+        if hwnd:
+            self._used_hwnds.add(hwnd)  # Adding hwnd to the set of used hwnds
+            self.hwnd = hwnd
+            print(f"Hwnd {hwnd} has been added.")
+            return True
+        else:
+            print("No available hwnd found.")
+            return False
 
     def _get_hwnd_by_name(self):
         def window_enum_callback(hwnd, output):
-            if win32gui.GetWindowText(hwnd) == self.name:
+            if win32gui.GetWindowText(hwnd) == self.name and hwnd not in self._used_hwnds:
                 output.append(hwnd)
             return True
         
@@ -111,8 +127,7 @@ class MetinWindow(Window):
         possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == "metin2client.exe"]
         possible_pids.sort(key=lambda p: psutil.Process(p).create_time())
         self.pid = possible_pids[0] if possible_pids else None
-        print(self.pid)
-        self.hwnd = self._get_hwnd_by_name()
+        self.hwnd = self._set_hwnd_of_window_by_name()
         self.window_open_click_time = None
 
     def open_new_window(self):
@@ -147,7 +162,7 @@ class MetinWindow(Window):
             possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == "metin2client.exe"]
             possible_pids.sort(key=lambda p: psutil.Process(p).create_time())
             self.pid = possible_pids[0] if possible_pids else None
-            self.hwnd = self._get_hwnd_by_name()
+            self.hwnd = self._set_hwnd_of_window_by_name()
             print(self.hwnd)
             self.window_open_click_time = None
 
@@ -161,49 +176,50 @@ class MetinWindow(Window):
         
     def capture(self):
         # https://stackoverflow.com/questions/6312627/windows-7-how-to-bring-a-window-to-the-front-no-matter-what-other-window-has-fo\
-        try:
-            if self.hwnd == None:
-                raise Exception("None")
-            wDC = win32gui.GetWindowDC(self.hwnd)
-            dcObj = win32ui.CreateDCFromHandle(wDC)
-            cDC = dcObj.CreateCompatibleDC()
-            dataBitMap = win32ui.CreateBitmap()
-            dataBitMap.CreateCompatibleBitmap(dcObj, self.width, self.height)
-            cDC.SelectObject(dataBitMap)
-            cDC.BitBlt((0, 0), (self.width, self.height), dcObj, (self.cropped_x, self.cropped_y), win32con.SRCCOPY)
-            # dataBitMap.SaveBitmapFile(cDC, 'debug.bmp')
+        with self.capture_lock:
+            try:
+                if self.hwnd == None:
+                    raise Exception("None")
+                wDC = win32gui.GetWindowDC(self.hwnd)
+                dcObj = win32ui.CreateDCFromHandle(wDC)
+                cDC = dcObj.CreateCompatibleDC()
+                dataBitMap = win32ui.CreateBitmap()
+                dataBitMap.CreateCompatibleBitmap(dcObj, self.width, self.height)
+                cDC.SelectObject(dataBitMap)
+                cDC.BitBlt((0, 0), (self.width, self.height), dcObj, (self.cropped_x, self.cropped_y), win32con.SRCCOPY)
+                # dataBitMap.SaveBitmapFile(cDC, 'debug.bmp')
 
-            # https://stackoverflow.com/questions/41785831/how-to-optimize-conversion-from-pycbitmap-to-opencv-image
-            signedIntsArray = dataBitMap.GetBitmapBits(True)
-            img = np.fromstring(signedIntsArray, dtype='uint8')
-            img.shape = (self.height, self.width, 4)
+                # https://stackoverflow.com/questions/41785831/how-to-optimize-conversion-from-pycbitmap-to-opencv-image
+                signedIntsArray = dataBitMap.GetBitmapBits(True)
+                img = np.fromstring(signedIntsArray, dtype='uint8')
+                img.shape = (self.height, self.width, 4)
 
-            # Free Resources
-            dcObj.DeleteDC()
-            cDC.DeleteDC()
-            win32gui.ReleaseDC(self.hwnd, wDC)
-            win32gui.DeleteObject(dataBitMap.GetHandle())
+                # Free Resources
+                dcObj.DeleteDC()
+                cDC.DeleteDC()
+                win32gui.ReleaseDC(self.hwnd, wDC)
+                win32gui.DeleteObject(dataBitMap.GetHandle())
 
-            # Drop the alpha channel
-            img = img[..., :3]
+                # Drop the alpha channel
+                img = img[..., :3]
 
-            # make image C_CONTIGUOUS
-            img = np.ascontiguousarray(img)
+                # make image C_CONTIGUOUS
+                img = np.ascontiguousarray(img)
 
-            return img
-        except Exception as e:
-                time.sleep(0.1)
-                hwnd_exists = self._check_if_hwnd_exits(self.hwnd)
-                print(hwnd_exists)
-                if hwnd_exists:
-                    print("OKAY")
-                    #self.open_new_window()
-                    self.set_window_foreground()
-                    return self.capture()
-                if not hwnd_exists:
-                    print("NIE OKAY")
-                    self.open_new_window()
-                    #self.set_window_foreground()
-                    raise Exception("trying to open new window")
+                return img
+            except Exception as e:
+                    time.sleep(0.1)
+                    hwnd_exists = self._check_if_hwnd_exits(self.hwnd)
+                    print(hwnd_exists)
+                    if hwnd_exists:
+                        print("OKAY")
+                        #self.open_new_window()
+                        self.set_window_foreground()
+                        return self.capture()
+                    if not hwnd_exists:
+                        print("NIE OKAY")
+                        self.open_new_window()
+                        #self.set_window_foreground()
+                        raise Exception("trying to open new window")
                 
             

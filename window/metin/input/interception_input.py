@@ -9,8 +9,8 @@ interception.inputs.mouse = 10
 
 
 class InterceptionInput(Window):
-    def __init__(self, window_name):
-        super().__init__(window_name)
+    def __init__(self, window_name, hwnd=None):
+        super().__init__(window_name, hwnd)
         pass
 
     def start_hitting(self):
@@ -45,7 +45,7 @@ class InterceptionInput(Window):
         interception.key_up("space")
 
     def pull_mobs(self):
-        interception.press("3", 3, 0.01)
+        interception.press("3", 3, 0.02)
 
     def pick_up(self):
         interception.key_down("z")
@@ -147,7 +147,7 @@ class InterceptionInput(Window):
         #sleep(0.1)
         interception.mouse_down('right')
         sleep(0.02)
-        interception.move_relative(random.randint(10, 25), 0)
+        interception.move_relative(random.randint(7, 16), 0)
         sleep(0.02)
         interception.mouse_up('right')
         sleep(0.03)

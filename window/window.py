@@ -12,13 +12,22 @@ interception.inputs.mouse = 10
 import psutil
 import pygetwindow as gw
 
-class Window:
-    def __init__(self, window_name):
-        self.name = window_name
-        self.hwnd = win32gui.FindWindow(None, window_name)
-        if self.hwnd == 0:
-            raise Exception(f'Window "{self.name}" not found!')
 
+def windows_swap_fix():
+    interception.move_to(1440,1059)
+    # sleep(0.03)
+    # interception.left_click(1)
+    # sleep(0.03)
+
+class Window:
+    def __init__(self, window_name, hwnd=None):
+        self.name = window_name
+
+        if hwnd == 0 or hwnd == None:
+            self.hwnd = win32gui.FindWindow(None, window_name)
+            #raise Exception(f'Window "{self.name}" not found!')
+        else:
+            self.hwnd = hwnd
         _, self.pid = win32process.GetWindowThreadProcessId(self.hwnd)
 
         # if self.pid in Window.managed_windows:
@@ -41,11 +50,26 @@ class Window:
         self.open_window_await_time = 6
         self.window_open_click_time = None
 
+        interception.move_to(1440,1059)
+        sleep(0.03)
+        interception.left_click(1)
+        sleep(0.03)
+
         pythoncom.CoInitialize()
         win32gui.ShowWindow(self.hwnd, 5)
         self.shell = win32com.client.Dispatch("WScript.Shell")
         self.shell.SendKeys('%')
         win32gui.SetForegroundWindow(self.hwnd)
+
+    def _get_hwnd_by_name(self):
+        def window_enum_callback(hwnd, output):
+            if win32gui.GetWindowText(hwnd) == self.name:
+                output.append(hwnd)
+            return True
+        
+        hwnds = []
+        win32gui.EnumWindows(window_enum_callback, hwnds)
+        return hwnds[0] if hwnds else None
 
     def _get_hwnd_from_pid(self):
         """
@@ -86,6 +110,7 @@ class Window:
                 self.shell = win32com.client.Dispatch("WScript.Shell")
                 self.shell.SendKeys('%')
                 win32gui.SetForegroundWindow(self.hwnd)
+                print('hwnd of {} is on'.format(self.hwnd))
            
             
     def close_window(self):
