@@ -249,11 +249,11 @@ class GameActions:
         
         time.sleep(0.3)
         self.metin_bot.osk_window.un_mount()
-        time.sleep(0.3)
+        time.sleep(0.4)
         self.metin_bot.osk_window.activate_aura()
         #time.sleep(2)
         #self.osk_window.activate_berserk()
-        time.sleep(0.3)
+        time.sleep(0.5)
         self.metin_bot.osk_window.un_mount()
         self.metin_bot.osk_window.activate_buffs()
 

@@ -15,6 +15,7 @@ from utils import * #get_metin_needle_path, get_tesseract_path
 import pytesseract
 import re
 from utils.helpers.paths import get_dangeon_end_image, get_ervelia_metin_needle, get_second_area_dangeon30, get_tesseract_path
+import copy
 
 from utils.helpers.vision import MobInfoFilter, Vision
 from window.metin.input.interception_input import InterceptionInput
@@ -205,16 +206,22 @@ class MetinBot:
                         self.time_of_new_screen = time.time()
                     return False
                 else:
+                    saved_click_pos = copy.deepcopy(self.detection_result['click_pos'])
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
                     if label == "first_arena":
-                        x, y = self.detection_result['click_pos']
+                        x, y = saved_click_pos
                         y = y + 75
-                        x = x - 20
+                        x = x - 20 
                         self.metin_window.mouse_move(x,y)
+                    
                     else:
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
-                        self.metin_window.mouse_move(*self.detection_result['click_pos'])
+                        self.metin_window.mouse_move(*saved_click_pos)
+                    
+                    if label == "second_arena":
+                        self.osk_window.activate_flag()
+
                     time.sleep(0.03)
                     if not check_match:
                         self.metin_window.mouse_click()
