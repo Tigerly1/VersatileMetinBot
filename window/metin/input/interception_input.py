@@ -49,7 +49,7 @@ class InterceptionInput(Window):
 
     def pick_up(self):
         interception.key_down("z")
-        sleep(6)
+        sleep(7)
         interception.key_up("z")
         
     def move_with_camera_rotation(self):
@@ -62,7 +62,7 @@ class InterceptionInput(Window):
         interception.key_up("e")
 
     def activate_flag(self):
-        interception.press("3")
+        interception.press("f1")
 
     def activate_horse_dodge(self):
         interception.press("4")
@@ -218,3 +218,6 @@ class InterceptionInput(Window):
 
     def stop_zooming_in(self):
         interception.key_up("r")
+
+    def escape_key(self):
+        interception.press("esc")

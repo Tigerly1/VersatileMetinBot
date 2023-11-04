@@ -11,7 +11,7 @@ interception.inputs.mouse = 10
 import ctypes
 import pythoncom
 import threading
-
+# 10,24 i 48:46
 
 
 class MetinWindow(Window):

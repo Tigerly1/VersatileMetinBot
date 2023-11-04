@@ -24,7 +24,7 @@ class GameActions:
         self.metin_bot.osk_window.stop_zooming_out()
 
     def calibrate_view(self, calibration_type="guard"):
-        self.metin_bot.metin_window.activate()
+        #self.metin_bot.metin_window.activate()
         # Camera option: Near, Perspective all the way to the right
         self.metin_bot.osk_window.start_rotating_up()
         time.sleep(1.1)
@@ -209,19 +209,21 @@ class GameActions:
         if time.time() - self.metin_bot.login_time > 25:
             self.metin_bot.login_state = False
             self.metin_bot.dangeon_actions.restart_class_props()
+            self.metin_bot.dangeon_actions.tp_to_dangeon = True
+            self.metin_bot.dangeon_actions.change_channel = True
             self.metin_bot.switch_state(DangeonState.INITIALIZING)
         # self.check_if_player_is_logged_out()
 
     def tp_to_dangeon(self, tp_back=False):
 
-        self.metin_bot.metin_window.activate()
+        #self.metin_bot.metin_window.activate()
 
-        time.sleep(0.17)
+        time.sleep(3)
         self.metin_bot.metin_window.mouse_move(521,208) #521, 247
-        time.sleep(0.04)
+        time.sleep(1)
         self.metin_bot.metin_window.mouse_click()
 
-        time.sleep(0.8)
+        time.sleep(1.2)
         self.metin_bot.metin_window.mouse_move(517,401)
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
@@ -242,7 +244,7 @@ class GameActions:
         self.metin_bot.metin_window.mouse_click()
 
     def turn_on_buffs(self):
-        self.metin_bot.metin_window.activate()
+        #self.metin_bot.metin_window.activate()
         self.metin_bot.last_buff = time.time()
         
         time.sleep(0.3)
@@ -308,7 +310,7 @@ class GameActions:
 
         channel_cords = [(896,40), (893,63), (896,84), (900, 102), (910,121), (931,131), (952,136), (973,130)]
 
-        self.metin_bot.metin_window.activate()
+        #self.metin_bot.metin_window.activate()
 
         time.sleep(0.1)
         self.metin_bot.metin_window.mouse_move(channel_cords[channel-1][0], channel_cords[channel-1][1])
@@ -390,7 +392,7 @@ class GameActions:
             return False
         
     def collect_the_event_card_drop(self):
-        self.metin_bot.metin_window.activate()
+        #self.metin_bot.metin_window.activate()
 
         time.sleep(0.4)
         self.metin_bot.metin_window.mouse_move(570,490)
@@ -404,7 +406,7 @@ class GameActions:
         try:
             self.check_if_player_is_logged_out()
             self.respawn_if_dead()
-            self.check_if_bot_is_stuck_in_dangeon(800)
+            self.check_if_bot_is_stuck_in_dangeon(900)
         except:
             print("health checks needs image first")
 

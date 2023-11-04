@@ -27,5 +27,8 @@ def get_first_area_dangeon30():
 def get_dangeon_item_dangeon30():
     return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\dangeon_item.png'
 
+def get_dangeon_end_image():
+    return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\dangeon_end.png'
+
 def countdown():
     pyautogui.countdown(1)

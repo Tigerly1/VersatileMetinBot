@@ -22,8 +22,8 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.window_names = ["Ervelia", "Ervelia", "Ervelia"]
-
+        self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
+        #self.window_names = ["Ervelia"]
         self.change_window = True
 
         self.handler = MultiWindowBotHandler(self)
@@ -44,7 +44,7 @@ class MainLoop():
         # self.bot = MetinBot(self.metin_window)
 
     def swap_window(self):
-        time.sleep(0.6)
+        time.sleep(0.3)
         self.change_window = True
         self.last_switch_time = time.time()
 
@@ -67,13 +67,12 @@ class MainLoop():
                     self.change_window = False
                     # Stop current bot and capture
                     current_instance['bot'].stop(swap_window=False)
-                    print("time of stopped thread {}".format(time.time()))
+                    #print("time of stopped thread {}".format(time.time()))
                     # Move to next instance
                     time.sleep(0.01)
                     #if time.time() - self.handler.get_next_instance_last_run_time() > self.seconds_between_same_runs:
-                    print("window is being changed")
+                    #print("window is being changed")
                     current_instance = self.handler.get_next_instance()
-                    time.sleep(0.1)
                     windows_swap_fix()
                     time.sleep(0.1)
                     try:
@@ -82,17 +81,17 @@ class MainLoop():
 
                         self.capt_detect.change_window_of_detection(current_instance['window'])
 
-                        time.sleep(0.2)
                         # current_instance['window'].move_window(0,0)
                         #current_instance['window'].activate()
-                        time.sleep(0.3)
+                        time.sleep(0.1)
                         #change the window in the capt_detect 
                         current_instance['bot'].start()
-                        print("time of started thread {}".format(time.time()))
+                        #print("time of started thread {}".format(time.time()))
                         self.handler.set_current_instance_last_run_time()
 
                         self.last_switch_time = time.time()
-                    except:
+                    except Exception as e:
+                        print(e)
                         self.change_window = True
 
                 state_of_detection = current_instance['bot'].get_object_detector_state()
