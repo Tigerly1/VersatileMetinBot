@@ -200,6 +200,7 @@ class MetinBot:
                         self.rotate_count = 0
                         self.game_actions.calibrate_view("guard")
                         self.time_of_new_screen = time.time()
+                        self.stop()
                     else:
                         self.rotate_count += 1
                         self.game_actions.rotate_view()
@@ -207,6 +208,7 @@ class MetinBot:
                     return False
                 else:
                     saved_click_pos = copy.deepcopy(self.detection_result['click_pos'])
+                    self.rotate_count = 0
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
                     if label == "first_arena":

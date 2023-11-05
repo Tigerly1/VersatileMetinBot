@@ -51,14 +51,14 @@ class Actions:
                 self.metin_bot.stop()
                 time.sleep(0.1)
                 return
-            if self.start_of_the_action_time is None:
-                self.start_of_the_action_time = time.time()
-            if time.time() - self.start_of_the_action_time > 10:
-                self.metin_bot.game_actions.calibrate_view("first_arena")
-                self.tp_to_dangeon = True
-                self.start_of_the_action_time = None
-                self.metin_bot.stop()
-                return
+            # if self.start_of_the_action_time is None:
+            #     self.start_of_the_action_time = time.time()
+            # if time.time() - self.start_of_the_action_time > 10:
+            #     self.metin_bot.game_actions.calibrate_view("first_arena")
+            #     self.tp_to_dangeon = True
+            #     self.start_of_the_action_time = None
+            #     self.metin_bot.stop()
+            #     return
             next_action = self.metin_bot.detect_and_click('guard')
             if not next_action:
                 return
@@ -73,7 +73,7 @@ class Actions:
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
             self.metin_bot.game_actions.calibrate_view("first_arena")
-        if time.time() - self.start_of_the_action_time > 35:
+        if time.time() - self.start_of_the_action_time > 120:
             self.start_of_the_action_time = None
             self.restart_after_action_not_changed()
             return
@@ -194,7 +194,7 @@ class Actions:
         # else:
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
-        if time.time() - self.start_of_the_action_time > 28:
+        if time.time() - self.start_of_the_action_time > 150:
             self.restart_after_action_not_changed()
             self.metin_bot.stop()
             return
@@ -228,9 +228,7 @@ class Actions:
         if time.time() - self.start_of_the_action_time < self.gather_items_time:
             self.metin_bot.stop()
             return
-        if not self.metin_bot.game_actions.check_if_equipment_is_on():
-                self.metin_bot.osk_window.open_inventory()
-
+        
         if self.items_gathered < 4:
             x, y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_item_dangeon30(), 0.6)
             if x is None:
@@ -239,6 +237,9 @@ class Actions:
                 self.metin_bot.game_actions.click_inventory_stash_x(self.inventory_page)
                 time.sleep(0.3)
                 if self.inventory_page == 1:
+                    if not self.metin_bot.game_actions.check_if_equipment_is_on():
+                        self.metin_bot.osk_window.open_inventory()
+                    time.sleep(0.1)
                     self.metin_bot.stop()
             else:
                 if self.items_gathered == 3:
@@ -247,7 +248,7 @@ class Actions:
                 self.metin_bot.metin_window.mouse_move(x,y)
                 time.sleep(0.3)
                 self.metin_bot.metin_window.mouse_right_click()
-                time.sleep(0.7)
+                time.sleep(0.6)
                 self.items_gathered += 1
 
         if self.items_gathered > 3:
@@ -407,7 +408,7 @@ class Actions:
 
     def restart_after_action_not_changed(self):
         self.restart_class_props()
-        self.metin_bot.dangeon_entered_time = time.time()
+        #self.metin_bot.dangeon_entered_time = time.time()
         self.tp_to_dangeon = True
         self.change_channel = True
         self.metin_bot.switch_state(DangeonState.INITIALIZING)
