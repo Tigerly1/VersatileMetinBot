@@ -22,7 +22,7 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
+        self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
         #self.window_names = ["Ervelia"]
         self.change_window = True
 

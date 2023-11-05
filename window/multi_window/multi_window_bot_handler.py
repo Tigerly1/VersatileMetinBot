@@ -6,7 +6,7 @@ from detectors.yolo.capture_and_detect import CaptureAndDetect
 from window.metin.metin_window import MetinWindow
 
 class MultiWindowBotHandler:
-    def __init__(self, main_loop, max_instances=6):
+    def __init__(self, main_loop, max_instances=8):
 
         self.instances = {}
         self.lock = Lock()
