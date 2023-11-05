@@ -44,7 +44,7 @@ class Actions:
                 time.sleep(0.1)
                 return 
             if self.change_channel:
-                time.sleep(4)
+                time.sleep(5)
                 self.metin_bot.current_channel = (self.metin_bot.current_channel % 8) + 1
                 self.metin_bot.game_actions.change_channel(self.metin_bot.current_channel)
                 self.change_channel = False
@@ -373,7 +373,8 @@ class Actions:
 
             x, y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_end_image(), 0.9)
             if x is None:
-                self.tp_to_dangeon = True
+                 self.tp_to_dangeon = True
+                 self.change_channel = True
             self.restart_class_props()
 
             
