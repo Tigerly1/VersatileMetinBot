@@ -61,6 +61,12 @@ class InterceptionInput(Window):
         sleep(0.05)
         interception.key_up("e")
 
+    def rotate(self, stop=False):
+        if stop:
+            interception.key_up("e")
+        else:
+            interception.key_down("e")
+
     def activate_flag(self):
         interception.press("3")
 

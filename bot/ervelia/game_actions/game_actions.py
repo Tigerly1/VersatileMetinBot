@@ -57,6 +57,10 @@ class GameActions:
         time.sleep(0.08)
         self.metin_bot.osk_window.stop_zooming_in()
 
+    def rotate_view_async(self, off=False):
+        self.metin_bot.osk_window.rotate(off)
+
+
     def rotate_view(self):
         self.metin_bot.osk_window.rotate_with_mouse()
         #self.osk_window.move_with_camera_rotation()

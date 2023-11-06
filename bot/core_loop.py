@@ -108,7 +108,7 @@ class MetinBot:
         self.time_entered_state = time.time()
         self.health_checks_iterations = 0
         self.state = None
-        self.switch_state(DangeonState.INITIALIZING)
+        self.switch_state(DangeonState.DEBUG)
         
 
     def run(self):
@@ -122,7 +122,18 @@ class MetinBot:
 
             if self.state == DangeonState.DEBUG:
                 time.sleep(0.1)
-                self.game_actions.calibrate_view()
+                self.game_actions.rotate_view_async()
+                self.time_of_rotation = time.time()
+                while time.time() - self.time_of_rotation < 8:
+                    detection = self.test_detect_and_click("first_arena")
+                    print(detection)
+                    if detection:
+                        break
+                if not detection:
+                    self.game_actions.calibrate_view()
+                print( self.test_detect_and_click("first_arena"))
+                self.game_actions.rotate_view_async(True)
+                time.sleep(4)
                 #self.switch_state(DangeonState.FIRST_ARENA)
                 #self.game_actions.check_if_equipment_is_on()
                 #self.metin_window.activate()
@@ -161,10 +172,36 @@ class MetinBot:
             
             if self.state == DangeonState.END_BOSS:
                 self.dangeon_actions.end_boss()
-            
+
+    def test_detect_and_click(self, label):
+        try:
+            if self.screenshot is not None and self.detection_time is not None:
+                #If no matches were found
+                
+                if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
+                    
+                    self.put_info_text('No metin found, will rotate!')
+                    if self.rotate_count > self.rotate_threshold:
+                        self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
+                        self.calibrate_count += 1
+                        self.rotate_count = 0
+                        #self.game_actions.calibrate_view()
+                       
+                    else:
+                        self.rotate_count += 1
+                        
+                    return False
+                else:
+                
+                    return True
+            return False
+        except Exception as e:
+            print("XD")
+            print(e)
+            return False
            
 
-    def detect_and_click(self, label, check_match=False, rotate_before_click=False):
+    def detect_and_click(self, label, check_match=False, rotate_before_click=False ):
         try:
             time.sleep(0.01)
             if self.screenshot is not None and self.detection_time is not None and \
