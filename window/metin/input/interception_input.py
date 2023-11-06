@@ -24,6 +24,12 @@ class InterceptionInput(Window):
         interception.key_down("w")
         sleep(0.03)
 
+    def rotate(self, stop=False):
+        if stop:
+            interception.key_up("e")
+        else:
+            interception.key_down("e")
+
     def rotate_forward(self):
         sleep(0.03)
         interception.key_down("w")

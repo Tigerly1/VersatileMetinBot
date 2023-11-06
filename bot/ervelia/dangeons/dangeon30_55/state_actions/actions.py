@@ -73,12 +73,29 @@ class Actions:
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
             self.metin_bot.game_actions.calibrate_view("first_arena")
-        if time.time() - self.start_of_the_action_time > 120:
+        if time.time() - self.start_of_the_action_time > 300:
             self.start_of_the_action_time = None
             self.restart_after_action_not_changed()
+            self.metin_bot.stop()
             return
-        next_action = self.metin_bot.detect_and_click('first_arena', rotate_before_click=True)
-        if not next_action:
+        # next_action = self.metin_bot.detect_and_click('first_arena', rotate_before_click=True)
+        # if not next_action:
+        #     return
+        self.rotate_start_time = time.time()
+        self.metin_bot.game_actions.rotate_view_async()
+
+        while time.time() - self.rotate_start_time  < 6:
+            result = self.metin_bot.brief_detection('first_arena')
+            if result:
+                break
+        
+        if not result:
+            self.metin_bot.game_actions.calibrate_view()
+        self.metin_bot.game_actions.rotate_view_async(True)
+        time.sleep(0.1)
+        new_click = self.metin_bot.detect_and_click('first_arena', rotate_before_click=True)
+        if not new_click:
+            self.metin_bot.stop()
             return
         # # x, y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_first_area_dangeon30(), 0.25)
         # # if x is None:
@@ -132,6 +149,9 @@ class Actions:
                 is_clicked = self.metin_bot.detect_and_click('metin', True)
                 self.metins_rotation += 1
                 if is_clicked:
+                    if self.first_metins_killed == 0:
+                        self.metin_bot.osk_window.activate_flag()
+
                     self.metin_start_hitting_time = time.time()
                     
                     #time.sleep(5)
@@ -194,12 +214,29 @@ class Actions:
         # else:
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
-        if time.time() - self.start_of_the_action_time > 150:
+        if time.time() - self.start_of_the_action_time > 300:
             self.restart_after_action_not_changed()
             self.metin_bot.stop()
             return
-        next_action = self.metin_bot.detect_and_click('second_arena')
-        if not next_action:
+        # next_action = self.metin_bot.detect_and_click('second_arena')
+        # if not next_action:
+        #     return
+        
+        self.rotate_start_time = time.time()
+        self.metin_bot.game_actions.rotate_view_async()
+
+        while time.time() - self.rotate_start_time  < 6:
+            result = self.metin_bot.brief_detection('second_arena')
+            if result:
+                break
+        
+        if not result:
+            self.metin_bot.game_actions.calibrate_view()
+        self.metin_bot.game_actions.rotate_view_async(True)
+        time.sleep(0.1)
+        new_click = self.metin_bot.detect_and_click('second_arena')
+        if not new_click:
+            self.metin_bot.stop()
             return
         # while True:
         #     next_action = self.metin_bot.detect_and_click('second_arena')

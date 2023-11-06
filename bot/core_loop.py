@@ -124,13 +124,27 @@ class MetinBot:
                 continue
 
             if self.state == DangeonState.DEBUG:
-               
+                self.rotate_start_time = time.time()
+                self.game_actions.rotate_view_async()
+
+                while time.time() - self.rotate_start_time  < 6:
+                    result = self.brief_detection('first_arena')
+                    if result:
+                        break
+                
+                if not result:
+                    self.game_actions.calibrate_view()
+                self.game_actions.rotate_view_async(True)
+                time.sleep(0.1)
+                new_click = self.detect_and_click('first_arena', rotate_before_click=True)
+
                 #self.game_actions.calibrate_view()
-                top_left = (300, 21)
-                bottom_right = (700, 60)
-                print(self.game_actions.get_clicked_place_info(top_left, bottom_right))
-                x, y = self.vision.find_image(self.get_screenshot_info(), get_dangeon_end_image(), 0.9)
-                print(x)
+                # top_left = (300, 21)
+                # bottom_right = (700, 60)
+                # print(self.game_actions.get_clicked_place_info(top_left, bottom_right))
+                # x, y = self.vision.find_image(self.get_screenshot_info(), get_dangeon_end_image(), 0.9)
+                # print(x)
+                
                 # is_clicked = self.detect_and_click('guard', False)
                 #print("XD")
                 #self.switch_state(DangeonState.FIRST_ARENA)
@@ -184,7 +198,20 @@ class MetinBot:
             if self.state == DangeonState.END_BOSS:
                 self.dangeon_actions.end_boss()
                 continue
-            
+    
+    def brief_detection(self, label):
+        try:
+            if self.screenshot is not None and self.detection_time is not None:
+                if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
+                    return False
+                else:
+                    return True
+                  
+            return False
+        except Exception as e:
+            print("XD")
+            print(e)
+            return False
            
     def detect_and_click(self, label, check_match=False, rotate_before_click=False):
         try:

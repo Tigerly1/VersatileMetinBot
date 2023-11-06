@@ -37,7 +37,7 @@ class GameActions:
         time.sleep(1.3)
         self.metin_bot.osk_window.stop_zooming_out()
         #self.osk_window.start_zooming_in()
-        time.sleep(0.03)
+        time.sleep(0.07)
         # time.sleep(0.07)
         # self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
@@ -62,6 +62,9 @@ class GameActions:
     def rotate_view(self):
         self.metin_bot.osk_window.rotate_with_mouse()
         #self.osk_window.move_with_camera_rotation()
+
+    def rotate_view_async(self, stop=False):
+        self.metin_bot.osk_window.rotate(stop)
 
     def process_metin_info(self, text):
         # Remove certain substrings
