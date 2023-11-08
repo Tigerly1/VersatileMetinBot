@@ -28,6 +28,13 @@ class MultiWindowBotHandler:
                     'window_name': window_name,  # Store window_name within the instance
                     'last_run_time': time.time()
                 }
+
+                ### add time for next move to windows to increase dangeon speed
+                if len(self.instances) > 4:
+                    instance['bot'].time_of_next_action = time.time() + 240
+                elif len(self.instances) > 2:
+                    instance['bot'].time_of_next_action = time.time() + 120
+
                 self.instances[self.counter] = instance  # Use counter as the key
                 self.counter += 1  # Increment counter for the next instance
                 
@@ -46,11 +53,17 @@ class MultiWindowBotHandler:
             self.current_key = keys[0]
         else:
             current_index = keys.index(self.current_key)
-            next_index = (current_index + 1) % len(keys)
-            if with_setting_key:
-                self.current_key = keys[next_index]
-            else:
-                return self.instances[keys[next_index]]
+                # Find the next instance that is ready based on wait_time
+            for offset in range(1, len(keys) + 1):
+                next_index = (current_index + offset) % len(keys)
+                next_key = keys[next_index]
+                next_instance = self.instances[next_key]
+                elapsed_time = time.time() - next_instance['bot'].time_of_next_action
+                if elapsed_time >= 0:  # Use the wait time of the bot
+                    if with_setting_key:
+                        self.current_key = next_key
+                    return next_instance
+            return None
         return self.instances[self.current_key]
     
     def set_current_instance_last_run_time(self):

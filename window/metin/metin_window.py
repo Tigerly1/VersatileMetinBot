@@ -68,7 +68,7 @@ class MetinWindow(Window):
         hwnds = []
 
         win32gui.EnumWindows(window_enum_callback, hwnds)
-        print(hwnds)
+        #print(hwnds)
         if hwnd in hwnds:
             return True
         else: return False

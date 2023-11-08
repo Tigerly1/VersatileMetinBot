@@ -98,7 +98,7 @@ class Window:
         hwnds = []
 
         win32gui.EnumWindows(window_enum_callback, hwnds)
-        print(hwnds)
+        #print(hwnds)
         if hwnd in hwnds:
             return True
         else: return False
@@ -110,14 +110,14 @@ class Window:
                 self.shell = win32com.client.Dispatch("WScript.Shell")
                 self.shell.SendKeys('%')
                 win32gui.SetForegroundWindow(self.hwnd)
-                print('hwnd of {} is on'.format(self.hwnd))
+                #print('hwnd of {} is on'.format(self.hwnd))
            
             
     def close_window(self):
         if self._check_if_hwnd_exits(self.hwnd):
             
             win32gui.PostMessage(self.hwnd, win32con.WM_CLOSE, 0, 0)
-            print(f"The window '{self.name}' with PID {self.pid} is now closed")
+            #print(f"The window '{self.name}' with PID {self.pid} is now closed")
 
     def move_window(self, x, y):
         if self._check_if_hwnd_exits(self.hwnd):
@@ -162,7 +162,7 @@ class Window:
         repeat = True
         while repeat:
             repeat = loop
-            print(self.get_relative_mouse_pos)
+            #print(self.get_relative_mouse_pos)
             if loop:
                 sleep(1)
 

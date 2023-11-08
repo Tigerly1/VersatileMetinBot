@@ -22,7 +22,7 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
+        self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
         #self.window_names = ["Ervelia"]
         self.change_window = True
 
@@ -44,7 +44,7 @@ class MainLoop():
         # self.bot = MetinBot(self.metin_window)
 
     def swap_window(self):
-        time.sleep(0.3)
+        time.sleep(0.4)
         self.change_window = True
         self.last_switch_time = time.time()
 
@@ -65,33 +65,39 @@ class MainLoop():
                 #current_time - self.last_switch_time >= self.switch_interval or
                 if self.change_window:
                     self.change_window = False
-                    # Stop current bot and capture
-                    current_instance['bot'].stop(swap_window=False)
+                    # Stop current bot and capture // update dont stop as it is always stopped
+                    #current_instance['bot'].stop(swap_window=False)
                     #print("time of stopped thread {}".format(time.time()))
                     # Move to next instance
                     time.sleep(0.01)
                     #if time.time() - self.handler.get_next_instance_last_run_time() > self.seconds_between_same_runs:
                     #print("window is being changed")
-                    current_instance = self.handler.get_next_instance()
-                    windows_swap_fix()
-                    time.sleep(0.1)
-                    try:
-                        current_instance['window'].set_window_foreground()
-                        time.sleep(0.2)
+                    new_instance = self.handler.get_next_instance()
 
-                        self.capt_detect.change_window_of_detection(current_instance['window'])
-
-                        # current_instance['window'].move_window(0,0)
-                        #current_instance['window'].activate()
+                    if new_instance is not None:
+                        windows_swap_fix()
                         time.sleep(0.1)
-                        #change the window in the capt_detect 
-                        current_instance['bot'].start()
-                        #print("time of started thread {}".format(time.time()))
-                        self.handler.set_current_instance_last_run_time()
+                        try:
+                            new_instance['window'].set_window_foreground()
+                            time.sleep(0.2)
 
-                        self.last_switch_time = time.time()
-                    except Exception as e:
-                        print(e)
+                            self.capt_detect.change_window_of_detection(new_instance['window'])
+
+                            # current_instance['window'].move_window(0,0)
+                            #current_instance['window'].activate()
+                            time.sleep(0.1)
+                            #change the window in the capt_detect 
+                            new_instance['bot'].start()
+                            current_instance = new_instance
+                            #print("time of started thread {}".format(time.time()))
+                            self.handler.set_current_instance_last_run_time()
+
+                            self.last_switch_time = time.time()
+                        except Exception as e:
+                            print(e)
+                            self.change_window = True
+                    else:
+                        time.sleep(0.2)
                         self.change_window = True
 
                 state_of_detection = current_instance['bot'].get_object_detector_state()

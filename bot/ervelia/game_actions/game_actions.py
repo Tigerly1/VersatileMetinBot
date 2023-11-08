@@ -29,6 +29,7 @@ class GameActions:
         self.metin_bot.osk_window.start_rotating_up()
         time.sleep(1.1)
         self.metin_bot.osk_window.stop_rotating_up()
+        time.sleep(0.15)
         self.metin_bot.osk_window.start_rotating_down()
         time.sleep(random.uniform(0.58, 0.63))
         self.metin_bot.osk_window.stop_rotating_down()
@@ -59,8 +60,8 @@ class GameActions:
         time.sleep(0.08)
         self.metin_bot.osk_window.stop_zooming_in()
 
-    def rotate_view(self):
-        self.metin_bot.osk_window.rotate_with_mouse()
+    def rotate_view(self, small_rotation=False):
+        self.metin_bot.osk_window.rotate_with_mouse(small_rotation)
         #self.osk_window.move_with_camera_rotation()
 
     def rotate_view_async(self, stop=False):
@@ -139,6 +140,22 @@ class GameActions:
 
         return mob_info_text
     
+    def get_text_from_current_cursor_position(self, width=200, height=150):
+        pos = self.metin_bot.metin_window.get_relative_mouse_pos()
+        top_left = self.metin_bot.metin_window.limit_coordinate((int(pos[0] - width / 2), pos[1] - height))
+        bottom_right = self.metin_bot.metin_window.limit_coordinate((int(pos[0] + width / 2), pos[1]))
+        try:
+            time.sleep(0.02)
+
+            text = self.get_clicked_place_info(top_left, bottom_right)
+            return text
+        except Exception as e:
+            print('e')
+
+    
+
+
+
     def check_if_player_is_logged_out(self):
         top_left = (450, 509)
         bottom_right = (560, 549)
@@ -250,14 +267,15 @@ class GameActions:
         #self.metin_bot.metin_window.activate()
         self.metin_bot.last_buff = time.time()
         
-        time.sleep(0.3)
+        time.sleep(0.1)
         self.metin_bot.osk_window.un_mount()
-        time.sleep(0.4)
+        time.sleep(0.6)
         self.metin_bot.osk_window.activate_aura()
         #time.sleep(2)
         #self.osk_window.activate_berserk()
-        time.sleep(0.5)
+        time.sleep(0.6)
         self.metin_bot.osk_window.un_mount()
+        time.sleep(0.04)
         self.metin_bot.osk_window.activate_buffs()
 
     # def send_telegram_message(self, msg):
@@ -389,7 +407,7 @@ class GameActions:
         eq_info = self.metin_bot.vision.apply_hsv_filter(eq_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
         eq_info = pytesseract.image_to_string(eq_info)
         # possible_logged_out_info = ["ZALOG", "TNOGUI"]
-        if "wipunek" in eq_info or "winunek" in eq_info:
+        if "Ekw" in eq_info or "nek" in eq_info:
             return True
         else:
             return False
