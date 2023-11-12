@@ -12,6 +12,7 @@ import pytesseract
 import re
 
 from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
+from utils.helpers.paths import get_empty_mount_image
 
 
 class GameActions:
@@ -31,11 +32,17 @@ class GameActions:
         self.metin_bot.osk_window.stop_rotating_up()
         time.sleep(0.15)
         self.metin_bot.osk_window.start_rotating_down()
-        time.sleep(random.uniform(0.58, 0.63))
+        #time.sleep(random.uniform(0.58, 0.63))
+        if calibration_type == "first_arena":
+            time.sleep(0.59)
+        elif calibration_type == "second_arena":
+            time.sleep(0.7)
+        else:
+            time.sleep(random.uniform(0.58, 0.63))
         self.metin_bot.osk_window.stop_rotating_down()
         time.sleep(0.1)
         self.metin_bot.osk_window.start_zooming_out()
-        time.sleep(1.3)
+        time.sleep(0.6)
         self.metin_bot.osk_window.stop_zooming_out()
         #self.osk_window.start_zooming_in()
         time.sleep(0.07)
@@ -213,6 +220,7 @@ class GameActions:
             self.metin_bot.login_state = True
             time.sleep(0.4)
             self.metin_bot.switch_state(DangeonState.LOGGING)
+            return
 
         #######
         elif self.metin_bot.login_state == True and time.time() - self.metin_bot.login_time > 10:
@@ -222,7 +230,7 @@ class GameActions:
             self.metin_bot.metin_window.mouse_click()
             time.sleep(0.4)
             self.metin_bot.stop()
-
+            return
 
         ######
         
@@ -232,6 +240,7 @@ class GameActions:
             self.metin_bot.dangeon_actions.tp_to_dangeon = True
             self.metin_bot.dangeon_actions.change_channel = True
             self.metin_bot.switch_state(DangeonState.INITIALIZING)
+            return
         # self.check_if_player_is_logged_out()
 
     def tp_to_dangeon(self, tp_back=False):
@@ -252,12 +261,13 @@ class GameActions:
     def tp_to_dangeon_again(self):
         self.metin_bot.metin_window.activate()
 
-        time.sleep(0.17)
+        time.sleep(0.47)
         self.metin_bot.metin_window.mouse_move(963,66)
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
-
-        time.sleep(0.8)
+        time.sleep(0.1)
+        self.metin_bot.osk_window.end_pick_up()
+        time.sleep(0.4)
         
         self.metin_bot.metin_window.mouse_move(473, 403)
         time.sleep(0.04)
@@ -267,13 +277,13 @@ class GameActions:
         #self.metin_bot.metin_window.activate()
         self.metin_bot.last_buff = time.time()
         
-        time.sleep(0.1)
+        time.sleep(0.05)
         self.metin_bot.osk_window.un_mount()
-        time.sleep(0.6)
+        time.sleep(0.5)
         self.metin_bot.osk_window.activate_aura()
         #time.sleep(2)
         #self.osk_window.activate_berserk()
-        time.sleep(0.6)
+        time.sleep(0.5)
         self.metin_bot.osk_window.un_mount()
         time.sleep(0.04)
         self.metin_bot.osk_window.activate_buffs()
@@ -333,7 +343,7 @@ class GameActions:
 
         #self.metin_bot.metin_window.activate()
 
-        time.sleep(0.1)
+        time.sleep(0.5)
         self.metin_bot.metin_window.mouse_move(channel_cords[channel-1][0], channel_cords[channel-1][1])
         time.sleep(0.1)
         self.metin_bot.metin_window.mouse_click()
@@ -422,12 +432,42 @@ class GameActions:
 
         time.sleep(0.1)
 
+    def check_if_player_is_on_the_mount(self):
+        if not self.check_if_equipment_is_on():
+            self.metin_bot.osk_window.open_inventory()
+        time.sleep(0.43)
+        self.metin_bot.metin_window.mouse_move(951,161)
+        time.sleep(0.07)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.22)
+        
+        top_left = (629, 329)
+        bottom_right = (676, 366)
+        mount_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
+        x,y = self.metin_bot.vision.find_image(mount_box, get_empty_mount_image(), 0.90)
+        
+       
+        self.metin_bot.metin_window.mouse_move(749,179)
+        time.sleep(0.07)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.05)
+        self.metin_bot.osk_window.open_inventory()
+        if x is not None:
+            return False
+        else:
+            return True
+        
+    def get_the_player_on_the_horse(self):
+        if not self.check_if_player_is_on_the_mount():
+            time.sleep(0.1)
+            self.metin_bot.osk_window.un_mount()
+            time.sleep(0.4)
 
     def health_checks(self):
         try:
             self.check_if_player_is_logged_out()
             self.respawn_if_dead()
-            self.check_if_bot_is_stuck_in_dangeon(900)
+            self.check_if_bot_is_stuck_in_dangeon(700)
         except:
             print("health checks needs image first")
 

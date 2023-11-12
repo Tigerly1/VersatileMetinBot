@@ -57,6 +57,12 @@ class InterceptionInput(Window):
         interception.key_down("z")
         sleep(7)
         interception.key_up("z")
+
+    def start_pick_up(self):
+        interception.key_down("z")
+
+    def end_pick_up(self):
+        interception.key_up("z")
         
     def move_with_camera_rotation(self):
         interception.key_down("w")
@@ -106,7 +112,10 @@ class InterceptionInput(Window):
 
     def open_inventory(self):
         interception.press("i")
-        sleep(0.1)
+        sleep(0.25)
+    
+    def close_inventory(self):
+        interception.press("i")
 
     def activate_buffs(self):
         interception.press("f5")
@@ -156,7 +165,7 @@ class InterceptionInput(Window):
         if small_rotation:
             interception.move_relative(-random.randint(2, 5), 0)
         else:
-            interception.move_relative(random.randint(7, 16), 0)
+            interception.move_relative(random.randint(12, 25), 0)
         sleep(0.05)
         interception.mouse_up('right')
         sleep(0.1)

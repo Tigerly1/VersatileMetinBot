@@ -260,29 +260,72 @@ class Vision:
         except:
             print("image was smaller then needle")
 
-    def find_image(self, live_image, template_path, conf_thresh=0.2):
-        # Load the template and the screen images
-        
+    def find_image(self, live_image, template_path, conf_thresh=0.2, max_centers=1):
+        # Load the template
         template = cv.imread(template_path)
-        ch, template_w, template_h,  = template.shape[::-1]
+        ch, template_w, template_h = template.shape[::-1]
+
         # Match the template using cv2.matchTemplate
         result = cv.matchTemplate(live_image, template, cv.TM_CCOEFF_NORMED)
-        min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
 
-        # Extract the coordinates of our best match
-        x, y = max_loc
+        # Threshold the result
+        locations = np.where(result >= conf_thresh)
+        locations = list(zip(*locations[::-1])) # Swap and pair x, y coordinates
 
-        # Get the coordinates of the center point of the found image
-        center_x = x + template_w // 2
-        center_y = y + template_h // 2
-        self.draw_marker( live_image, (center_x, center_y))
-        # Print the confidence score
-        #print(max_val)
-        if max_val > conf_thresh:
-            return center_x, center_y
+        # Sort locations by their corresponding confidence level
+        matches = sorted([(result[y, x], (x, y)) for x, y in locations], key=lambda x: x[0], reverse=True)
+
+        # Take up to the top max_centers matches
+        top_matches = matches[:max_centers]
+
+        centers = []
+        for _, (x, y) in top_matches:
+            # Get the coordinates of the center point of the found image
+            center_x = x + template_w // 2
+            center_y = y + template_h // 2
+            self.draw_marker(live_image, (center_x, center_y))
+            centers.append((center_x, center_y))
+
+        # Return results based on max_centers
+        if max_centers == 1:
+            return centers[0] if centers else (None, None)
         else:
-            return None, None
-        
+            return centers
+    
+    def is_point_in_rectangle(self, point, rect_top_left, rect_bottom_right):
+        """
+        Check if the point (x, y) is inside the specified rectangle.
+
+        :param point: Tuple (x, y) representing the point.
+        :param rect_top_left: Tuple (x, y) representing the top-left corner of the rectangle.
+        :param rect_bottom_right: Tuple (x, y) representing the bottom-right corner of the rectangle.
+        :return: True if the point is inside the rectangle, False otherwise.
+        """
+        x, y = point
+        rect_x1, rect_y1 = rect_top_left
+        rect_x2, rect_y2 = rect_bottom_right
+
+        return rect_x1 <= x <= rect_x2 and rect_y1 <= y <= rect_y2
+
+    def index_of_centers_that_hasnt_been_clicked_yet(self, centers, clicked_centers, current_inv_tab):
+        sorted_centers = sorted(centers, key=lambda center: center[1])
+        for index, (center_x, center_y) in enumerate(sorted_centers):
+        # Check if this center has been clicked in the current inventory tab
+            already_clicked = False
+            for clicked_x, clicked_y, inventory in clicked_centers:
+                if self.is_point_in_rectangle((center_x, center_y), (clicked_x-12, clicked_y-12), (clicked_x+12, clicked_y+12)) and inventory == current_inv_tab:
+                    already_clicked = True
+                    break
+
+            if not already_clicked:
+                return index  # Return the index of the first unclicked center
+
+        return None  # Return None if all centers have been clicked
+
+            
+    
+    def in_range(self, left, right, x):
+        return left <= x <= right
 
     def save_results(self,detection_result_rectangle, detection_image, output_image_path, output_txt_path, label_to_index=0):
         # 1. Save the image
