@@ -33,5 +33,8 @@ def get_dangeon_end_image():
 def get_empty_mount_image():
     return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\empty_mount.png'
 
+def gm_icon_image():
+    return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\gmicon.png'
+
 def countdown():
     pyautogui.countdown(1)
