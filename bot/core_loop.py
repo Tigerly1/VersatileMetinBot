@@ -121,7 +121,7 @@ class MetinBot:
 
 
     def run(self):
-        time.sleep(0.13)
+        time.sleep(0.04)
         while not self.stopped:
             self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
 
@@ -131,19 +131,19 @@ class MetinBot:
                 continue 
             
             if self.state == DangeonState.INITIALIZING:
-                time.sleep(0.2)
                 self.metin_window.activate()
                 self.game_actions.calibrate_view("guard")
                 self.game_actions.get_the_player_on_the_horse()
-                self.switch_state(DangeonState.FIRST_ARENA)
+                self.switch_state(DangeonState.ENTER_THE_DANGEON)
                 continue
 
             if self.state == DangeonState.DEBUG:
+                #self.vision.SIFT_FEATURES_DETECTION(self.get_screenshot_info())
                 # self.game_actions.get_the_player_on_the_horse()
                 # time.sleep(3)
-                self.game_actions.calibrate_view("first_arena")
+                #self.game_actions.calibrate_view("first_arena")
                 #self.stats.notify_via_telegram("JEJ")
-                time.sleep(2)
+                time.sleep(1)
                 continue
                 
             if self.state == DangeonState.LOGGING:
@@ -291,10 +291,10 @@ class MetinBot:
 
         if match_loc is not None or detection_success:
             self.metin_window.mouse_click()
-            time.sleep(0.02)
+            #time.sleep(0.02)
             #self.osk_window.activate_dodge(self.current_metin_name=="water")
             #self.osk_window.activate_horse_dodge()
-            time.sleep(0.02)
+            #time.sleep(0.02)
             #self.set_object_detector_state(False)
             self.put_info_text('{} found!'.format(label))
             #self.game_actions.turn_on_buffs()

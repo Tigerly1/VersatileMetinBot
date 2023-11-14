@@ -20,6 +20,8 @@ class Actions:
         ### states to clear
         self.first_metins_killed = 0
         self.gather_items_time = 115
+        self.last_inventory_page_used = 2
+        self.gather_items_stones_click = []
         self.items_gathered = 0
         self.inventory_page = 2
         self.second_metins_killed = 0
@@ -31,7 +33,7 @@ class Actions:
         self.pick_up_stop = False
         self.max_metins_rotations = 20
         self.metins_rotation = 0
-        self.gather_items_stones_click = []
+        
 
         self.stats = DungeonBotStatistics()
 
@@ -283,9 +285,10 @@ class Actions:
             self.start_of_the_action_time = time.time()
             if not self.metin_bot.game_actions.check_if_equipment_is_on():
                 self.metin_bot.osk_window.open_inventory()
-            self.metin_bot.game_actions.click_inventory_stash_x(2)
+            self.metin_bot.game_actions.click_inventory_stash_x(self.last_inventory_page_used)
+            self.inventory_page = self.last_inventory_page_used
         self.metin_bot.osk_window.start_hitting()
-        
+
         if self.items_gathered <= 0:
             time.sleep(0.03)
             self.metin_bot.osk_window.pull_mobs()
@@ -299,6 +302,7 @@ class Actions:
         elif time.time() - self.start_of_the_action_time > 210:
             self.start_of_the_action_time = None
             self.restart_after_action_not_changed()
+            return
 
         if self.items_gathered < 4:
             centers = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_item_dangeon30(), 0.6, 4)
@@ -310,7 +314,7 @@ class Actions:
                 self.metin_bot.game_actions.click_inventory_stash_x(self.inventory_page)
                 time.sleep(0.03)
                 #time.sleep(0.20)
-                if self.inventory_page == 2:
+                if self.inventory_page == 1:
                     self.gather_items_stones_click = []
                     if not self.metin_bot.game_actions.check_if_equipment_is_on():
                         self.metin_bot.osk_window.open_inventory()
@@ -320,6 +324,8 @@ class Actions:
                 for x in enumerate(centers):
                     if x != 0: 
                         index_of_next_click = self.metin_bot.vision.index_of_centers_that_hasnt_been_clicked_yet(centers, self.gather_items_stones_click, self.inventory_page)
+                    else:
+                        self.last_inventory_page_used = self.inventory_page
                     if index_of_next_click is not None:
                         self.metin_bot.metin_window.mouse_move(centers[index_of_next_click][0],centers[index_of_next_click][1])
                         time.sleep(0.05)
@@ -358,7 +364,7 @@ class Actions:
          
         if  self.second_metins_killed < 4 and self.metins_rotation <= self.max_metins_rotations:
             if self.metin_start_hitting_time is None or time.time() - self.metin_start_hitting_time > 5.5:
-                time.sleep(0.05)
+                time.sleep(0.02)
                 is_clicked = self.metin_bot.detect_and_click('metin', True)
                 self.metins_rotation += 1
                 if is_clicked:
@@ -390,8 +396,8 @@ class Actions:
             time.sleep(0.2)
             self.metin_bot.osk_window.start_hitting()
             time.sleep(0.2)
-            self.metin_bot.game_actions.turn_on_buffs()
-            time.sleep(0.4)
+            # self.metin_bot.game_actions.turn_on_buffs()
+            # time.sleep(0.4)
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.05)
             self.metin_bot.stop(True, time.time()+14)
@@ -448,14 +454,14 @@ class Actions:
                 self.start_of_the_action_time = time.time()
 
         if self.start_of_the_action_time + 24 <= time.time():
-            self.metin_bot.osk_window.start_pick_up()
-            if self.pick_up_stop == False:
+            # self.metin_bot.osk_window.start_pick_up()
+            # if self.pick_up_stop == False:
                 
-                self.metin_bot.osk_window.stop_hitting()
-                time.sleep(2.6)
-                self.pick_up_stop = True
-                self.metin_bot.stop()
-                return
+            #     self.metin_bot.osk_window.stop_hitting()
+            #     time.sleep(2.6)
+            #     self.pick_up_stop = True
+            #     self.metin_bot.stop()
+            #     return
 
             self.start_of_the_action_time = None
             self.metin_bot.dangeon_end_time = time.time()

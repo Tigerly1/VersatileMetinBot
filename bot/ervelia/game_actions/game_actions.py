@@ -261,13 +261,13 @@ class GameActions:
     def tp_to_dangeon_again(self):
         self.metin_bot.metin_window.activate()
 
-        time.sleep(0.47)
+        time.sleep(0.07)
         self.metin_bot.metin_window.mouse_move(963,66)
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
         time.sleep(0.1)
         self.metin_bot.osk_window.end_pick_up()
-        time.sleep(0.4)
+        time.sleep(0.2)
         
         self.metin_bot.metin_window.mouse_move(473, 403)
         time.sleep(0.04)
@@ -467,7 +467,7 @@ class GameActions:
         try:
             self.check_if_player_is_logged_out()
             self.respawn_if_dead()
-            self.check_if_bot_is_stuck_in_dangeon(700)
+            self.check_if_bot_is_stuck_in_dangeon(600)
         except:
             print("health checks needs image first")
 

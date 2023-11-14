@@ -5,6 +5,7 @@ import time
 from bot.core_loop import MetinBot
 from bot.scheduler.bot_scheduler import BotScheduler
 from detectors.yolo.capture_and_detect import CaptureAndDetect
+from utils.helpers.vision import Vision
 
 from window.metin.metin_window import MetinWindow
 from window.multi_window.multi_window_bot_handler import MultiWindowBotHandler
@@ -121,7 +122,8 @@ class MainLoop():
                 # Draw bot state on image
                 overlay_image = current_instance['bot'].get_overlay_image() 
                 detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
- 
+                
+                #Vision().SIFT_FEATURES_DETECTION(detection_image)
                 # Display image
                 cv.imshow('Matches', detection_image)
 

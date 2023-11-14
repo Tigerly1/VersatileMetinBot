@@ -59,7 +59,6 @@ class CaptureAndDetect:
             end_x = start_x + 70
             start_y = (768 - 70) // 2
             end_y = start_y + 70
-
             # Make the middle region black (set pixel values to [0, 0, 0])
             screenshot[start_y:end_y, start_x:end_x, :] = [0, 0, 0]
 
@@ -93,6 +92,7 @@ class CaptureAndDetect:
                         'scores': output_scores,
                         'labels': labels
                     }
+                    #print(detection)
                     sorted_indices = np.argsort(detection['scores'])[::-1]
                     sorted_rectangles = detection['rectangles'][sorted_indices]
                     detection['rectangles'] = sorted_rectangles

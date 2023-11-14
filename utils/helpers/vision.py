@@ -3,6 +3,11 @@ import cv2 as cv
 import numpy as np
 import os
 from pathlib import Path
+import time
+import matplotlib.pyplot as plt
+from IPython import display
+from sklearn.cluster import DBSCAN
+from PIL import ImageGrab
 
 from utils.helpers.paths import get_metin_needle_path
 
@@ -105,6 +110,7 @@ class Vision:
         # # There are 6 methods to choose from:
         # # TM_CCOEFF, TM_CCOEFF_NORMED, TM_CCORR, TM_CCORR_NORMED, TM_SQDIFF, TM_SQDIFF_NORMED
         # self.method = method
+        self.is_diagram_opened = False
         pass
 
     # create gui window with controls for adjusting arguments in real-time
@@ -341,3 +347,87 @@ class Vision:
             class_idx = label_to_index
             f.write(f"{class_idx} {x_center} {y_center} {w} {h}\n")
     
+    # Function to load image and detect SIFT features
+    def detect_features(self, image_path):
+        # Read the image
+        image = cv.imread(image_path, cv.IMREAD_GRAYSCALE)
+        if image is None:
+            raise ValueError(f"Image at {image_path} could not be loaded.")
+        # Detect keypoints and compute the descriptors with SIFT
+        keypoints, descriptors = self.sift.detectAndCompute(image, None)
+        if descriptors is None:
+            raise ValueError(f"No keypoints detected in image at {image_path}.")
+        return keypoints, descriptors, image
+
+    # Function to match descriptors between two images
+    def match_descriptors(self, descriptors1, descriptors2):
+        # Ensure descriptors are valid
+        if descriptors1 is None or descriptors2 is None:
+            raise ValueError("One or both sets of descriptors are None and cannot be matched.")
+        # Create BFMatcher object with default params
+        bf = cv.BFMatcher(cv.NORM_L2, crossCheck=True)
+        # Match descriptors
+        matches = bf.match(descriptors1, descriptors2)
+        # Sort them in the order of their distance
+        matches = sorted(matches, key=lambda x: x.distance)
+        return matches
+
+    def SIFT_FEATURES_DETECTION(self, screenshot):
+
+        self.sift = cv.SIFT_create()
+        # Load images and detect features
+        keypoints1, descriptors1, image1 = self.detect_features(r'C:\Users\Filip\Downloads\test.png')
+        keypoints2, descriptors2 = self.sift.detectAndCompute(cv.cvtColor(screenshot, cv.COLOR_BGR2GRAY), None)
+        # Choose a location
+        chosen_location = (152, 144) # Replace with your coordinates
+
+        # Compute distances from the chosen location to each keypoint
+        distances = [(kp, np.linalg.norm(np.array(kp.pt) - np.array(chosen_location))) for kp in keypoints1]
+
+        # Sort keypoints by distance
+        distances.sort(key=lambda x: x[1])
+
+        # Get the indices of the top 100 keypoints
+        top_100_indices = [keypoints1.index(kp) for kp, _ in distances[:100]]
+
+        # Extract descriptors for the top 100 keypoints
+        top_100_descriptors = descriptors1[top_100_indices, :]
+
+        # Match descriptors if there are keypoints detected
+        if top_100_indices:
+            matches = self.match_descriptors(top_100_descriptors, descriptors2)
+                # Extract locations of matched keypoints in both images
+            points2 = np.float32([keypoints2[m.trainIdx].pt for m in matches]).reshape(-1, 2)
+
+            # Apply DBSCAN clustering
+            db = DBSCAN(eps=30, min_samples=5).fit(points2)
+            labels = db.labels_
+            clustered_matches = []
+            # Check if any clusters were found
+            if np.any(labels != -1):
+                # Calculate the number of occurrences of each label (excluding noise)
+                label_counts = np.bincount(labels[labels != -1])
+                
+                # Find the index of the largest cluster
+                largest_cluster_idx = np.argmax(label_counts)
+
+                # Filter the matches based on the largest cluster
+                clustered_matches = [m for i, m in enumerate(matches) if labels[i] == largest_cluster_idx]
+
+            # Draw matches if any have been found
+            if len(matches) > 0:
+                # Draw only the top 100 keypoints
+                matched_keypoints = [keypoints2[m.trainIdx].pt for m in clustered_matches]
+    
+                # Convert keypoints into a form that can be used with drawKeypoints
+                matched_keypoints = [cv.KeyPoint(x=pt[0], y=pt[1], size=8) for pt in matched_keypoints]
+
+                imgs = cv.drawKeypoints(screenshot, matched_keypoints, None, flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+                cv.imshow('Top 100 Nearest Feature Matches', imgs)
+                # cv.waitKey(0)
+                # cv.destroyAllWindows()
+            else:
+                print("No matches found.")
+        else:
+            print("No keypoints found near the chosen location.")
+
