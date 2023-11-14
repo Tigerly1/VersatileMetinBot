@@ -1,6 +1,7 @@
 
 import sys
 from pathlib import Path
+import threading
 import time
 from bot.core_loop import MetinBot
 from bot.scheduler.bot_scheduler import BotScheduler
@@ -10,6 +11,12 @@ from utils.helpers.vision import Vision
 from window.metin.metin_window import MetinWindow
 from window.multi_window.multi_window_bot_handler import MultiWindowBotHandler
 from window.window import windows_swap_fix
+
+
+import utils.interception as interception
+from utils.interception import Stroke
+interception.inputs.keyboard = 1
+interception.inputs.mouse = 10
 
 
 FILE = Path(__file__).resolve()
@@ -43,7 +50,10 @@ class MainLoop():
          
         self.seconds_between_same_runs = 14
         # self.bot = MetinBot(self.metin_window)
+        self.stop_loop = False
 
+        keyboard_thread = threading.Thread(target=self.listen_for_ctrl_w)
+        keyboard_thread.start()
     def swap_window(self):
         time.sleep(0.02)
         self.change_window = True
@@ -55,12 +65,11 @@ class MainLoop():
 
         current_instance = self.handler.get_next_instance()
 
-        pause = False
 
         while True:
             key = cv.waitKey(1)
             
-            if not pause:
+            if not self.stop_loop:
             # Check if it's time to switch to the next instance
                 current_time = time.time()
                 #current_time - self.last_switch_time >= self.switch_interval or
@@ -129,16 +138,16 @@ class MainLoop():
 
                 # press 'q' with the output window focused to exit.
                 # waits 1 ms every loop to process key presses
-                if key == ord('w') and not pause: ## w as wait
+                if key == ord('w') and not self.stop_loop: ## w as wait
                     self.capt_detect.stop()
                     current_instance['bot'].stop()
-                    pause = True
+                    self.stop_loop = True
 
-            if pause:
+            if self.stop_loop:
                 key = cv.waitKey(5)
                 if key == ord('w'):
                     self.capt_detect.start()
-                    current_instance['bot']
+                    current_instance['bot'].start()
                     pause = False
 
             if key == ord('q'):
@@ -148,3 +157,21 @@ class MainLoop():
                     current_instance['bot'].stop()
                 cv.destroyAllWindows()
                 break
+
+    def listen_for_ctrl_w(self):
+        with interception() as intercept:
+            intercept.set_filter(intercept.is_keyboard, interception.FilterKeyState.DOWN.value | interception.FilterKeyState.UP.value)
+
+            ctrl_pressed = False
+            while not self.stop_loop:
+                device = intercept.wait()
+                stroke = intercept.receive(device)
+
+                if type(stroke) == Stroke:
+                    if stroke.code == interception.key_code('LEFT_CTRL') or stroke.code == interception.key_code('RIGHT_CTRL'):
+                        ctrl_pressed = stroke.state
+
+                    if stroke.code == interception.key_code('W') and stroke.state and ctrl_pressed:
+                        self.stop_loop = True  # Set flag to stop the main loop
+                        print("WOW")
+                intercept.send(device, stroke)

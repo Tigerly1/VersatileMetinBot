@@ -121,7 +121,7 @@ class MetinBot:
 
 
     def run(self):
-        time.sleep(0.04)
+        time.sleep(0.08)
         while not self.stopped:
             self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
 

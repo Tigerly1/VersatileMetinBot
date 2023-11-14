@@ -89,7 +89,7 @@ class Actions:
         self.rotate_start_time = time.time()
         self.metin_bot.game_actions.rotate_view_async()
 
-        while time.time() - self.rotate_start_time  < 3.5:
+        while time.time() - self.rotate_start_time  < 4:
             result = self.metin_bot.brief_detection('first_arena')
             if result:
                 break
@@ -97,7 +97,7 @@ class Actions:
         
         if not result:
             self.metin_bot.game_actions.calibrate_view('first_arena')
-            self.metin_bot.stop(True, time.time()+6)
+            self.metin_bot.stop(True, time.time()+12)
             return
         time.sleep(0.19)
         new_click = False
@@ -109,10 +109,10 @@ class Actions:
                 if new_click:
                     break
             if not new_click:
-                self.metin_bot.stop(True, time.time()+6)
+                self.metin_bot.stop(True, time.time()+12)
                 return
         if not result:    
-            self.metin_bot.stop(True, time.time()+6)
+            self.metin_bot.stop(True, time.time()+12)
             return
         # # x, y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_first_area_dangeon30(), 0.25)
         # # if x is None:
@@ -293,8 +293,8 @@ class Actions:
             time.sleep(0.03)
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.06)
-        if time.time() - self.start_of_the_action_time < self.gather_items_time - 23:
-            self.metin_bot.stop(True, time.time()+23)
+        if time.time() - self.start_of_the_action_time < self.gather_items_time - 18:
+            self.metin_bot.stop(True, time.time()+18)
             return
         elif time.time() - self.start_of_the_action_time < self.gather_items_time:
             self.metin_bot.stop(True, time.time() + abs(time.time() - self.start_of_the_action_time -  self.gather_items_time))
