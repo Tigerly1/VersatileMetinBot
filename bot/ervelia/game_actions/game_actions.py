@@ -24,6 +24,16 @@ class GameActions:
         time.sleep(zooming_time)
         self.metin_bot.osk_window.stop_zooming_out()
 
+    def zoom_in(self, zooming_time=1.0):
+        self.metin_bot.osk_window.start_zooming_in()
+        time.sleep(zooming_time)
+        self.metin_bot.osk_window.stop_zooming_in()
+
+    def zoom_in_out(self, in_time=1.0, out_time=0.6):
+        self.zoom_in(in_time)
+        time.sleep(0.05)
+        self.zoom_out(out_time)
+
     def calibrate_view(self, calibration_type="guard"):
         #self.metin_bot.metin_window.activate()
         # Camera option: Near, Perspective all the way to the right
@@ -34,18 +44,21 @@ class GameActions:
         self.metin_bot.osk_window.start_rotating_down()
         #time.sleep(random.uniform(0.58, 0.63))
         if calibration_type == "first_arena":
-            time.sleep(0.59)
+            time.sleep(0.68)
         elif calibration_type == "second_arena":
             time.sleep(0.7)
         else:
             time.sleep(random.uniform(0.58, 0.63))
         self.metin_bot.osk_window.stop_rotating_down()
         time.sleep(0.1)
-        self.metin_bot.osk_window.start_zooming_out()
-        time.sleep(0.6)
-        self.metin_bot.osk_window.stop_zooming_out()
-        #self.osk_window.start_zooming_in()
-        time.sleep(0.07)
+        if calibration_type != "first_arena":
+            self.metin_bot.osk_window.start_zooming_out()
+            time.sleep(0.6)
+            self.metin_bot.osk_window.stop_zooming_out()
+            #self.osk_window.start_zooming_in()
+            time.sleep(0.07)
+        else:
+            self.zoom_in_out()
         # time.sleep(0.07)
         # self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
@@ -279,11 +292,11 @@ class GameActions:
         
         time.sleep(0.05)
         self.metin_bot.osk_window.un_mount()
-        time.sleep(0.5)
+        time.sleep(0.6)
         self.metin_bot.osk_window.activate_aura()
         #time.sleep(2)
         #self.osk_window.activate_berserk()
-        time.sleep(0.5)
+        time.sleep(0.2)
         self.metin_bot.osk_window.un_mount()
         time.sleep(0.04)
         self.metin_bot.osk_window.activate_buffs()

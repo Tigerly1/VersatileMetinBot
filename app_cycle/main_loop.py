@@ -12,12 +12,13 @@ from window.metin.metin_window import MetinWindow
 from window.multi_window.multi_window_bot_handler import MultiWindowBotHandler
 from window.window import windows_swap_fix
 
-
-import utils.interception as interception
+import utils.interception as interceptionModule
+from utils.interception import Interception
 from utils.interception import Stroke
-interception.inputs.keyboard = 1
-interception.inputs.mouse = 10
-
+interceptionModule.inputs.keyboard = 1
+interceptionModule.inputs.mouse = 10
+from utils.interception._keycodes import KEYBOARD_MAPPING
+from utils.interception._consts import *
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[1]  # versatileMetinBot root directory
@@ -30,8 +31,8 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
-        #self.window_names = ["Ervelia"]
+        #self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
+        self.window_names = ["Ervelia"]
         self.change_window = True
 
         self.handler = MultiWindowBotHandler(self)
@@ -51,8 +52,8 @@ class MainLoop():
         self.seconds_between_same_runs = 14
         # self.bot = MetinBot(self.metin_window)
         self.stop_loop = False
-
-        keyboard_thread = threading.Thread(target=self.listen_for_ctrl_w)
+        interception = Interception()
+        keyboard_thread = threading.Thread(target=self.listen_for_ctrl_w, args=(interception,))
         keyboard_thread.start()
     def swap_window(self):
         time.sleep(0.02)
@@ -138,17 +139,12 @@ class MainLoop():
 
                 # press 'q' with the output window focused to exit.
                 # waits 1 ms every loop to process key presses
-                if key == ord('w') and not self.stop_loop: ## w as wait
-                    self.capt_detect.stop()
-                    current_instance['bot'].stop()
-                    self.stop_loop = True
+            if self.stop_loop: ## w as wait
+                self.capt_detect.stop()
+                current_instance['bot'].stop(swap_window=False)
 
-            if self.stop_loop:
-                key = cv.waitKey(5)
-                if key == ord('w'):
-                    self.capt_detect.start()
-                    current_instance['bot'].start()
-                    pause = False
+           
+                    
 
             if key == ord('q'):
                 self.capt_detect.stop()
@@ -158,20 +154,56 @@ class MainLoop():
                 cv.destroyAllWindows()
                 break
 
-    def listen_for_ctrl_w(self):
-        with interception() as intercept:
-            intercept.set_filter(intercept.is_keyboard, interception.FilterKeyState.DOWN.value | interception.FilterKeyState.UP.value)
+    def listen_for_ctrl_w(self, interception):
+        while True:
+            #interceptionModule.capture_keyboard()
+            # print("XDD")
+            # interception.wait(interceptionModule.inputs.keyboard)
+           
+            # stroke = interception.receive(interceptionModule.inputs.keyboard)
+            # print(stroke.code)
+            # time.sleep(0.1)
+            # # Check for Ctrl key press or release
+            # if stroke.code in [KEYBOARD_MAPPING['ctrlleft'], KEYBOARD_MAPPING['ctrlright']]:
+            #     ctrl_pressed = stroke.state == 1  # state 1 for key down, 0 for key up
 
-            ctrl_pressed = False
-            while not self.stop_loop:
-                device = intercept.wait()
-                stroke = intercept.receive(device)
+            # # Check for W key press with Ctrl pressed
+            # if stroke.code == KEYBOARD_MAPPING['w'] and stroke.state == 1 and ctrl_pressed:
+            #     self.stop_loop = True  # Set the flag to stop the main loop
+            #     print('wow')
+            context = Interception()
+            context.set_filter(context.is_keyboard, FilterKeyState.FILTER_KEY_ALL)
 
-                if type(stroke) == Stroke:
-                    if stroke.code == interception.key_code('LEFT_CTRL') or stroke.code == interception.key_code('RIGHT_CTRL'):
-                        ctrl_pressed = stroke.state
+            #print("Listenting to keyboard, press ESC to quit.")
+            ctrl_clicked = False
+            try:
+                while True:
+                    device = context.wait()
+                    stroke = context.receive(device)
 
-                    if stroke.code == interception.key_code('W') and stroke.state and ctrl_pressed:
-                        self.stop_loop = True  # Set flag to stop the main loop
-                        print("WOW")
-                intercept.send(device, stroke)
+                    
+
+                    if stroke.code == KEYBOARD_MAPPING['w'] and ctrl_clicked:
+                        self.stop_loop = not self.stop_loop
+                        if self.stop_loop:
+                            print("bot is stopped now")
+                        if not self.stop_loop:
+                            self.capt_detect.start()
+                            self.swap_window()
+                        break
+
+                    if stroke.code in [KEYBOARD_MAPPING['shift'], KEYBOARD_MAPPING['shift']]:
+                        ctrl_clicked = True
+                    else:
+                        ctrl_clicked = False
+
+                    if stroke.code == 0x01:
+                        print("ESC pressed, exited.")
+                        #return device
+
+                    #print(f"Received stroke {stroke} on keyboard device {device}")
+                    context.send(device, stroke)
+            finally:
+                context._destroy_context()
+                
+            #interception.send(interceptionModule.inputs.keyboard, stroke)

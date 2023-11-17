@@ -8,7 +8,7 @@ import cv2 as cv
 import tensorflow as tf
 from openvino.runtime import Core
 from utils.helpers.paths import get_second_area_dangeon30
-
+from ultralytics import YOLO
 from utils.helpers.vision import Vision
 
 class CaptureAndDetect:
@@ -21,9 +21,9 @@ class CaptureAndDetect:
         #self.snowman_hsv_filter = hsv_filter
         #self.classifier = cv.CascadeClassifier(model_path)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print(device)
-        self.model = torch.hub.load(r'C:\Users\Filip\Desktop\tob2tm\Metin2-Bot-main\yolov5', 'custom', path=r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\upgraded.pt', source='local',force_reload=True )
-
+        # print(device)
+        # self.model = torch.hub.load(r'C:\Users\Filip\Desktop\tob2tm\Metin2-Bot-main\yolov5', 'custom', path=r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\upgraded.pt', source='local',force_reload=True )
+        self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\v8.pt').to(device)
         self.screenshot = None
         self.screenshot_time = None
 
@@ -78,19 +78,47 @@ class CaptureAndDetect:
             if self.is_object_detector_enabled:
                 detection_time = time.time()
                 # screenshot_gpu = torch.from_numpy(screenshot).to(self.device) #to gpu
-                results = self.model(screenshot)
+                results = self.model(screenshot, verbose=False)
                 #results.print()
-                results_pandas_df = results.pandas().xyxy[0]
-                boxes = results_pandas_df[['xmin', 'ymin', 'xmax', 'ymax']].values
-                output_scores = results_pandas_df['confidence'].values
-                labels = results_pandas_df['name'].values  # Assuming 'name' is the column containing labels
+                #results_pandas_df = results.pandas().xyxy[0]
 
+                class_names = self.model.names
+                boxes = []
+                output_scores = []
+                labels = []
+                # Assuming results is a list of tensors, where each tensor is detections for an image
+                for x in results:
+                    x = x.boxes.cpu()
+                    boxes.append(x.xyxy.numpy())
+                    output_scores.append(x.conf.numpy())
+                    labels.append(x.cls.numpy())
+                    
+               
+               # Flatten the lists of boxes, scores, and labels
+                flat_boxes = np.concatenate(boxes)
+                flat_scores = np.concatenate(output_scores)
+                flat_labels = np.concatenate(labels)
 
-                if len(boxes):
+                label_names = [class_names[int(label)] for label in flat_labels]
+
+                # Get sorted indices based on scores
+                sorted_indices = np.argsort(flat_scores)[::-1]
+
+                # Apply the sorted indices to the flattened arrays
+                sorted_rectangles = flat_boxes[sorted_indices]
+                sorted_scores = flat_scores[sorted_indices]
+                sorted_labels = [label_names[i] for i in sorted_indices]
+
+                if len(sorted_rectangles):
+                    # detection = {
+                    #     'rectangles': boxes,
+                    #     'scores': output_scores,
+                    #     'labels': labels
+                    # }
                     detection = {
-                        'rectangles': boxes,
-                        'scores': output_scores,
-                        'labels': labels
+                        'rectangles': sorted_rectangles,
+                        'scores': sorted_scores,
+                        'labels': sorted_labels
                     }
                     #print(detection)
                     sorted_indices = np.argsort(detection['scores'])[::-1]
@@ -106,11 +134,11 @@ class CaptureAndDetect:
                     for box, score, label in zip(detection['rectangles'][:6], detection['scores'][:6], detection['labels'][:6]):
                         if score > 0.02:
                             self.vision.draw_rectangle_xmin_ymin_xmax_ymax(detection_image,box, (255,0,0))
-                            top_left = (int(box[1]), int(box[0]))
-                            bottom_right = (int(box[3]), int(box[2]))
+                            top_left = (int(box[0]), int(box[1]))
+                            bottom_right = (int(box[2]), int(box[3]))
                             # Put the probability on the image
                             #label = f"{score:.2f}"
-                            detection_image = cv.putText(detection_image, label, (top_left[0], top_left[1] - 10),
+                            detection_image = cv.putText(detection_image, label + " " + str(score), (top_left[0], top_left[1] - 10),
                                                         cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv.LINE_AA)
                     
                     # Highlighting the best box in a different color (optional)
@@ -121,7 +149,7 @@ class CaptureAndDetect:
 
                     # Put the highest probability on the image for the best box
                     #label = f"{best_score:.2f}"
-                    detection_image = cv.putText(detection_image, best_label, (top_left[0], top_left[1] - 10),
+                    detection_image = cv.putText(detection_image, best_label + " " + str(best_score), (top_left[0], top_left[1] - 10),
                                                 cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv.LINE_AA)
                     
                     detection['click_pos'] = int((best_box[0] + best_box[2]) / 2), int((best_box[1] + best_box[3])/2)

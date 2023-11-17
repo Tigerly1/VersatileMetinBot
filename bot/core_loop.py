@@ -27,7 +27,7 @@ from window.metin.metin_window import MetinWindow
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename="debug", level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
     
 
 class MetinBot:
@@ -121,7 +121,7 @@ class MetinBot:
 
 
     def run(self):
-        time.sleep(0.08)
+        time.sleep(0.05)
         while not self.stopped:
             self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
 
@@ -195,7 +195,8 @@ class MetinBot:
         time.sleep(0.001)
         try:
             if self.screenshot is not None and self.detection_time is not None:
-                if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
+                if self.detection_result is None or (self.detection_result is not None and (self.detection_result['labels'][0] != label \
+                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.55)):
                     return False
                 else:
                     return True
@@ -212,7 +213,8 @@ class MetinBot:
             if self.screenshot is not None and self.detection_time is not None and \
                             self.detection_time > self.time_of_new_screen + 0.02:
                 #If no matches were found
-                if self.detection_result is None or (self.detection_result is not None and self.detection_result['labels'][0] != label):
+                if self.detection_result is None or (self.detection_result is not None and  (self.detection_result['labels'][0] != label \
+                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.55)):
                     self.put_info_text('No metin found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
@@ -247,6 +249,7 @@ class MetinBot:
                     if not check_match:
                         self.metin_window.mouse_click()
                         time.sleep(0.02)
+                        #self.metin_window.mouse_click()
                         return True
                     else:
                         is_correct = self.check_match_after_detection(label)
