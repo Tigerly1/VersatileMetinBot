@@ -12,7 +12,8 @@ import pytesseract
 import re
 
 from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
-from utils.helpers.paths import get_empty_mount_image
+from utils.helpers.music_player import play_music
+from utils.helpers.paths import get_empty_mount_image, gm_icon_image
 
 
 class GameActions:
@@ -484,4 +485,20 @@ class GameActions:
         except:
             print("health checks needs image first")
 
-
+    def detect_gm(self):
+        # print("DETECTION OF GM START")
+        # print(time.time())
+        image = self.metin_bot.get_screenshot_info()
+        x,y = self.metin_bot.vision.find_image(image, gm_icon_image(), 0.80)
+        
+        top_left = (161, 17)
+        bottom_right = (820, 255)
+        image_cuted_for_detection = self.metin_bot.vision.extract_section(image, top_left, bottom_right)
+        text = pytesseract.image_to_string(image_cuted_for_detection).lower()
+        does_screen_contain_text = 'napisz' in text or "admin" in text or "wykryto" in text
+        if x is not None or does_screen_contain_text:
+            print("GM DETECTED MUSIC IS PLAYING")
+            play_music()
+        # print("DETECTION OF GM STOP")
+        # print(time.time())
+       

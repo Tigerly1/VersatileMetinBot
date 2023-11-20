@@ -15,7 +15,7 @@ from window.window import windows_swap_fix
 import utils.interception as interceptionModule
 from utils.interception import Interception
 from utils.interception import Stroke
-interceptionModule.inputs.keyboard = 1
+interceptionModule.inputs.keyboard = 0
 interceptionModule.inputs.mouse = 10
 from utils.interception._keycodes import KEYBOARD_MAPPING
 from utils.interception._consts import *
@@ -31,8 +31,8 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        #self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
-        self.window_names = ["Ervelia"]
+        self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
+        #self.window_names = ["Ervelia"]
         self.change_window = True
 
         self.handler = MultiWindowBotHandler(self)
@@ -100,7 +100,11 @@ class MainLoop():
                             time.sleep(0.03)
 
                             self.capt_detect.change_window_of_detection(new_instance['window'])
+                            # Get new detections
+                            screenshot, screenshot_time, detection, detection_time, detection_image = self.capt_detect.get_info()
 
+                            # Update bot with new image
+                            current_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
                             # current_instance['window'].move_window(0,0)
                             #current_instance['window'].activate()
                             time.sleep(0.05)
@@ -120,6 +124,7 @@ class MainLoop():
                 state_of_detection = current_instance['bot'].get_object_detector_state()
 
                 self.capt_detect.set_object_detector_state(state_of_detection)
+
                 # Get new detections
                 screenshot, screenshot_time, detection, detection_time, detection_image = self.capt_detect.get_info()
 

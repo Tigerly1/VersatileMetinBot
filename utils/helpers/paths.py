@@ -36,5 +36,8 @@ def get_empty_mount_image():
 def gm_icon_image():
     return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\gmicon.png'
 
+def gm_detection_music():
+    return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\music\alarm_gm_detection.mp3'
+
 def countdown():
     pyautogui.countdown(1)

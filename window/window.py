@@ -7,7 +7,7 @@ import pygetwindow as gw
 import numpy as np
 import pythoncom
 import utils.interception as interception
-interception.inputs.keyboard = 1
+interception.inputs.keyboard = 0
 interception.inputs.mouse = 10
 import psutil
 import pygetwindow as gw

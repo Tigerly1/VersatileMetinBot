@@ -168,8 +168,8 @@ class Actions:
             self.metin_bot.game_actions.turn_on_buffs()
             time.sleep(0.1)
         
-        if self.first_metins_killed < 4  and self.metins_rotation <= self.max_metins_rotations \
-            or self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'] == LABELS[0]:
+        if (self.first_metins_killed < 4  and self.metins_rotation <= self.max_metins_rotations) \
+            or (self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'][0] == LABELS[0]):
             if self.metin_start_hitting_time is None or time.time() - self.metin_start_hitting_time > 5:
                
                 time.sleep(0.05)
@@ -182,7 +182,7 @@ class Actions:
                     self.metin_start_hitting_time = time.time()
                     self.metins_rotation = 0
                     #time.sleep(5)
-                    self.metin_bot.stop(True, time.time()+5.1)
+                    self.metin_bot.stop(True, time.time()+6.1)
                     self.first_metins_killed += 1
                     return
 
@@ -371,9 +371,8 @@ class Actions:
     def second_metins(self):
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
-         
-        if  self.second_metins_killed < 4 and self.metins_rotation <= self.max_metins_rotations \
-            or self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'] == LABELS[0]:
+        if  (self.second_metins_killed < 4 and self.metins_rotation <= self.max_metins_rotations) \
+            or (self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'][0] == LABELS[0]):
             if self.metin_start_hitting_time is None or time.time() - self.metin_start_hitting_time > 5.5:
                 time.sleep(0.04)
                 is_clicked = self.metin_bot.detect_and_click('metin', True)
@@ -384,7 +383,7 @@ class Actions:
                     if self.second_metins_killed == 0:
                         self.metin_bot.osk_window.activate_flag()
                     #time.sleep(5)
-                    self.metin_bot.stop(True, time.time()+6.2)
+                    self.metin_bot.stop(True, time.time()+7.2)
                     self.second_metins_killed += 1
                     return
                 elif self.metins_rotation % 10 == 0:
@@ -466,19 +465,18 @@ class Actions:
                 self.start_of_the_action_time = time.time()
 
         if self.start_of_the_action_time + 25 <= time.time():
-            # self.metin_bot.osk_window.start_pick_up()
-            # if self.pick_up_stop == False:
+            self.metin_bot.osk_window.start_pick_up()
+            if self.pick_up_stop == False:
                 
-            #     self.metin_bot.osk_window.stop_hitting()
-            #     time.sleep(2.6)
-            #     self.pick_up_stop = True
-            #     self.metin_bot.stop()
-            #     return
+                self.metin_bot.osk_window.stop_hitting()
+                time.sleep(2.6)
+                self.pick_up_stop = True
+                self.metin_bot.stop()
+                return
+            time.sleep(2.6)
             self.metin_bot.osk_window.stop_hitting()
             self.start_of_the_action_time = None
-            self.metin_bot.dangeon_end_time = time.time()
-            self.metin_bot.dangeons_count += 1
-            self.stats.add_dungeon_completed(self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time)
+            
             # print("Avarage time per dangeon {} seconds".format((time.time() - self.metin_bot.started) / self.metin_bot.dangeons_count))
             # print("{} dangeon ended".format(self.metin_bot.dangeons_count))
             # print("dangeon finished in {} minutes".format((self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time) / 60))
@@ -492,6 +490,11 @@ class Actions:
             if x is None:
                  self.tp_to_dangeon = True
                  self.change_channel = True
+            else:
+                self.metin_bot.dangeon_end_time = time.time()
+                self.metin_bot.dangeons_count += 1
+                self.stats.add_dungeon_completed(self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time)
+            
             self.restart_class_props(False)
 
             

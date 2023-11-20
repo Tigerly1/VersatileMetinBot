@@ -117,8 +117,6 @@ class MetinBot:
 
         self.switch_state(DangeonState.ENTER_THE_DANGEON)
 
-        
-
 
     def run(self):
         time.sleep(0.05)
@@ -381,6 +379,9 @@ class MetinBot:
             self.time_of_window_run = time.time()
             self.thread = Thread(target=self.run)
             self.thread.start()
+
+            self.detect_gm_thread = Thread(target=self.game_actions.detect_gm)
+            self.detect_gm_thread.start()
         
     def set_object_detector_state(self,state):
         self.state_lock.acquire()

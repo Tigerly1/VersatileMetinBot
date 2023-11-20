@@ -4,7 +4,7 @@ from window.window import Window
 
 from time import sleep
 import utils.interception as interception
-interception.inputs.keyboard = 1
+interception.inputs.keyboard = 0
 interception.inputs.mouse = 10
 
 
