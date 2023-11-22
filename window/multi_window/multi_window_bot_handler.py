@@ -30,10 +30,10 @@ class MultiWindowBotHandler:
                 }
 
                 ### add time for next move to windows to increase dangeon speed
-                if len(self.instances) > 3:
-                    instance['bot'].time_of_next_action = time.time() + 240
-                elif len(self.instances) > 1:
-                    instance['bot'].time_of_next_action = time.time() + 120
+                # if len(self.instances) > 3:
+                #     instance['bot'].time_of_next_action = time.time() + 240
+                # elif len(self.instances) > 1:
+                #     instance['bot'].time_of_next_action = time.time() + 120
 
                 self.instances[self.counter] = instance  # Use counter as the key
                 self.counter += 1  # Increment counter for the next instance

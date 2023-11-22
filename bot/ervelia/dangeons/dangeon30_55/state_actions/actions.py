@@ -63,8 +63,8 @@ class Actions:
                 return
             if self.start_of_the_action_time is None:
                 self.start_of_the_action_time = time.time()
-            if time.time() - self.start_of_the_action_time > 10:
-                self.metin_bot.game_actions.calibrate_view("first_arena")
+            if time.time() - self.start_of_the_action_time > 6:
+                self.metin_bot.game_actions.calibrate_view("guard")
                 self.tp_to_dangeon = True
                 self.start_of_the_action_time = None
                 self.metin_bot.stop()
@@ -98,7 +98,7 @@ class Actions:
         self.rotate_start_time = time.time()
         self.metin_bot.game_actions.rotate_view_async()
 
-        while time.time() - self.rotate_start_time  < 3:
+        while time.time() - self.rotate_start_time  < 4:
             result = self.metin_bot.brief_detection('first_arena')
             if result:
                 break
@@ -315,6 +315,7 @@ class Actions:
             # print(time.time())
             self.metin_bot.osk_window.start_hitting()
             self.start_of_the_action_time = time.time()
+            time.sleep(0.1)
             if not self.metin_bot.game_actions.check_if_equipment_is_on():
                 self.metin_bot.osk_window.open_inventory()
             #self.metin_bot.game_actions.click_inventory_stash_x(self.last_inventory_page_used)

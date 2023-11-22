@@ -1,3 +1,4 @@
+import datetime
 import os
 from threading import Thread, Lock
 
@@ -51,12 +52,13 @@ class CaptureAndDetect:
     def run(self):
         while not self.stopped:
             # Take screenshot
-            #print("TIME STARTED: " + str(time.time()))
+            temporar_hwnd = self.metin_window.hwnd
+            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME STARTED")
             try:
-                self.hwnd_of_captured_screenshot = self.metin_window.hwnd
                 screenshot = self.metin_window.capture()
+                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME CAPTURED SS")
             except:
-                print("error capturing screenshot")
+                #print("error capturing screenshot")
                 continue
 
             start_x = (1024 - 70) // 2
@@ -81,11 +83,12 @@ class CaptureAndDetect:
 
             if self.is_object_detector_enabled:
                 detection_time = time.time()
+                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME STARTED DETECTION")
                 # screenshot_gpu = torch.from_numpy(screenshot).to(self.device) #to gpu
                 results = self.model(screenshot, verbose=False)
                 #results.print()
                 #results_pandas_df = results.pandas().xyxy[0]
-
+                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION CALCULATED")
                 class_names = self.model.names
                 boxes = []
                 output_scores = []
@@ -118,7 +121,7 @@ class CaptureAndDetect:
                 sorted_rectangles = filtered_boxes[sorted_indices]
                 sorted_scores = filtered_scores[sorted_indices]
                 sorted_labels = [filtered_label_names[i] for i in sorted_indices]
-
+                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION PROCESSED")
                 if len(sorted_rectangles):
                     # detection = {
                     #     'rectangles': boxes,
@@ -165,6 +168,8 @@ class CaptureAndDetect:
                     
                     detection['click_pos'] = int((best_box[0] + best_box[2]) / 2), int((best_box[1] + best_box[3])/2)
                     self.vision.draw_marker(detection_image, detection['click_pos'])
+                    print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION DRAWED")
+
                 
 
             # Acquire lock and set new images
@@ -172,7 +177,10 @@ class CaptureAndDetect:
             self.detection = detection
             self.detection_time = detection_time
             self.detection_image = detection_image
+            if temporar_hwnd == self.metin_window.hwnd:
+                self.hwnd_of_captured_screenshot = self.metin_window.hwnd
             self.lock.release()
+            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION END")
             #time_to_go_to_sleep = 0.04 if not detection else  0.20 * len(detection['scores']) + 0.2
             #time.sleep(time_to_go_to_sleep)
             #print("TIME END: " + str(time.time()))

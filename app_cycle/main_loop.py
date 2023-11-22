@@ -1,4 +1,5 @@
 
+import datetime
 import sys
 from pathlib import Path
 import threading
@@ -19,6 +20,7 @@ interceptionModule.inputs.keyboard = 0
 interceptionModule.inputs.mouse = 10
 from utils.interception._keycodes import KEYBOARD_MAPPING
 from utils.interception._consts import *
+
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[1]  # versatileMetinBot root directory
@@ -54,7 +56,7 @@ class MainLoop():
         # add initialization after tkinter ui START with tkinter options
 
         self.capt_detect = self.handler.get_capture_and_detect()
-       
+        #self.time_to_stop_for_scalene = time.time()
         self.last_switch_time = time.time()
         self.switch_interval = 8  # seconds
          
@@ -78,7 +80,8 @@ class MainLoop():
 
         while True:
             key = cv.waitKey(1)
-            
+            # if time.time() - 90 >= self.time_to_stop_for_scalene:
+            #                 scalene_profiler.stop()
             if not self.stop_loop:
             # Check if it's time to switch to the next instance
                 current_time = time.time()
@@ -101,18 +104,18 @@ class MainLoop():
                     if new_instance is not None and ((current_instance['bot'].thread is not None and not current_instance['bot'].thread.is_alive()) \
                                                      or current_instance['bot'].thread is None):
                         windows_swap_fix()
-                        time.sleep(0.05)
+                        #time.sleep(0.05)
                         try:
                             
                             new_instance['window'].set_window_foreground()
-                            time.sleep(0.03)
+                            #time.sleep(0.03)
 
                             self.capt_detect.change_window_of_detection(new_instance['window'])
                             #Vision().SIFT_FEATURES_DETECTION(detection_image)
                             # Display image
                             # current_instance['window'].move_window(0,0)
                             #current_instance['window'].activate()
-
+                            print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + "window is being changed")
 
                             while True:
                                 screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
@@ -121,7 +124,7 @@ class MainLoop():
                                     new_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
                                     break
                                 # Update bot with new image
-                                    
+                            print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " window has been changed")
                             #time.sleep(0.05)
                             #change the window in the capt_detect 
                             new_instance['bot'].start()

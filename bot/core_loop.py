@@ -119,7 +119,7 @@ class MetinBot:
 
 
     def run(self):
-        #time.sleep(0.05)
+        time.sleep(0.03)
         while not self.stopped:
             self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
 
@@ -135,13 +135,14 @@ class MetinBot:
                 continue
 
             if self.state == DangeonState.DEBUG:
-                if self.game_actions.check_if_equipment_is_on():
-                    self.osk_window.close_inventory()
+                # if self.game_actions.check_if_equipment_is_on():
+                #     self.osk_window.close_inventory()
                 #self.vision.SIFT_FEATURES_DETECTION(self.get_screenshot_info())
                 # self.game_actions.get_the_player_on_the_horse()
                 # time.sleep(3)
                 #self.game_actions.calibrate_view("first_arena")
                 #self.stats.notify_via_telegram("JEJ")
+                time.sleep(2)
                 self.switch_state(DangeonState.DEBUG)
                 continue
                 
@@ -195,8 +196,8 @@ class MetinBot:
         try:
             if self.screenshot is not None and self.detection_time is not None:
                 if self.detection_result is None or (self.detection_result is not None and (self.detection_result['labels'][0] != label \
-                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65) \
-                                                        or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7):
+                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
+                                                        or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
                     return False
                 else:
                     return True
@@ -209,13 +210,13 @@ class MetinBot:
            
     def detect_and_click(self, label, check_match=False, rotate_before_click=False, small_rotation=False):
         try:
-            time.sleep(0.01)
+            time.sleep(0.1)
             if self.screenshot is not None and self.detection_time is not None and \
                             self.detection_time > self.time_of_new_screen + 0.02:
                 #If no matches were found
                 if self.detection_result is None or (self.detection_result is not None and  (self.detection_result['labels'][0] != label \
-                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65) \
-                                                        or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7):
+                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
+                                                        or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
                     self.put_info_text('No metin found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
@@ -282,7 +283,7 @@ class MetinBot:
                 self.info_lock.acquire()
                 #logging.debug("Lock acquired for check_match_after_detection.")
                 time.sleep(0.02)
-                new_screen_after_hovering = self.get_screenshot_info()
+                new_screen_after_hovering = self.metin_window.capture()
                 time.sleep(0.02)
 
                 if len(new_screen_after_hovering) > 0:
