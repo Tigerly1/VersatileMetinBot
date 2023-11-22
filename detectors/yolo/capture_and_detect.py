@@ -53,7 +53,7 @@ class CaptureAndDetect:
         while not self.stopped:
             # Take screenshot
             temporar_hwnd = self.metin_window.hwnd
-            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME STARTED")
+            print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME STARTED")
             try:
                 screenshot = self.metin_window.capture()
                 #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME CAPTURED SS")
@@ -168,7 +168,7 @@ class CaptureAndDetect:
                     
                     detection['click_pos'] = int((best_box[0] + best_box[2]) / 2), int((best_box[1] + best_box[3])/2)
                     self.vision.draw_marker(detection_image, detection['click_pos'])
-                    print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION DRAWED")
+                    #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION DRAWED")
 
                 
 
@@ -183,7 +183,7 @@ class CaptureAndDetect:
             #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION END")
             #time_to_go_to_sleep = 0.04 if not detection else  0.20 * len(detection['scores']) + 0.2
             #time.sleep(time_to_go_to_sleep)
-            #print("TIME END: " + str(time.time()))
+            print("TIME END: " + str(time.time()))
 
             if self.DEBUG:
                 time.sleep(1)
