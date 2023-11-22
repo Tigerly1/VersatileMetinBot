@@ -5,6 +5,11 @@ import os
 
 load_dotenv()
 
+import logging
+
+# Configure logging
+logging.basicConfig(filename="debug", level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 class DungeonBotStatistics:
 
     _instance = None

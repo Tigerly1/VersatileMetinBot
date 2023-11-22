@@ -35,6 +35,8 @@ class CaptureAndDetect:
 
         self.detection_tries = 5 
 
+        self.hwnd_of_captured_screenshot = None
+
         self.stopped = False
         self.lock = Lock()
 
@@ -49,7 +51,9 @@ class CaptureAndDetect:
     def run(self):
         while not self.stopped:
             # Take screenshot
+            #print("TIME STARTED: " + str(time.time()))
             try:
+                self.hwnd_of_captured_screenshot = self.metin_window.hwnd
                 screenshot = self.metin_window.capture()
             except:
                 print("error capturing screenshot")
@@ -99,15 +103,21 @@ class CaptureAndDetect:
                 flat_scores = np.concatenate(output_scores)
                 flat_labels = np.concatenate(labels)
 
-                label_names = [class_names[int(label)] for label in flat_labels]
+                mask = flat_scores >= 0.57
+                filtered_boxes = flat_boxes[mask]
+                filtered_scores = flat_scores[mask]
+                filtered_labels = flat_labels[mask]
 
-                # Get sorted indices based on scores
-                sorted_indices = np.argsort(flat_scores)[::-1]
+                # Convert filtered labels to their corresponding names
+                filtered_label_names = [class_names[int(label)] for label in filtered_labels]
 
-                # Apply the sorted indices to the flattened arrays
-                sorted_rectangles = flat_boxes[sorted_indices]
-                sorted_scores = flat_scores[sorted_indices]
-                sorted_labels = [label_names[i] for i in sorted_indices]
+                # Get sorted indices based on filtered scores
+                sorted_indices = np.argsort(filtered_scores)[::-1]
+
+                # Apply the sorted indices to the filtered arrays
+                sorted_rectangles = filtered_boxes[sorted_indices]
+                sorted_scores = filtered_scores[sorted_indices]
+                sorted_labels = [filtered_label_names[i] for i in sorted_indices]
 
                 if len(sorted_rectangles):
                     # detection = {
@@ -120,6 +130,7 @@ class CaptureAndDetect:
                         'scores': sorted_scores,
                         'labels': sorted_labels
                     }
+                    #print(detection)
                     #print(detection)
                     sorted_indices = np.argsort(detection['scores'])[::-1]
                     sorted_rectangles = detection['rectangles'][sorted_indices]
@@ -164,6 +175,7 @@ class CaptureAndDetect:
             self.lock.release()
             #time_to_go_to_sleep = 0.04 if not detection else  0.20 * len(detection['scores']) + 0.2
             #time.sleep(time_to_go_to_sleep)
+            #print("TIME END: " + str(time.time()))
 
             if self.DEBUG:
                 time.sleep(1)
@@ -200,8 +212,9 @@ class CaptureAndDetect:
         detection_time = self.detection_time
         detection_image = None if self.detection_image is None \
             else self.detection_image.copy()
+        hwnd_of_detection = self.hwnd_of_captured_screenshot
         self.lock.release()
-        return screenshot, screenshot_time, detection, detection_time, detection_image
+        return screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_detection
 
     def find_best_match(self, rectangles):
         ideal_width = 80

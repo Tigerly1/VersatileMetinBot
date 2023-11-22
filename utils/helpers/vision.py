@@ -431,3 +431,10 @@ class Vision:
         else:
             print("No keypoints found near the chosen location.")
 
+    def compare_screenshots(self, img1, img2):
+        # Calculate the absolute difference between images
+        diff = np.abs(img1.astype('int16') - img2.astype('int16'))
+        
+        # Calculate the average difference per pixel
+        avg_diff = np.mean(diff)
+        return avg_diff

@@ -13,7 +13,7 @@ import re
 
 from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
 from utils.helpers.music_player import play_music
-from utils.helpers.paths import get_empty_mount_image, gm_icon_image
+from utils.helpers.paths import get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
 
 
 class GameActions:
@@ -56,12 +56,12 @@ class GameActions:
             self.metin_bot.osk_window.start_zooming_out()
             time.sleep(0.6)
             self.metin_bot.osk_window.stop_zooming_out()
-            #self.osk_window.start_zooming_in()
-            time.sleep(0.07)
+        #self.osk_window.start_zooming_in()
+        #time.sleep(0.07)
         else:
             self.zoom_in_out()
-        # time.sleep(0.07)
-        # self.zoom_out()
+        time.sleep(0.07)
+        #self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
         #self.osk_window.stop_zooming_in()
 
@@ -139,9 +139,7 @@ class GameActions:
         top_left = (300, 21)
         bottom_right = (700, 60)
 
-        self.metin_bot.info_lock.acquire()
-        mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.screenshot, top_left, bottom_right)
-        self.metin_bot.info_lock.release()
+        mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
         mob_info_text = pytesseract.image_to_string(mob_info_box)
@@ -152,9 +150,7 @@ class GameActions:
         # top_left = (300, 21)
         # bottom_right = (705, 60)
 
-        self.metin_bot.info_lock.acquire()
-        mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.screenshot, top_left, bottom_right)
-        self.metin_bot.info_lock.release()
+        mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
         mob_info_text = pytesseract.image_to_string(mob_info_box)
@@ -181,9 +177,7 @@ class GameActions:
         top_left = (450, 509)
         bottom_right = (560, 549)
         try:
-            self.metin_bot.info_lock.acquire()
-            logged_out_info = self.metin_bot.vision.extract_section(self.metin_bot.screenshot, top_left, bottom_right)
-            self.metin_bot.info_lock.release()
+            logged_out_info = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
             logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
             logged_out_info = pytesseract.image_to_string(logged_out_info)
@@ -197,7 +191,6 @@ class GameActions:
             else:
                 return "user is logged in"
         except:
-            self.metin_bot.info_lock.release()
             print("error z logowaniem ale essa")
         #return logged_out_info
 
@@ -261,7 +254,7 @@ class GameActions:
 
         #self.metin_bot.metin_window.activate()
 
-        time.sleep(3)
+        #time.sleep(3)
         self.metin_bot.metin_window.mouse_move(521,208) #521, 247
         time.sleep(1)
         self.metin_bot.metin_window.mouse_click()
@@ -287,19 +280,19 @@ class GameActions:
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
 
-    def turn_on_buffs(self):
+    def turn_on_buffs(self, only_potions=False):
         #self.metin_bot.metin_window.activate()
         self.metin_bot.last_buff = time.time()
-        
-        time.sleep(0.05)
-        self.metin_bot.osk_window.un_mount()
-        time.sleep(0.6)
-        self.metin_bot.osk_window.activate_aura()
-        #time.sleep(2)
-        #self.osk_window.activate_berserk()
-        time.sleep(0.2)
-        self.metin_bot.osk_window.un_mount()
-        time.sleep(0.04)
+        if not only_potions:
+            time.sleep(0.05)
+            self.metin_bot.osk_window.un_mount()
+            time.sleep(0.7)
+            self.metin_bot.osk_window.activate_aura()
+            #time.sleep(2)
+            #self.osk_window.activate_berserk()
+            time.sleep(0.25)
+            self.metin_bot.osk_window.un_mount()
+            time.sleep(0.04)
         self.metin_bot.osk_window.activate_buffs()
 
     # def send_telegram_message(self, msg):
@@ -421,17 +414,20 @@ class GameActions:
             self.metin_bot.switch_state(DangeonState.INITIALIZING)
 
     def check_if_equipment_is_on(self):
-        top_left = (850, 80)
-        bottom_right = (1020, 154)
+        top_left = (840, 80)
+        bottom_right = (1023, 160)
 
-        self.metin_bot.info_lock.acquire()
-        eq_info = self.metin_bot.vision.extract_section(self.metin_bot.screenshot, top_left, bottom_right)
-        self.metin_bot.info_lock.release()
+        eq_info = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
+        x,y = self.metin_bot.vision.find_image(eq_info, get_eq_ervelia_stripe(), 0.90)
 
-        eq_info = self.metin_bot.vision.apply_hsv_filter(eq_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-        eq_info = pytesseract.image_to_string(eq_info)
-        # possible_logged_out_info = ["ZALOG", "TNOGUI"]
-        if "Ekw" in eq_info or "nek" in eq_info:
+        # eq_info = self.metin_bot.vision.apply_hsv_filter(eq_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
+        # eq_info = pytesseract.image_to_string(eq_info)
+        # # possible_logged_out_info = ["ZALOG", "TNOGUI"]
+        # if "Ekw" in eq_info or "nek" in eq_info:
+        #     return True
+        # else:
+        #     return False
+        if x is not None:
             return True
         else:
             return False

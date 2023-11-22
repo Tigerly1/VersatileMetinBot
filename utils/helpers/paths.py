@@ -36,8 +36,11 @@ def get_empty_mount_image():
 def gm_icon_image():
     return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\gmicon.png'
 
-def gm_detection_music():
-    return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\music\alarm_gm_detection.mp3'
+def get_eq_ervelia_stripe():
+    return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\eq_stripe_ervelia.png'
 
 def countdown():
     pyautogui.countdown(1)
+
+def gm_detection_music():
+    return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\music\alarm_gm_detection.mp3'
