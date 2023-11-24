@@ -280,7 +280,7 @@ class Vision:
 
         # Sort locations by their corresponding confidence level
         matches = sorted([(result[y, x], (x, y)) for x, y in locations], key=lambda x: x[0], reverse=True)
-
+        
         # Take up to the top max_centers matches
         top_matches = matches[:max_centers]
 

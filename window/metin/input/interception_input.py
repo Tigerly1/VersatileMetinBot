@@ -112,7 +112,7 @@ class InterceptionInput(Window):
 
     def open_inventory(self):
         interception.press("i")
-        sleep(0.25)
+        sleep(0.2)
     
     def close_inventory(self):
         interception.press("i")
@@ -149,6 +149,16 @@ class InterceptionInput(Window):
         sleep(0.1)
         interception.mouse_up('right')
         sleep(0.03)
+    def rotate_up_max_mouse(self):
+        sleep(0.05)
+        self.mouse_move(random.randint(280, 400), random.randint(260, 360))
+        sleep(0.05)
+        interception.mouse_down('right')
+        sleep(0.03)
+        interception.move_relative(0, random.randint(75, 95))
+        sleep(0.02)
+        interception.mouse_up('right')
+
     def rotate_with_mouse(self, small_rotation=False):
         
         self.mouse_move(random.randint(300, 400), random.randint(400, 500))

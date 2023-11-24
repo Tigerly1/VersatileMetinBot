@@ -115,17 +115,19 @@ class MetinBot:
 
         self.time_of_next_action = time.time()
 
-        self.switch_state(DangeonState.ENTER_THE_DANGEON)
+        self.switch_state(DangeonState.DEBUG)
 
 
     def run(self):
-        time.sleep(0.03)
+        #time.sleep(0.03)i
         while not self.stopped:
-            self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
 
-            if self.health_checks_iterations == 1:
-                self.game_actions.health_checks()
-                continue 
+            ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
+            #self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
+
+            # if self.health_checks_iterations == 1:
+            #     self.game_actions.health_checks()
+            #     continue 
             
             if self.state == DangeonState.INITIALIZING:
                 self.metin_window.activate()
@@ -135,14 +137,27 @@ class MetinBot:
                 continue
 
             if self.state == DangeonState.DEBUG:
+                time.sleep(0.03)
+                self.game_actions.open_inventory()
+
+                self.game_actions.close_inventory()
+                # if not self.game_actions.check_if_equipment_is_on():  
+                #     self.osk_window.open_inventory()
+
+                # time.sleep(0.3)
+
                 # if self.game_actions.check_if_equipment_is_on():
-                #     self.osk_window.close_inventory()
+                #     self.osk_window.open_inventory()
+                #self.osk_window.rotate_up_max_mouse()
+                # if self.game_actions.check_if_equipment_is_on():
+                #     print("WOAA")
+                    #self.osk_window.close_inventory()
                 #self.vision.SIFT_FEATURES_DETECTION(self.get_screenshot_info())
                 # self.game_actions.get_the_player_on_the_horse()
                 # time.sleep(3)
                 #self.game_actions.calibrate_view("first_arena")
                 #self.stats.notify_via_telegram("JEJ")
-                time.sleep(2)
+                #time.sleep(10000)
                 self.switch_state(DangeonState.DEBUG)
                 continue
                 
@@ -210,9 +225,8 @@ class MetinBot:
            
     def detect_and_click(self, label, check_match=False, rotate_before_click=False, small_rotation=False):
         try:
-            time.sleep(0.1)
             if self.screenshot is not None and self.detection_time is not None and \
-                            self.detection_time > self.time_of_new_screen + 0.02:
+                            self.detection_time > self.time_of_new_screen + 0.06:
                 #If no matches were found
                 if self.detection_result is None or (self.detection_result is not None and  (self.detection_result['labels'][0] != label \
                                                       or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \

@@ -1678,3 +1678,412 @@
 2023-11-22 23:57:53,408 - DEBUG - Creating converter from 5 to 7
 2023-11-22 23:57:58,141 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
 2023-11-22 23:57:58,281 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 15:27:51,418 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 15:27:51,442 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 15:27:51,444 - DEBUG - interactive is False
+2023-11-24 15:27:51,444 - DEBUG - platform is win32
+2023-11-24 15:27:51,651 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 15:27:51,673 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 15:28:38,539 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 15:28:41,049 - DEBUG - Creating converter from 7 to 5
+2023-11-24 15:28:41,049 - DEBUG - Creating converter from 5 to 7
+2023-11-24 15:28:41,050 - DEBUG - Creating converter from 7 to 5
+2023-11-24 15:28:41,050 - DEBUG - Creating converter from 5 to 7
+2023-11-24 15:29:05,435 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 15:29:05,687 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 15:37:48,393 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 15:37:48,595 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 15:38:48,469 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 15:38:48,656 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:29:28,595 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 16:29:28,601 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:29:28,602 - DEBUG - interactive is False
+2023-11-24 16:29:28,602 - DEBUG - platform is win32
+2023-11-24 16:29:28,685 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:29:28,688 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 16:29:39,492 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 16:29:39,967 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:29:39,967 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:29:39,967 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:29:39,967 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:29:50,884 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:29:51,063 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:30:50,915 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:30:51,053 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:34:27,081 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 16:34:27,087 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:34:27,089 - DEBUG - interactive is False
+2023-11-24 16:34:27,089 - DEBUG - platform is win32
+2023-11-24 16:34:27,152 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:34:27,157 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 16:34:32,546 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 16:34:32,773 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:34:32,773 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:34:32,773 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:34:32,773 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:34:41,465 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:34:41,617 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:35:41,477 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:35:41,636 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:38:27,358 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 16:38:27,378 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:38:27,391 - DEBUG - interactive is False
+2023-11-24 16:38:27,392 - DEBUG - platform is win32
+2023-11-24 16:38:27,600 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:38:27,606 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 16:38:39,042 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 16:38:39,712 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:38:39,712 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:38:39,712 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:38:39,712 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:38:50,620 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 16:39:16,388 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:39:16,564 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:40:04,457 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 16:40:04,476 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:40:04,484 - DEBUG - interactive is False
+2023-11-24 16:40:04,485 - DEBUG - platform is win32
+2023-11-24 16:40:04,687 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:40:04,692 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 16:40:16,156 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 16:40:16,809 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:40:16,809 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:40:16,809 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:40:16,809 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:40:27,766 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 16:40:37,680 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:40:37,922 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:43:34,814 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 16:43:34,828 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:43:34,834 - DEBUG - interactive is False
+2023-11-24 16:43:34,834 - DEBUG - platform is win32
+2023-11-24 16:43:34,996 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:43:35,003 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 16:43:46,047 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 16:43:46,675 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:43:46,675 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:43:46,676 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:43:46,676 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:43:57,292 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 16:44:04,269 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:44:04,419 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:45:17,051 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:45:17,193 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:47:05,365 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 16:47:05,372 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:47:05,373 - DEBUG - interactive is False
+2023-11-24 16:47:05,373 - DEBUG - platform is win32
+2023-11-24 16:47:05,442 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:47:05,446 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 16:47:11,434 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 16:47:11,692 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:47:11,692 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:47:11,692 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:47:11,692 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:47:21,044 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:47:21,234 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:48:21,043 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:48:21,171 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:49:21,135 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:49:21,303 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:50:21,088 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:50:21,242 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:51:21,112 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:51:21,248 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:52:21,146 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:52:21,298 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:56:34,057 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 16:56:34,083 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:56:34,089 - DEBUG - interactive is False
+2023-11-24 16:56:34,089 - DEBUG - platform is win32
+2023-11-24 16:56:34,301 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 16:56:34,311 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 16:56:44,569 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 16:56:45,186 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:56:45,186 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:56:45,186 - DEBUG - Creating converter from 7 to 5
+2023-11-24 16:56:45,187 - DEBUG - Creating converter from 5 to 7
+2023-11-24 16:56:56,696 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:56:56,856 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 16:56:57,080 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 16:58:54,428 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 16:58:54,576 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:00:46,696 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 17:00:46,717 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:00:46,728 - DEBUG - interactive is False
+2023-11-24 17:00:46,728 - DEBUG - platform is win32
+2023-11-24 17:00:46,894 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:00:46,899 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 17:00:57,067 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 17:00:57,704 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:00:57,704 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:00:57,705 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:00:57,705 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:01:09,698 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:01:09,864 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:01:10,141 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 17:02:30,193 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:02:30,346 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:05:39,569 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 17:05:39,596 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:05:39,600 - DEBUG - interactive is False
+2023-11-24 17:05:39,600 - DEBUG - platform is win32
+2023-11-24 17:05:39,767 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:05:39,781 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 17:05:58,623 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 17:05:59,594 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:05:59,594 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:05:59,594 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:05:59,594 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:06:12,553 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:06:12,721 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:06:13,041 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 17:07:14,515 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:07:14,667 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:10:52,944 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:10:53,108 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:13:17,004 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:13:17,147 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:18:51,944 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 17:18:51,962 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:18:51,972 - DEBUG - interactive is False
+2023-11-24 17:18:51,972 - DEBUG - platform is win32
+2023-11-24 17:18:52,135 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:18:52,141 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 17:19:02,818 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 17:19:03,443 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:19:03,443 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:19:03,443 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:19:03,443 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:19:13,914 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 17:20:14,541 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:20:14,690 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:21:15,711 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:21:15,846 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:27:16,436 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 17:27:16,455 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:27:16,464 - DEBUG - interactive is False
+2023-11-24 17:27:16,464 - DEBUG - platform is win32
+2023-11-24 17:27:16,623 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:27:16,634 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 17:27:27,026 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 17:27:27,666 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:27:27,666 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:27:27,666 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:27:27,666 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:27:38,312 - DEBUG - Loaded backend tkagg version 8.6.
+2023-11-24 17:28:11,646 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:28:11,812 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:29:14,792 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 17:29:14,798 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:29:14,800 - DEBUG - interactive is False
+2023-11-24 17:29:14,800 - DEBUG - platform is win32
+2023-11-24 17:29:14,868 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:29:14,874 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 17:45:53,134 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 17:45:53,142 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:45:53,144 - DEBUG - interactive is False
+2023-11-24 17:45:53,144 - DEBUG - platform is win32
+2023-11-24 17:45:53,218 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:45:53,224 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 17:46:00,782 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 17:46:01,203 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:46:01,203 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:46:01,203 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:46:01,203 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:46:10,820 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:46:10,988 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 17:48:44,043 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 17:48:44,048 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:48:44,051 - DEBUG - interactive is False
+2023-11-24 17:48:44,051 - DEBUG - platform is win32
+2023-11-24 17:48:44,126 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 17:48:44,129 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 17:48:49,966 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 17:48:50,198 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:48:50,198 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:48:50,198 - DEBUG - Creating converter from 7 to 5
+2023-11-24 17:48:50,198 - DEBUG - Creating converter from 5 to 7
+2023-11-24 17:48:59,591 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 17:48:59,798 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:17:42,311 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 18:17:42,316 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:17:42,319 - DEBUG - interactive is False
+2023-11-24 18:17:42,319 - DEBUG - platform is win32
+2023-11-24 18:17:42,412 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:17:42,415 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 18:17:48,611 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 18:17:48,873 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:17:48,873 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:17:48,873 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:17:48,873 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:17:53,716 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:17:53,868 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:18:53,747 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:18:53,863 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:19:53,765 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:19:53,914 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:20:53,813 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:20:53,978 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:21:53,821 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:21:53,944 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:22:53,860 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:22:53,985 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:24:35,246 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 18:24:35,251 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:24:35,253 - DEBUG - interactive is False
+2023-11-24 18:24:35,253 - DEBUG - platform is win32
+2023-11-24 18:24:35,334 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:24:35,339 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 18:24:41,276 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 18:24:41,523 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:24:41,523 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:24:41,523 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:24:41,523 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:24:50,729 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:24:50,885 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:25:40,761 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 18:25:40,768 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:25:40,770 - DEBUG - interactive is False
+2023-11-24 18:25:40,770 - DEBUG - platform is win32
+2023-11-24 18:25:40,841 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:25:40,848 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 18:25:46,886 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 18:25:47,167 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:25:47,167 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:25:47,167 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:25:47,168 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:25:56,364 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:25:56,518 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:26:56,371 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:26:56,488 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:27:56,402 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:27:56,581 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:28:47,308 - DEBUG - Metin has been killed
+2023-11-24 18:28:56,432 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:28:56,568 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:29:56,451 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:29:56,575 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:30:56,470 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:30:56,610 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:31:56,477 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:31:56,600 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:32:56,514 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:32:56,671 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:33:56,527 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:33:56,664 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:34:56,550 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:34:56,690 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:35:56,559 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:35:56,689 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:36:03,782 - DEBUG - Metin has been killed
+2023-11-24 18:36:56,578 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:36:56,710 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:37:56,618 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:37:56,745 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:38:56,640 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:38:56,831 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:39:36,977 - DEBUG - ACTION RESTARTED WITH BUG IN GATHER_ITEMS
+2023-11-24 18:39:37,665 - DEBUG - ACTION RESTARTED WITH BUG IN GATHER_ITEMS
+2023-11-24 18:39:56,673 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:39:56,828 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:39:57,164 - DEBUG - ACTION RESTARTED WITH BUG IN GATHER_ITEMS
+2023-11-24 18:57:30,031 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 18:57:30,039 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:57:30,042 - DEBUG - interactive is False
+2023-11-24 18:57:30,042 - DEBUG - platform is win32
+2023-11-24 18:57:30,140 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 18:57:30,145 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 18:57:36,974 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 18:57:37,237 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:57:37,237 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:57:37,237 - DEBUG - Creating converter from 7 to 5
+2023-11-24 18:57:37,237 - DEBUG - Creating converter from 5 to 7
+2023-11-24 18:57:46,638 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:57:46,785 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:58:46,671 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:58:46,791 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 18:59:46,680 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 18:59:46,846 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:00:46,727 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:00:46,858 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:01:05,369 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 19:01:05,376 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 19:01:05,377 - DEBUG - interactive is False
+2023-11-24 19:01:05,377 - DEBUG - platform is win32
+2023-11-24 19:01:05,441 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 19:01:05,444 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 19:01:11,697 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 19:01:11,946 - DEBUG - Creating converter from 7 to 5
+2023-11-24 19:01:11,946 - DEBUG - Creating converter from 5 to 7
+2023-11-24 19:01:11,946 - DEBUG - Creating converter from 7 to 5
+2023-11-24 19:01:11,946 - DEBUG - Creating converter from 5 to 7
+2023-11-24 19:01:21,149 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:01:21,278 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:02:21,154 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:02:21,317 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:03:21,193 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:03:21,348 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:10:18,782 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 19:10:18,786 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 19:10:18,788 - DEBUG - interactive is False
+2023-11-24 19:10:18,789 - DEBUG - platform is win32
+2023-11-24 19:10:18,898 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 19:10:18,902 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 19:10:24,840 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 19:10:25,090 - DEBUG - Creating converter from 7 to 5
+2023-11-24 19:10:25,090 - DEBUG - Creating converter from 5 to 7
+2023-11-24 19:10:25,090 - DEBUG - Creating converter from 7 to 5
+2023-11-24 19:10:25,090 - DEBUG - Creating converter from 5 to 7
+2023-11-24 19:10:34,722 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:10:34,862 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:11:34,717 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:11:34,895 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:12:35,091 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:12:35,212 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:13:35,109 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:13:35,452 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:14:35,132 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:14:35,270 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:15:35,141 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:15:35,332 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:16:35,185 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:16:35,316 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:17:35,214 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:17:35,375 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:18:35,264 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:18:35,408 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:19:35,253 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:19:35,382 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:28:48,329 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 19:28:48,334 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 19:28:48,335 - DEBUG - interactive is False
+2023-11-24 19:28:48,335 - DEBUG - platform is win32
+2023-11-24 19:28:48,435 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 19:28:48,438 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 19:28:54,355 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 19:28:54,601 - DEBUG - Creating converter from 7 to 5
+2023-11-24 19:28:54,601 - DEBUG - Creating converter from 5 to 7
+2023-11-24 19:28:54,601 - DEBUG - Creating converter from 7 to 5
+2023-11-24 19:28:54,601 - DEBUG - Creating converter from 5 to 7
+2023-11-24 19:29:03,976 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:29:04,153 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:30:04,036 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:30:04,173 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:31:04,059 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:31:04,181 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 19:32:04,091 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 19:32:04,261 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-11-24 20:04:37,040 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-11-24 20:04:37,048 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-11-24 20:04:37,051 - DEBUG - interactive is False
+2023-11-24 20:04:37,051 - DEBUG - platform is win32
+2023-11-24 20:04:37,154 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-11-24 20:04:37,159 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-11-24 20:04:43,760 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-11-24 20:04:44,026 - DEBUG - Creating converter from 7 to 5
+2023-11-24 20:04:44,026 - DEBUG - Creating converter from 5 to 7
+2023-11-24 20:04:44,026 - DEBUG - Creating converter from 7 to 5
+2023-11-24 20:04:44,026 - DEBUG - Creating converter from 5 to 7
+2023-11-24 20:04:53,777 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-11-24 20:04:53,943 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0

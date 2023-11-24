@@ -52,14 +52,14 @@ class GameActions:
             time.sleep(random.uniform(0.58, 0.63))
         self.metin_bot.osk_window.stop_rotating_down()
         time.sleep(0.1)
-        if calibration_type != "first_arena":
-            self.metin_bot.osk_window.start_zooming_out()
-            time.sleep(0.6)
-            self.metin_bot.osk_window.stop_zooming_out()
-        #self.osk_window.start_zooming_in()
-        #time.sleep(0.07)
-        else:
-            self.zoom_in_out()
+        # if calibration_type != "first_arena":
+        #     self.metin_bot.osk_window.start_zooming_out()
+        #     time.sleep(0.6)
+        #     self.metin_bot.osk_window.stop_zooming_out()
+        # #self.osk_window.start_zooming_in()
+        # #time.sleep(0.07)
+        # else:
+        #     self.zoom_in_out()
         time.sleep(0.07)
         #self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
@@ -318,9 +318,9 @@ class GameActions:
         self.metin_bot.metin_window.mouse_click()
         time.sleep(0.09)
         self.metin_bot.metin_window.mouse_move(coords[respawn-1][0]+10, coords[respawn-1][1]+4)
-        time.sleep(0.50)
+        time.sleep(0.20)
         self.metin_bot.metin_window.mouse_click()
-        time.sleep(0.22)
+        time.sleep(0.07)
         #time.sleep(4)
 
     def teleport_to_next_metin_respawn(self, respawn_number=1):
@@ -350,7 +350,7 @@ class GameActions:
 
         #self.metin_bot.metin_window.activate()
 
-        time.sleep(0.5)
+        time.sleep(0.2)
         self.metin_bot.metin_window.mouse_move(channel_cords[channel-1][0], channel_cords[channel-1][1])
         time.sleep(0.1)
         self.metin_bot.metin_window.mouse_click()
@@ -432,6 +432,31 @@ class GameActions:
         else:
             return False
         
+    def open_inventory(self):
+        if not self.check_if_equipment_is_on():
+            self.metin_bot.osk_window.open_inventory()
+
+        ## NOW CHECK IF INVENTROY IS ON
+        time_of_await_to_open_again = time.time() + 0.3
+        while time.time() < time_of_await_to_open_again:
+            if self.check_if_equipment_is_on():
+                return
+            
+        self.open_inventory()
+
+    def close_inventory(self):
+        if self.check_if_equipment_is_on():
+            self.metin_bot.osk_window.open_inventory()
+
+        ## NOW CHECK IF INVENTROY IS ON
+        time_of_await_to_close_again = time.time() + 0.3
+        while time.time() < time_of_await_to_close_again:
+            if not self.check_if_equipment_is_on():
+                return
+            
+        self.close_inventory()
+                
+        
     def collect_the_event_card_drop(self):
         #self.metin_bot.metin_window.activate()
 
@@ -443,8 +468,7 @@ class GameActions:
         time.sleep(0.1)
 
     def check_if_player_is_on_the_mount(self):
-        if not self.check_if_equipment_is_on():
-            self.metin_bot.osk_window.open_inventory()
+        self.open_inventory()
         time.sleep(0.43)
         self.metin_bot.metin_window.mouse_move(951,161)
         time.sleep(0.07)
@@ -461,7 +485,7 @@ class GameActions:
         time.sleep(0.07)
         self.metin_bot.metin_window.mouse_click()
         time.sleep(0.05)
-        self.metin_bot.osk_window.open_inventory()
+        self.close_inventory()
         if x is not None:
             return False
         else:

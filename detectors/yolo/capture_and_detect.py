@@ -52,16 +52,20 @@ class CaptureAndDetect:
     def continuous_screen_capture(self):
         while not self.stopped:
             try:
+                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME CAPTURE STARTED")
+                temporar_hwnd = self.metin_window.hwnd
                 screenshot = self.metin_window.capture()
+
+                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME CAPTURE ENDED")
                 self.lock.acquire()
                 self.screenshot = screenshot
                 self.screenshot_time = time.time()
-                self.temporar_hwnd = self.metin_window.hwnd
+                self.temporar_hwnd = temporar_hwnd
                 self.lock.release()
             except:
                 # Handle exceptions if needed
                 pass
-            time.sleep(0.01)  # Small sleep to prevent hogging the CPU
+            time.sleep(0.006)  # Small sleep to prevent hogging the CPU
 
     def start(self):
         self.stopped = False
@@ -71,7 +75,7 @@ class CaptureAndDetect:
     def run(self):
         while not self.stopped:
             # Take screenshot
-            print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME STARTED")
+            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME STARTED")
             self.lock.acquire()
             screenshot = self.screenshot
             temporar_hwnd = self.temporar_hwnd
@@ -185,13 +189,15 @@ class CaptureAndDetect:
                 self.detection = detection
                 self.detection_time = detection_time
                 self.detection_image = detection_image
+                # print(self.metin_window.hwnd)
+                # print("and temporar" + str(temporar_hwnd))
                 if temporar_hwnd == self.metin_window.hwnd:
                     self.hwnd_of_captured_screenshot = self.metin_window.hwnd
                 self.lock.release()
                 #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) +" TIME DETECTION END")
                 #time_to_go_to_sleep = 0.04 if not detection else  0.20 * len(detection['scores']) + 0.2
                 #time.sleep(time_to_go_to_sleep)
-                print("TIME END: " + str(time.time()))
+                #print("TIME END: " + str(time.time()))
 
             if self.DEBUG:
                 time.sleep(1)

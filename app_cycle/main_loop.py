@@ -34,7 +34,7 @@ class MainLoop():
     def __init__(self):
 
 
-        self.windows_count = 1
+        self.windows_count = 6
         self.server_name = "Ervelia"
         
         self.window_names = []
@@ -115,16 +115,29 @@ class MainLoop():
                             # Display image
                             # current_instance['window'].move_window(0,0)
                             #current_instance['window'].activate()
-                            print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + "window is being changed")
+                            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + "window is being changed")
 
                             while True:
                                 screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
                     
                                 if hwnd_of_ss == new_instance['bot'].metin_window.hwnd:
+                                    time.sleep(0.002)
+                                    screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
                                     new_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
                                     break
                                 # Update bot with new image
-                            print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " window has been changed")
+                            if detection_image is None:
+                                self.swap_window()
+                                continue
+
+                            # Draw bot state on image
+                            overlay_image = current_instance['bot'].get_overlay_image() 
+                            detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
+                
+                            #Vision().SIFT_FEATURES_DETECTION(detection_image)
+                            # Display image
+                            cv.imshow('Matches', detection_image)
+                            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " window has been changed")
                             #time.sleep(0.05)
                             #change the window in the capt_detect 
                             new_instance['bot'].start()
