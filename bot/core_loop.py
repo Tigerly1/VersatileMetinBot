@@ -115,7 +115,7 @@ class MetinBot:
 
         self.time_of_next_action = time.time()
 
-        self.switch_state(DangeonState.DEBUG)
+        self.switch_state(DangeonState.ENTER_THE_DANGEON)
 
 
     def run(self):
@@ -123,24 +123,32 @@ class MetinBot:
         while not self.stopped:
 
             ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
-            #self.health_checks_iterations = (self.health_checks_iterations + 1) % 7
+            self.health_checks_iterations = (self.health_checks_iterations + 1) % 50
 
-            # if self.health_checks_iterations == 1:
-            #     self.game_actions.health_checks()
-            #     continue 
+            if self.health_checks_iterations == 45:
+                self.game_actions.health_checks()
+                continue 
             
             if self.state == DangeonState.INITIALIZING:
                 self.metin_window.activate()
                 self.game_actions.calibrate_view("guard")
                 self.game_actions.get_the_player_on_the_horse()
+                self.game_actions.zoom_out()
                 self.switch_state(DangeonState.ENTER_THE_DANGEON)
                 continue
 
             if self.state == DangeonState.DEBUG:
-                time.sleep(0.03)
-                self.game_actions.open_inventory()
+                while True:
+                    print("YES CHECK")
+                    self.game_actions.tp_to_dangeon()
+                    # time.sleep(1)
+                    # print("OK CHECK")
+                    # self.game_actions.check_if_you_cannot_tp_to_dangeon()
+                    # time.sleep(1)
+                # time.sleep(0.03)
+                # self.game_actions.open_inventory()
 
-                self.game_actions.close_inventory()
+                # self.game_actions.close_inventory()
                 # if not self.game_actions.check_if_equipment_is_on():  
                 #     self.osk_window.open_inventory()
 
@@ -158,7 +166,7 @@ class MetinBot:
                 #self.game_actions.calibrate_view("first_arena")
                 #self.stats.notify_via_telegram("JEJ")
                 #time.sleep(10000)
-                self.switch_state(DangeonState.DEBUG)
+                #self.switch_state(DangeonState.DEBUG)
                 continue
                 
             if self.state == DangeonState.LOGGING:

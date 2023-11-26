@@ -284,6 +284,18 @@ class Vision:
         # Take up to the top max_centers matches
         top_matches = matches[:max_centers]
 
+        ## DEBUG
+         # Threshold the result
+        # tlocations = np.where(result >= 0.01)
+        # tlocations = list(zip(*tlocations[::-1])) # Swap and pair x, y coordinates
+
+        # # Sort locations by their corresponding confidence level
+        # tmatches = sorted([(result[y, x], (x, y)) for x, y in tlocations], key=lambda x: x[0], reverse=True)
+        
+        # # Take up to the top max_centers matches
+        # ttop_matches = tmatches[:3]
+        # print(ttop_matches)
+
         centers = []
         for _, (x, y) in top_matches:
             # Get the coordinates of the center point of the found image

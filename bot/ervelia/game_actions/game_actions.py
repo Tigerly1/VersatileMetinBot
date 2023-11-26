@@ -13,7 +13,7 @@ import re
 
 from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
 from utils.helpers.music_player import play_music
-from utils.helpers.paths import get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
+from utils.helpers.paths import get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
 
 
 class GameActions:
@@ -236,13 +236,14 @@ class GameActions:
             time.sleep(0.07)
             self.metin_bot.metin_window.mouse_click()
             time.sleep(0.4)
+            self.metin_bot.login_state = False
             self.metin_bot.stop()
             return
 
         ######
         
         if time.time() - self.metin_bot.login_time > 25:
-            self.metin_bot.login_state = False
+            
             self.metin_bot.dangeon_actions.restart_class_props()
             self.metin_bot.dangeon_actions.tp_to_dangeon = True
             self.metin_bot.dangeon_actions.change_channel = True
@@ -255,15 +256,35 @@ class GameActions:
         #self.metin_bot.metin_window.activate()
 
         #time.sleep(3)
-        self.metin_bot.metin_window.mouse_move(521,208) #521, 247
-        time.sleep(1)
-        self.metin_bot.metin_window.mouse_click()
 
-        time.sleep(1.2)
-        self.metin_bot.metin_window.mouse_move(517,401)
+        self.metin_bot.metin_window.mouse_move(521,208) #521, 247
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
+
+        time.sleep(1.5)
+        #cv.imwrite("test.png", cv.cvtColor(self.metin_bot.get_screenshot_info(), cv.COLOR_RGB2BGR))
+        x,y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_enter_the_dangeon_button(), 0.99)
+        if x:
+            self.metin_bot.metin_window.mouse_move(x,y)
+            time.sleep(0.04)
+            self.metin_bot.metin_window.mouse_click()
+        #else:
+
+
         #time.sleep(4)
+
+    def check_if_you_cannot_tp_to_dangeon(self):
+        # top_left = (350, 215)
+        # bottom_right = (669, 591)
+        # modal_info = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
+
+        x,y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_you_cannot_enter_the_dangeon_button(), 0.99)
+        if x:
+            self.metin_bot.metin_window.mouse_move(x,y)
+            time.sleep(0.04)
+            self.metin_bot.metin_window.mouse_click()
+            return True
+        return False
 
     def tp_to_dangeon_again(self):
         self.metin_bot.metin_window.activate()

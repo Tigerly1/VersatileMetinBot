@@ -19,7 +19,7 @@ class MetinWindow(Window):
 
     def __init__(self, window_name):   
         self.name = window_name
-        self.open_window_await_time = 10
+        self.open_window_await_time = 15
         self.window_open_click_time = None
         pythoncom.CoInitialize()
     
@@ -31,9 +31,10 @@ class MetinWindow(Window):
         if self.hwnd == 0:
             self.open_new_window_first_time()
             #raise Exception(f'Window "{self.name}" not found!')
-        
-        super().__init__(window_name, self.hwnd)
+
         self.set_window_foreground()
+        super().__init__(window_name, self.hwnd)
+        
 
         self.capture_lock = threading.Lock()
 
@@ -122,12 +123,12 @@ class MetinWindow(Window):
         win32gui.SetForegroundWindow(patcher)
         sleep(0.1)
         interception.left_click(1)
-        time.sleep(6)
+        time.sleep(10)
 
         possible_pids = [p.info['pid'] for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] == "metin2client.exe"]
         possible_pids.sort(key=lambda p: psutil.Process(p).create_time())
         self.pid = possible_pids[0] if possible_pids else None
-        self.hwnd = self._set_hwnd_of_window_by_name()
+        self._set_hwnd_of_window_by_name()
         self.window_open_click_time = None
 
     def open_new_window(self):

@@ -77,7 +77,7 @@ class CaptureAndDetect:
             # Take screenshot
             #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " TIME STARTED")
             self.lock.acquire()
-            screenshot = self.screenshot
+            screenshot = self.screenshot.copy()
             temporar_hwnd = self.temporar_hwnd
             screenshot_time = self.screenshot_time
             self.lock.release()
