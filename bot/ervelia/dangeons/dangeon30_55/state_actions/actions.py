@@ -155,7 +155,7 @@ class Actions:
             self.start_of_the_action_time = time.time()
             time.sleep(0.1)
             self.metin_bot.osk_window.start_hitting()
-            time.sleep(0.03)
+            time.sleep(0.07)
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.12)
             #self.metin_bot.game_actions.zoom_out()
@@ -191,7 +191,7 @@ class Actions:
         if first_assumption or second_assumption:
             if second_assumption and not first_assumption:
                  self.metin_bot.osk_window.activate_flag()
-            time.sleep(0.04)
+            time.sleep(0.07)
             is_clicked = self.metin_bot.detect_and_click('metin', True)
             self.metins_rotation += 1
             if is_clicked:
@@ -242,13 +242,15 @@ class Actions:
             # code to attack the monster
             self.start_of_the_action_time = None
             self.metin_bot.increment_state(True, time.time()+1)
+
         elif time.time() - self.start_of_the_action_time > 12:
 
             ## WE DONT KNOW IF HE DIDN'T KILL THE MONSTERS ALREADY AND IT TPED HIM TO NEXT STAGE WE CANT USE PULL MOBS IN NEXT STAGE
             picture_for_comparison2 = self.metin_bot.get_screenshot_info()
-            pixels_difference = self.metin_bot.vision.compare_screenshots(self.picture_for_comparison, picture_for_comparison2)
+            pixels_difference_percentage = self.metin_bot.vision.compare_screenshots_percentage(self.picture_for_comparison, picture_for_comparison2)
             #print(pixels_difference)
-            if pixels_difference > 18:
+            logging.debug("pixels diff" + str(pixels_difference_percentage))
+            if pixels_difference_percentage >= 85:
                 self.metin_bot.increment_state(True, time.time()+3)
                 return
             
@@ -410,7 +412,7 @@ class Actions:
         if first_assumption or second_assumption:
             if second_assumption and not first_assumption:
                  self.metin_bot.osk_window.activate_flag()
-            time.sleep(0.04)
+            time.sleep(0.07)
             is_clicked = self.metin_bot.detect_and_click('metin', True)
             self.metins_rotation += 1
             if is_clicked:
@@ -558,6 +560,7 @@ class Actions:
         self.guard_clicked = False
         self.gather_items_stones_click = []
         if bug:
+            print("ACTION RESTARTED WITH BUG IN {}".format(self.metin_bot.state.name))
             self.stats.add_bug_encountered()
 
         self.metin_bot.game_actions.close_inventory()
@@ -569,10 +572,10 @@ class Actions:
 
     def restart_after_action_not_changed(self):
         self.restart_class_props()
-        print("ACTION RESTARTED WITH BUG IN {}".format(self.metin_bot.state.name))
         logging.debug("ACTION RESTARTED WITH BUG IN {}".format(self.metin_bot.state.name))
         #self.metin_bot.dangeon_entered_time = time.time()
         #self.metin_bot.game_actions.get_the_player_on_the_horse()
         self.tp_to_dangeon = True
         self.change_channel = True
+        self.metin_bot.health_checks_bool = True
         self.metin_bot.switch_state(DangeonState.INITIALIZING)

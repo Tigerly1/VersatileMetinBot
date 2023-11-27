@@ -108,6 +108,7 @@ class MetinBot:
         self.time_of_new_screen = None
         self.time_entered_state = time.time()
         self.health_checks_iterations = 0
+        self.health_checks_bool = False
         self.state = None
         
         self.login_state = False
@@ -125,8 +126,9 @@ class MetinBot:
             ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
             self.health_checks_iterations = (self.health_checks_iterations + 1) % 50
 
-            if self.health_checks_iterations == 45:
+            if self.health_checks_iterations == 45 or self.health_checks_bool:
                 self.game_actions.health_checks()
+                self.health_checks_bool = False
                 continue 
             
             if self.state == DangeonState.INITIALIZING:
@@ -394,7 +396,9 @@ class MetinBot:
         self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or time.time() - self.started_hitting_time >= 3:
+        if result is None or time.time() - self.started_hitting_time >= 4.5:
+            
+
             logging.debug("Metin has been killed")
             self.started_hitting_time = None
             self.put_info_text('Finished -> Collect drop')
@@ -405,6 +409,9 @@ class MetinBot:
             self.last_metin_time = total
 
             return False
+        elif time.time() - self.started_hitting_time >= 3:
+            self.game_actions.get_the_player_on_the_horse()
+            return True
         return True
 
     def start(self):

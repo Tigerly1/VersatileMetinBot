@@ -443,10 +443,33 @@ class Vision:
         else:
             print("No keypoints found near the chosen location.")
 
-    def compare_screenshots(self, img1, img2):
+    def compare_screenshots_mean(self, img1, img2):
         # Calculate the absolute difference between images
         diff = np.abs(img1.astype('int16') - img2.astype('int16'))
         
         # Calculate the average difference per pixel
         avg_diff = np.mean(diff)
         return avg_diff
+
+    def compare_screenshots_percentage(self, img1, img2, threshold=1):
+        """
+        Compare two screenshots to check how many pixels have significantly changed.
+
+        :param img1: First image array.
+        :param img2: Second image array.
+        :param threshold: Difference threshold to consider a pixel as changed.
+        :return: The percentage of changed pixels.
+        """
+        # Calculate the absolute difference between the images
+        diff = np.abs(img1.astype('int16') - img2.astype('int16'))
+
+        # Count the number of pixels that have changed more than the threshold
+        changed_pixels = np.sum(np.max(diff, axis=-1) > threshold)
+
+        # Calculate the total number of pixels
+        total_pixels = img1.shape[0] * img1.shape[1]
+
+        # Calculate the percentage of pixels that have changed
+        changed_percentage = (changed_pixels / total_pixels) * 100
+
+        return changed_percentage

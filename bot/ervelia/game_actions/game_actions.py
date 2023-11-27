@@ -185,7 +185,7 @@ class GameActions:
             if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or self.metin_bot.login_state:
                 # self.metin_bot.set_object_detector_state(False)
                 
-                self.metin_bot.dangeon_actions.restart_class_props()
+                #self.metin_bot.dangeon_actions.restart_class_props()
                 print(logged_out_info)
                 self.login_user()
             else:
@@ -232,13 +232,15 @@ class GameActions:
         #######
         elif self.metin_bot.login_state == True and time.time() - self.metin_bot.login_time > 10:
             time.sleep(0.1)
+            self.metin_bot.osk_window.pick_x_champion_in_champion_select("1")
+            time.sleep(0.2)
             self.metin_bot.metin_window.mouse_move(239,616)
             time.sleep(0.07)
             self.metin_bot.metin_window.mouse_click()
             time.sleep(0.4)
-            self.metin_bot.login_state = False
-            self.metin_bot.stop()
-            return
+            if time.time() - self.metin_bot.login_time <= 25:
+                self.metin_bot.stop()
+                return
 
         ######
         
@@ -247,6 +249,8 @@ class GameActions:
             self.metin_bot.dangeon_actions.restart_class_props()
             self.metin_bot.dangeon_actions.tp_to_dangeon = True
             self.metin_bot.dangeon_actions.change_channel = True
+            self.metin_bot.health_checks_bool = True
+            self.metin_bot.login_state = False
             self.metin_bot.switch_state(DangeonState.INITIALIZING)
             return
         # self.check_if_player_is_logged_out()
@@ -432,6 +436,7 @@ class GameActions:
             self.metin_bot.dangeon_entered_time = time.time()
             self.metin_bot.dangeon_actions.tp_to_dangeon = True
             self.metin_bot.dangeon_actions.change_channel = True
+            self.metin_bot.health_checks_bool = True
             self.metin_bot.switch_state(DangeonState.INITIALIZING)
 
     def check_if_equipment_is_on(self):
@@ -453,7 +458,7 @@ class GameActions:
         else:
             return False
         
-    def open_inventory(self):
+    def open_inventory(self, tried=0):
         if not self.check_if_equipment_is_on():
             self.metin_bot.osk_window.open_inventory()
 
@@ -462,10 +467,13 @@ class GameActions:
         while time.time() < time_of_await_to_open_again:
             if self.check_if_equipment_is_on():
                 return
-            
-        self.open_inventory()
+        
+        if tried > 20:
+            return
+        
+        self.open_inventory(tried+1)
 
-    def close_inventory(self):
+    def close_inventory(self, tried=0):
         if self.check_if_equipment_is_on():
             self.metin_bot.osk_window.open_inventory()
 
@@ -474,8 +482,11 @@ class GameActions:
         while time.time() < time_of_await_to_close_again:
             if not self.check_if_equipment_is_on():
                 return
-            
-        self.close_inventory()
+        
+        if tried > 20:
+            return
+
+        self.close_inventory(tried+1)
                 
         
     def collect_the_event_card_drop(self):

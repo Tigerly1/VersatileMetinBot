@@ -95,8 +95,9 @@ class InterceptionInput(Window):
         # self.press_key(button='Fn', mode='click')
         # sleep(0.2)
         # self.press_key(button='1', mode='click')
+    def pick_x_champion_in_champion_select(self, numer):
+        interception.press(numer)
         
-
     def recall_mount(self):
         self.call_mount()
         # self.send_mount_away()
@@ -175,7 +176,7 @@ class InterceptionInput(Window):
         if small_rotation:
             interception.move_relative(-random.randint(2, 5), 0)
         else:
-            interception.move_relative(random.randint(12, 25), 0)
+            interception.move_relative(random.randint(17, 27), 0)
         sleep(0.05)
         interception.mouse_up('right')
         sleep(0.1)
