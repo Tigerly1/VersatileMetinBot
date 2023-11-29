@@ -66,6 +66,7 @@ class MainLoop():
         interception = Interception()
         keyboard_thread = threading.Thread(target=self.listen_for_ctrl_w, args=(interception,))
         keyboard_thread.start()
+        
     def swap_window(self):
         time.sleep(0.02)
         self.change_window = True

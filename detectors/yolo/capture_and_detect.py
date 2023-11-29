@@ -87,7 +87,7 @@ class CaptureAndDetect:
                 start_y = (768 - 70) // 2
                 end_y = start_y + 70
                 # Make the middle region black (set pixel values to [0, 0, 0])
-                screenshot[start_y:end_y, start_x:end_x, :] = [0, 0, 0]           
+                #screenshot[start_y:end_y, start_x:end_x, :] = [0, 0, 0]           
                 detection = None
                 detection_time = None
                 detection_image = screenshot.copy()

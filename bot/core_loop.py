@@ -393,7 +393,7 @@ class MetinBot:
         if self.started_hitting_time is None:
             self.started_hitting_time = time.time()
 
-        self.game_actions.respawn_if_dead()
+        #self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
         if result is None or time.time() - self.started_hitting_time >= 4.5:
