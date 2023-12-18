@@ -170,18 +170,21 @@ class Window:
         #pyautogui.moveTo(self.x + x, self.y + y, duration=0.1)
         interception.move_to(self.x + x, self.y + y)
 
-    def mouse_click(self, x=None, y=None):
-        sleep(0.2)
+    def mouse_click(self, x=None, y=None, lowDelay=False):
+        sleep(0.06)
         if x is None and y is None:
             x, y = self.get_relative_mouse_pos()
-        interception.click(self.x + x, self.y + y)
+        if not lowDelay:
+            interception.click(self.x + x, self.y + y)
+        else:
+            interception.click(button="left", clicks=1, interval=0.1, delay=0.02)
         #pyautogui.click(self.x + x, self.y + y, duration=0.1)
 
     def mouse_right_click(self, x=None, y=None):
         sleep(0.03)
         if x is None and y is None:
             x, y = self.get_relative_mouse_pos()
-        interception.right_click(1)
+        interception.click(button="right", clicks=1, interval=0.1, delay=0.02)
 
     def limit_coordinate(self, pos):
         pos = list(pos)

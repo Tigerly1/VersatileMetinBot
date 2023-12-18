@@ -451,7 +451,7 @@ class Vision:
         avg_diff = np.mean(diff)
         return avg_diff
 
-    def compare_screenshots_percentage(self, img1, img2, threshold=1):
+    def compare_screenshots_percentage(self, img1, img2, threshold=3):
         """
         Compare two screenshots to check how many pixels have significantly changed.
 

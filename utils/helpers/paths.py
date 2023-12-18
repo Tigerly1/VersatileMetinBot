@@ -50,3 +50,18 @@ def countdown():
 
 def gm_detection_music():
     return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\music\alarm_gm_detection.mp3'
+
+import os
+
+def get_absolute_path(relative_path):
+    # Directory of the image_paths.py file
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    return os.path.join(base_dir, relative_path)
+
+# Define paths
+ERVELIA_DANG30_IMAGE_PATHS = {
+    'brown_belt': get_absolute_path('utils/images/ervelia/dang_30_items/brown_belt.png'),
+    'green_belt': get_absolute_path('utils/images/ervelia/dang_30_items/green_belt.png'),
+    'red_dragon': get_absolute_path('utils/images/ervelia/dang_30_items/red_dragon.png'),
+    # Add more images here
+}

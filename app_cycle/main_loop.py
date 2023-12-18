@@ -33,7 +33,6 @@ import utils
 class MainLoop():
     def __init__(self):
 
-
         self.windows_count = 6
         self.server_name = "Ervelia"
         
@@ -44,17 +43,13 @@ class MainLoop():
         #self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
         #self.window_names = ["Ervelia", "Ervelia"]
         
-        self.change_window = True
+        self.change_window = False
 
         self.handler = MultiWindowBotHandler(self)
 
         for window_name in self.window_names:
             self.handler.add_instance(window_name)
-        self.scheduler = BotScheduler()
-        for _, instance in self.handler.instances.items():
-            self.scheduler.add_bot(instance['bot'])
-        # add initialization after tkinter ui START with tkinter options
-
+        
         self.capt_detect = self.handler.get_capture_and_detect()
         #self.time_to_stop_for_scalene = time.time()
         self.last_switch_time = time.time()
@@ -66,7 +61,7 @@ class MainLoop():
         interception = Interception()
         keyboard_thread = threading.Thread(target=self.listen_for_ctrl_w, args=(interception,))
         keyboard_thread.start()
-        
+
     def swap_window(self):
         time.sleep(0.02)
         self.change_window = True
@@ -77,7 +72,24 @@ class MainLoop():
         self.capt_detect.start()
 
         current_instance = self.handler.get_next_instance()
+        windows_swap_fix()
+        current_instance['window'].set_window_foreground()
+        self.capt_detect.change_window_of_detection(current_instance['window'])
 
+        while True:
+            screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
+
+            if hwnd_of_ss == current_instance['bot'].metin_window.hwnd:
+                time.sleep(0.002)
+                screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
+                current_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
+                break
+            # Update bot with new image
+        # if detection_image is None:
+        #     self.swap_window()
+        
+        current_instance['bot'].start()
+        self.handler.set_current_instance_last_run_time()
 
         while True:
             key = cv.waitKey(1)
@@ -104,40 +116,41 @@ class MainLoop():
                     time.sleep(0.01)
                     if new_instance is not None and ((current_instance['bot'].thread is not None and not current_instance['bot'].thread.is_alive()) \
                                                      or current_instance['bot'].thread is None):
-                        windows_swap_fix()
-                        #time.sleep(0.05)
+                        
                         try:
-                            
-                            new_instance['window'].set_window_foreground()
-                            #time.sleep(0.03)
+                            if new_instance != current_instance:
 
-                            self.capt_detect.change_window_of_detection(new_instance['window'])
-                            #Vision().SIFT_FEATURES_DETECTION(detection_image)
-                            # Display image
-                            # current_instance['window'].move_window(0,0)
-                            #current_instance['window'].activate()
-                            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + "window is being changed")
+                                windows_swap_fix()
 
-                            while True:
-                                screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
-                    
-                                if hwnd_of_ss == new_instance['bot'].metin_window.hwnd:
-                                    time.sleep(0.002)
+                                new_instance['window'].set_window_foreground()
+                                #time.sleep(0.03)
+
+                                self.capt_detect.change_window_of_detection(new_instance['window'])
+                                #Vision().SIFT_FEATURES_DETECTION(detection_image)
+                                # Display image
+                                # current_instance['window'].move_window(0,0)
+                                #current_instance['window'].activate()
+                                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + "window is being changed")
+
+                                while True:
                                     screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
-                                    new_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
-                                    break
-                                # Update bot with new image
-                            if detection_image is None:
-                                self.swap_window()
-                                continue
+                        
+                                    if hwnd_of_ss == new_instance['bot'].metin_window.hwnd:
+                                        time.sleep(0.002)
+                                        new_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
+                                        break
+                                    # Update bot with new image
+                                if detection_image is None:
+                                    self.swap_window()
+                                    continue
 
-                            # Draw bot state on image
-                            overlay_image = current_instance['bot'].get_overlay_image() 
-                            detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
-                
-                            #Vision().SIFT_FEATURES_DETECTION(detection_image)
-                            # Display image
-                            cv.imshow('Matches', detection_image)
+                                # Draw bot state on image
+                                overlay_image = current_instance['bot'].get_overlay_image() 
+                                detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
+                    
+                                #Vision().SIFT_FEATURES_DETECTION(detection_image)
+                                # Display image
+                                cv.imshow('Matches', detection_image)
                             #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " window has been changed")
                             #time.sleep(0.05)
                             #change the window in the capt_detect 

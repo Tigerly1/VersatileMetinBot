@@ -13,7 +13,7 @@ import re
 
 from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
 from utils.helpers.music_player import play_music
-from utils.helpers.paths import get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
+from utils.helpers.paths import ERVELIA_DANG30_IMAGE_PATHS, get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
 
 
 class GameActions:
@@ -49,7 +49,7 @@ class GameActions:
         elif calibration_type == "second_arena":
             time.sleep(0.7)
         else:
-            time.sleep(random.uniform(0.58, 0.63))
+            time.sleep(random.uniform(0.62, 0.7))
         self.metin_bot.osk_window.stop_rotating_down()
         time.sleep(0.1)
         # if calibration_type != "first_arena":
@@ -81,8 +81,8 @@ class GameActions:
         time.sleep(0.08)
         self.metin_bot.osk_window.stop_zooming_in()
 
-    def rotate_view(self, small_rotation=False):
-        self.metin_bot.osk_window.rotate_with_mouse(small_rotation)
+    def rotate_view(self, small_rotation=False, big_rotation=False):
+        self.metin_bot.osk_window.rotate_with_mouse(small_rotation, big_rotation)
         #self.osk_window.move_with_camera_rotation()
 
     def rotate_view_async(self, stop=False):
@@ -142,7 +142,7 @@ class GameActions:
         mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-        mob_info_text = pytesseract.image_to_string(mob_info_box)
+        mob_info_text = pytesseract.image_to_string(mob_info_box, lang='pol')
 
         return self.process_metin_info(mob_info_text)
 
@@ -232,7 +232,7 @@ class GameActions:
         #######
         elif self.metin_bot.login_state == True and time.time() - self.metin_bot.login_time > 10:
             time.sleep(0.1)
-            self.metin_bot.osk_window.pick_x_champion_in_champion_select("1")
+            self.metin_bot.osk_window.pick_x_champion_in_champion_select("2")
             time.sleep(0.2)
             self.metin_bot.metin_window.mouse_move(239,616)
             time.sleep(0.07)
@@ -553,4 +553,72 @@ class GameActions:
             play_music()
         # print("DETECTION OF GM STOP")
         # print(time.time())
-       
+
+    
+    def remove_dangon_items_from_inv(self):
+
+        time.sleep(0.1)
+        self.open_inventory()
+        time.sleep(0.15)
+        self.metin_bot.metin_window.mouse_move(793,211)
+        time.sleep(0.08)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.6)
+        
+        items_removed = 0
+
+        for inv_page in [1,2,3,4]:
+
+            self.click_inventory_stash_x(inv_page)
+            time.sleep(0.2)
+
+            merged_centers = []
+
+            image = self.metin_bot.get_screenshot_info()
+            top_left = (854, 386)
+            bottom_right = (1017, 685)
+            image_cuted_for_detection = self.metin_bot.vision.extract_section(image, top_left, bottom_right)
+
+            for path in ERVELIA_DANG30_IMAGE_PATHS.values():
+                centers = self.metin_bot.vision.find_image(image_cuted_for_detection, path, 0.7, 30)
+                centers = sorted(centers, key=lambda center: center[1])
+                if len(centers) > 0:
+                    merged_centers = merged_centers + centers
+
+
+            items_clicked_indexes = []
+
+            #merged_centers = merged_centers[:24]
+            #print(merged_centers)
+
+            merged_centers = sorted(merged_centers, key=lambda merged_center: merged_center[1])
+
+            for count, value in enumerate(merged_centers):
+                index_of_next_click = self.metin_bot.vision.index_of_centers_that_hasnt_been_clicked_yet(merged_centers, items_clicked_indexes, inv_page)
+                if index_of_next_click is not None:
+                    self.metin_bot.metin_window.mouse_move(merged_centers[index_of_next_click][0]+top_left[0],merged_centers[index_of_next_click][1]+top_left[1])
+                    time.sleep(0.05)
+                    self.metin_bot.metin_window.mouse_right_click()
+                    time.sleep(0.03)
+                    items_clicked_indexes.append([merged_centers[index_of_next_click][0], merged_centers[index_of_next_click][1], inv_page])
+                    items_removed += 1
+                    if items_removed % 24 == 0:
+                        time.sleep(0.05)
+                        self.metin_bot.metin_window.mouse_move(480,480)
+                        time.sleep(0.05)
+                        self.metin_bot.metin_window.mouse_click()
+                        time.sleep(0.6)
+            
+        time.sleep(0.05)
+        self.metin_bot.metin_window.mouse_move(480,480)
+        time.sleep(0.05)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.6)
+
+        time.sleep(0.05)
+        self.metin_bot.metin_window.mouse_move(600,281)
+        time.sleep(0.05)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.6)
+
+        self.close_inventory()

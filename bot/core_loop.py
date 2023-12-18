@@ -60,6 +60,7 @@ class MetinBot:
 
         self.started_hitting_time = None
         self.started_moving_time = None
+        self.moving_to_enemy_flag_clicked = False
         self.next_metin = None
         self.last_metin_time = time.time()
 
@@ -116,11 +117,11 @@ class MetinBot:
 
         self.time_of_next_action = time.time()
 
-        self.switch_state(DangeonState.ENTER_THE_DANGEON)
+        self.set_first_state(DangeonState.ENTER_THE_DANGEON)
 
 
     def run(self):
-        #time.sleep(0.03)i
+        time.sleep(0.02)
         while not self.stopped:
 
             ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
@@ -136,13 +137,23 @@ class MetinBot:
                 self.game_actions.calibrate_view("guard")
                 self.game_actions.get_the_player_on_the_horse()
                 self.game_actions.zoom_out()
+                self.game_actions.remove_dangon_items_from_inv()
                 self.switch_state(DangeonState.ENTER_THE_DANGEON)
                 continue
 
             if self.state == DangeonState.DEBUG:
-                while True:
-                    print("YES CHECK")
-                    self.game_actions.tp_to_dangeon()
+
+                self.osk_window.mouse_move(690,93)
+
+                time.sleep(0.2)
+                for x in range(0, 1000):
+                    self.osk_window.mouse_right_click()
+                    time.sleep(random.randint(5,10)/150)
+                    #time.sleep(0.01)
+                #self.game_actions.remove_dangon_items_from_inv()
+                # while True:
+                #     print("YES CHECK")
+                #     self.game_actions.tp_to_dangeon()
                     # time.sleep(1)
                     # print("OK CHECK")
                     # self.game_actions.check_if_you_cannot_tp_to_dangeon()
@@ -167,8 +178,8 @@ class MetinBot:
                 # time.sleep(3)
                 #self.game_actions.calibrate_view("first_arena")
                 #self.stats.notify_via_telegram("JEJ")
-                #time.sleep(10000)
-                #self.switch_state(DangeonState.DEBUG)
+                time.sleep(5)
+                self.switch_state(DangeonState.DEBUG)
                 continue
                 
             if self.state == DangeonState.LOGGING:
@@ -217,12 +228,13 @@ class MetinBot:
                 continue
     
     def brief_detection(self, label):
-        time.sleep(0.001)
+        time.sleep(0.07)
         try:
             if self.screenshot is not None and self.detection_time is not None:
                 if self.detection_result is None or (self.detection_result is not None and (self.detection_result['labels'][0] != label \
                                                       or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
                                                         or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
+                    self.game_actions.rotate_view(False, True)
                     return False
                 else:
                     return True
@@ -256,27 +268,38 @@ class MetinBot:
                 else:
                     saved_click_pos = copy.deepcopy(self.detection_result['click_pos'])
                     x, y = saved_click_pos
+
                     if x >= 875 and y <= 300:
                         x = 865
+                        if label == "metin":
+                            self.game_actions.rotate_view()
+                            return False
+                        
                     self.rotate_count = 0
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
+
+                    if label == "metin":
+                        if x < 14 or x > 1010:
+                            self.game_actions.rotate_view()
+                            return False
+
                     if label == "first_arena":
-                        
                         y = y + 35
                         x = x - 30 
                         self.metin_window.mouse_move(x,y)
-                    
+                        
                     else:
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
                         self.metin_window.mouse_move(x, y)
                     
                     if label == "second_arena":
                         self.osk_window.activate_flag()
+                        time.sleep(0.2)
 
                     time.sleep(0.03)
                     if not check_match:
-                        self.metin_window.mouse_click()
+                        self.metin_window.mouse_click(lowDelay=True)
                         time.sleep(0.02)
                         #self.metin_window.mouse_click()
                         return True
@@ -364,6 +387,7 @@ class MetinBot:
         result = self.game_actions.get_mob_info()
         #print(result[0])
         if result is not None and result[1] < 1000:
+            self.moving_to_enemy_flag_clicked = False
             self.started_moving_time = None
             self.move_fail_count = 0
             self.put_info_text(f'Started hitting {result[0]}')
@@ -380,6 +404,11 @@ class MetinBot:
         #     return None
         #     #self.osk_window.pick_up()
         #     #self.metin_count += 1
+        elif result is not None and result[1] == 1000 and not self.moving_to_enemy_flag_clicked:
+            self.osk_window.activate_flag()
+            self.moving_to_enemy_flag_clicked = True
+            time.sleep(2.5)
+            self.moving_to_enemy()
         else:
              return False
 
@@ -396,7 +425,7 @@ class MetinBot:
         #self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or time.time() - self.started_hitting_time >= 4.5:
+        if result is None or (result is not None and result[1] < 100) or time.time() - self.started_hitting_time >= 4.5:
             
 
             logging.debug("Metin has been killed")
@@ -409,7 +438,7 @@ class MetinBot:
             self.last_metin_time = total
 
             return False
-        elif time.time() - self.started_hitting_time >= 3:
+        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 3:
             self.game_actions.get_the_player_on_the_horse()
             return True
         return True
@@ -470,6 +499,17 @@ class MetinBot:
         screenshot = self.screenshot
         self.info_lock.release()
         return screenshot
+
+    def set_first_state(self, state):
+         self.state_lock.acquire()
+
+         self.time_entered_state = time.time()
+         self.time_of_new_screen = time.time()
+
+         self.state = state
+
+         self.state_lock.release()
+         self.put_info_text()
 
     def switch_state(self, state):
         self.stop()

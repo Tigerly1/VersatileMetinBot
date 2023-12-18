@@ -24,7 +24,7 @@ class Actions:
         ### states to clear
         self.first_metins_killed = 0
         self.picture_for_comparison = None
-        self.gather_items_time = 122
+        self.gather_items_time = 102
         self.last_inventory_page_used = 2
         self.gather_items_stones_click = []
         self.items_gathered = 0
@@ -47,7 +47,12 @@ class Actions:
 
         if self.metin_bot.dangeon_end_time > time.time() - 20 and self.metin_bot.dangeons_count > 0 and self.tp_to_dangeon == False:
             self.metin_bot.game_actions.tp_to_dangeon_again()
-            time.sleep(0.1)
+            self.metin_bot.dangeon_entered_time = time.time()
+            self.start_of_the_action_time = None
+            time.sleep(0.01)
+            self.metin_bot.increment_state(False)
+            return
+            
         elif not self.guard_clicked:
             if self.tp_to_dangeon:
                 self.metin_bot.game_actions.teleport_to_x_respawn(1,1)
@@ -62,21 +67,29 @@ class Actions:
                 self.inventory_page = 1
                 self.metin_bot.stop(True, time.time()+10)
                 return
+            
             if self.start_of_the_action_time is None:
                 self.start_of_the_action_time = time.time()
-            if time.time() - self.start_of_the_action_time > 1:
-                #self.metin_bot.game_actions.calibrate_view("guard")
-                self.tp_to_dangeon = True
-                self.start_of_the_action_time = None
-                self.metin_bot.stop()
-                return
+            
             self.guard_clicked = self.metin_bot.detect_and_click('guard', True)
+
             if not self.guard_clicked:
+                
+                if random.random() < 0.04: 
+                    self.metin_bot.game_actions.calibrate_view("guard")
+                    self.tp_to_dangeon = True
+                    self.start_of_the_action_time = None
+                    self.metin_bot.stop()
+                    return
+                if time.time() - self.start_of_the_action_time > 1:
+                    #self.metin_bot.game_actions.calibrate_view("guard")
+                    self.start_of_the_action_time = None
+                    self.metin_bot.stop()
                 return
             self.metin_bot.stop(True, time.time()+3)
             return
         else:
-            self.metin_bot.game_actions.tp_to_dangeon() ## TO BE DONE
+            self.metin_bot.game_actions.tp_to_dangeon()
 
         self.metin_bot.dangeon_entered_time = time.time()
         # code to enter the dungeon
@@ -100,17 +113,17 @@ class Actions:
             self.restart_after_action_not_changed()
             return
 
-        if time.time() - self.start_of_the_action_time > 50:
+        if time.time() - self.start_of_the_action_time > 40:
             self.metin_bot.game_actions.calibrate_view('first_arena')
 
         self.rotate_start_time = time.time()
-        self.metin_bot.game_actions.rotate_view_async()
+        #self.metin_bot.game_actions.rotate_view_async()
 
         while time.time() - self.rotate_start_time  < 1.5:
             result = self.metin_bot.brief_detection('first_arena')
             if result:
                 break
-        self.metin_bot.game_actions.rotate_view_async(True)
+        #self.metin_bot.game_actions.rotate_view_async(True)
         
         if not result:
             #self.metin_bot.game_actions.calibrate_view('first_arena')
@@ -158,6 +171,8 @@ class Actions:
             time.sleep(0.09)
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.15)
+            self.metin_bot.osk_window.pull_mobs_different_version()
+            time.sleep(0.04)
             #self.metin_bot.game_actions.zoom_out()
             self.metin_bot.stop(True, time.time()+11)
             return
@@ -182,11 +197,15 @@ class Actions:
             self.metin_bot.game_actions.turn_on_buffs()
             time.sleep(0.1)
         
+        first_assumption = self.first_metins_killed < 4  and self.metins_rotation <= self.max_metins_rotations
+        second_assumption = self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'][0] == LABELS[0]
+
         if self.first_metins_killed > 0:
             self.metin_bot.moving_to_enemy()
 
-        first_assumption = self.first_metins_killed < 4  and self.metins_rotation <= self.max_metins_rotations
-        second_assumption = self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'][0] == LABELS[0]
+        if self.first_metins_killed > 3 and not second_assumption:
+            self.metin_bot.osk_window.rotate_with_mouse(False,True)
+            time.sleep(0.12)
 
         if first_assumption or second_assumption:
             if second_assumption and not first_assumption:
@@ -198,6 +217,8 @@ class Actions:
             if is_clicked:
                 if self.first_metins_killed == 0:
                     self.metin_bot.osk_window.activate_flag()
+                    time.sleep(0.1)
+
                 self.metins_rotation = 0
                 #time.sleep(5)
                 self.first_metins_killed += 1
@@ -206,10 +227,14 @@ class Actions:
                 return
 
             elif self.metins_rotation % 12 == 0:
+                self.metin_bot.osk_window.pull_mobs_different_version()
+                self.metin_bot.osk_window.start_hitting()
                 self.metin_bot.stop(True, time.time()+15.1)
                 return
             
         elif self.metins_rotation > self.max_metins_rotations:
+           
+            
             self.start_of_the_action_time = None
             self.restart_after_action_not_changed()
 
@@ -224,12 +249,14 @@ class Actions:
     
     def kill_mini_boss(self):
         if self.start_of_the_action_time is None:
-            self.picture_for_comparison = self.metin_bot.get_screenshot_info()
             self.start_of_the_action_time = time.time()
             self.metin_bot.osk_window.start_hitting()
             time.sleep(0.1)
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.15)
+            self.picture_for_comparison = self.metin_bot.get_screenshot_info()
+            self.metin_bot.osk_window.pull_mobs_different_version()
+            time.sleep(0.04)
             self.metin_bot.stop(True, time.time()+12)
             return 
         self.metin_bot.osk_window.start_hitting()
@@ -238,33 +265,37 @@ class Actions:
         # time.sleep(0.05)
         
         if time.time() - self.start_of_the_action_time > 26:
-            self.metin_bot.osk_window.stop_hitting()
+            #self.metin_bot.osk_window.stop_hitting()
             time.sleep(0.1)
             # code to attack the monster
             self.start_of_the_action_time = None
-            self.metin_bot.increment_state(True, time.time()+1)
+            self.metin_bot.increment_state(True, time.time()+3)
 
-        elif time.time() - self.start_of_the_action_time > 12:
+        elif time.time() - self.start_of_the_action_time > 16:
 
             ## WE DONT KNOW IF HE DIDN'T KILL THE MONSTERS ALREADY AND IT TPED HIM TO NEXT STAGE WE CANT USE PULL MOBS IN NEXT STAGE
-            time.sleep(0.03)
+            time.sleep(0.04)
             picture_for_comparison2 = self.metin_bot.get_screenshot_info()
             pixels_difference_percentage = self.metin_bot.vision.compare_screenshots_percentage(self.picture_for_comparison, picture_for_comparison2)
+            time.sleep(0.2)
+            picture_for_comparison3 = self.metin_bot.get_screenshot_info()
+            pixels_difference_percentage2 = self.metin_bot.vision.compare_screenshots_percentage(self.picture_for_comparison, picture_for_comparison3)
             #print(pixels_difference)
             logging.debug("pixels diff" + str(pixels_difference_percentage))
-            if pixels_difference_percentage >= 85:
-                self.metin_bot.increment_state(True, time.time()+3)
+            logging.debug("pixels diff" + str(pixels_difference_percentage2))
+            if pixels_difference_percentage >= 78 and pixels_difference_percentage2 >= 78:
+                self.metin_bot.increment_state(True)
                 return
             
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.12)
-            self.metin_bot.stop(True, time.time()+16)
+            self.metin_bot.stop(True, time.time()+6)
         # elif time.time() - self.start_of_the_action_time > 19:
         #     self.metin_bot.osk_window.pull_mobs()
         #     time.sleep(0.1)
         #     self.metin_bot.stop(True, time.time()+13)
         else:
-            self.metin_bot.stop()
+            self.metin_bot.stop(True, time.time()+5)
 
         
 
@@ -291,13 +322,13 @@ class Actions:
         #     return
         
         self.rotate_start_time = time.time()
-        self.metin_bot.game_actions.rotate_view_async()
+        #self.metin_bot.game_actions.rotate_view_async()
 
         while time.time() - self.rotate_start_time  < 1:
             result = self.metin_bot.brief_detection('second_arena')
             if result:
                 break
-        self.metin_bot.game_actions.rotate_view_async(True)
+        #self.metin_bot.game_actions.rotate_view_async(True)
         if not result:
             # self.metin_bot.game_actions.calibrate_view("second_arena")
             self.metin_bot.stop(True, time.time())
@@ -337,8 +368,8 @@ class Actions:
             time.sleep(0.03)
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.09)
-        if time.time() - self.start_of_the_action_time < self.gather_items_time - 18:
-            self.metin_bot.stop(True, time.time()+18)
+        if time.time() - self.start_of_the_action_time < self.gather_items_time - 12:
+            self.metin_bot.stop(True, time.time()+12)
             return
         elif time.time() - self.start_of_the_action_time < self.gather_items_time:
             self.metin_bot.stop(True, time.time() + abs(time.time() - self.start_of_the_action_time -  self.gather_items_time))
@@ -405,11 +436,16 @@ class Actions:
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
 
+        first_assumption = self.second_metins_killed < 4  and self.metins_rotation <= self.max_metins_rotations
+        second_assumption = self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'][0] == LABELS[0]
+
         if self.second_metins_killed > 0:
             self.metin_bot.moving_to_enemy()
 
-        first_assumption = self.second_metins_killed < 4  and self.metins_rotation <= self.max_metins_rotations
-        second_assumption = self.metin_bot.detection_result is not None and self.metin_bot.detection_result['labels'][0] == LABELS[0]
+        if self.second_metins_killed > 3 and not second_assumption:
+            self.metin_bot.osk_window.rotate_with_mouse(False,True)
+            time.sleep(0.12)
+            self.metin_bot.detect_and_click('metin')
 
         if first_assumption or second_assumption:
             if second_assumption and not first_assumption:
@@ -423,6 +459,7 @@ class Actions:
                 self.metins_rotation = 0
                 if self.second_metins_killed == 0:
                     self.metin_bot.osk_window.activate_flag()
+                    time.sleep(0.1)
                 #time.sleep(5)
                 self.metin_bot.stop(True, time.time()+4.4)
                 self.second_metins_killed += 1
@@ -451,7 +488,7 @@ class Actions:
             # time.sleep(0.4)
             self.metin_bot.osk_window.pull_mobs()
             time.sleep(0.08)
-            self.metin_bot.stop(True, time.time()+14)
+            self.metin_bot.stop(True, time.time()+8)
             return
         
         self.metin_bot.osk_window.start_hitting()
@@ -485,7 +522,7 @@ class Actions:
                  self.metin_bot.increment_state(False)
             else:
 
-                self.metin_bot.stop(True, time.time()+10)
+                self.metin_bot.stop(True, time.time()+2)
         # code to attack the monster
 
     def end_boss(self):
@@ -507,15 +544,15 @@ class Actions:
                 self.metin_bot.game_actions.turn_on_buffs(only_potions=True)
 
         if self.start_of_the_action_time + 33 <= time.time():
-            self.metin_bot.osk_window.start_pick_up()
-            if self.pick_up_stop == False:
-                self.metin_bot.game_actions.calibrate_view('first_arena')
-                self.metin_bot.osk_window.stop_hitting()
-                #time.sleep(2.6)
-                self.pick_up_stop = True
-                self.metin_bot.stop()
-                return
-            time.sleep(1.2)
+            # self.metin_bot.osk_window.start_pick_up()
+            # if self.pick_up_stop == False:
+            #     self.metin_bot.game_actions.calibrate_view('first_arena')
+            #     self.metin_bot.osk_window.stop_hitting()
+            #     #time.sleep(2.6)
+            #     self.pick_up_stop = True
+            #     self.metin_bot.stop()
+            #     return
+            # time.sleep(1.2)
             self.metin_bot.osk_window.stop_hitting()
             self.start_of_the_action_time = None
             
@@ -551,7 +588,7 @@ class Actions:
 
     def restart_class_props(self, bug=True):
         self.first_metins_killed = 0
-        self.gather_items_time = 122
+        self.gather_items_time = 102
         self.items_gathered = 0
         #self.inventory_page = 2
         self.second_metins_killed = 0
@@ -565,6 +602,8 @@ class Actions:
         if bug:
             print("ACTION RESTARTED WITH BUG IN {}".format(self.metin_bot.state.name))
             self.stats.add_bug_encountered()
+
+        # if 
 
         self.metin_bot.game_actions.close_inventory()
         # time.sleep(0.1)

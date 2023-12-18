@@ -53,6 +53,11 @@ class InterceptionInput(Window):
     def pull_mobs(self):
         interception.press("3", 3, 0.02)
 
+    def pull_mobs_different_version(self):
+        interception.key_down("3")
+        sleep(0.02)
+        interception.key_up("3")
+
     def pick_up(self):
         interception.key_down("z")
         sleep(7)
@@ -95,8 +100,8 @@ class InterceptionInput(Window):
         # self.press_key(button='Fn', mode='click')
         # sleep(0.2)
         # self.press_key(button='1', mode='click')
-    def pick_x_champion_in_champion_select(self, numer):
-        interception.press(numer)
+    def pick_x_champion_in_champion_select(self, number):
+        interception.press(number)
         
     def recall_mount(self):
         self.call_mount()
@@ -160,7 +165,7 @@ class InterceptionInput(Window):
         sleep(0.02)
         interception.mouse_up('right')
 
-    def rotate_with_mouse(self, small_rotation=False):
+    def rotate_with_mouse(self, small_rotation=False, large_rotation=False):
         
         self.mouse_move(random.randint(300, 400), random.randint(400, 500))
         sleep(0.05)
@@ -175,6 +180,8 @@ class InterceptionInput(Window):
         sleep(0.06)
         if small_rotation:
             interception.move_relative(-random.randint(2, 5), 0)
+        elif large_rotation:
+            interception.move_relative(random.randint(25, 35), 0)
         else:
             interception.move_relative(random.randint(17, 27), 0)
         sleep(0.05)
