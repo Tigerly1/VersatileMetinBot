@@ -8,9 +8,9 @@ import numpy as np
 import enum
 from threading import Thread, Lock
 import datetime
-from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
-from bot.ervelia.dangeons.dangeon30_55.state_actions.actions import Actions
+from bot.ervelia.dangeons.dangeon75_95.state import DangeonState
 from bot.ervelia.game_actions.game_actions import GameActions
+from bot.interfaces.dungeon_strategy_interface import DangeonStateStrategy
 from bot.stats.dangeon import DungeonBotStatistics
 from utils import * #get_metin_needle_path, get_tesseract_path
 import pytesseract
@@ -32,10 +32,12 @@ logging.basicConfig(filename="debug", level=logging.DEBUG, format='%(asctime)s -
 
 class MetinBot:
 
-    def __init__(self, metin_window: MetinWindow, bot_id, main_loop):
+    def __init__(self, metin_window: MetinWindow, state_order: DangeonStateStrategy,  bot_id, main_loop):
         self.metin_window = metin_window
         self.bot_id = bot_id
         self.main_loop = main_loop
+        self.state_order = state_order
+        self.state_order.init_actions_passing_variables(self)
         print(metin_window.hwnd)
         self.osk_window = InterceptionInput("Ervelia", metin_window.hwnd)
         #metin_window.move_window(0,0)
@@ -100,7 +102,6 @@ class MetinBot:
         self.dangeon_end_time = time.time()
 
         self.game_actions = GameActions(self)
-        self.dangeon_actions = Actions(self)
         self.stats = DungeonBotStatistics()
 
 
@@ -117,123 +118,25 @@ class MetinBot:
 
         self.time_of_next_action = time.time()
 
-        self.set_first_state(DangeonState.ENTER_THE_DANGEON)
+        self.set_first_state()
+
+        #self.state = DangeonState.SECOND_CLICK_ITEMS
 
 
     def run(self):
-        time.sleep(0.02)
-        while not self.stopped:
-
-            ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
-            self.health_checks_iterations = (self.health_checks_iterations + 1) % 50
-
-            if self.health_checks_iterations == 45 or self.health_checks_bool:
-                self.game_actions.health_checks()
-                self.health_checks_bool = False
-                continue 
-            
-            if self.state == DangeonState.INITIALIZING:
-                self.metin_window.activate()
-                self.game_actions.calibrate_view("guard")
-                self.game_actions.get_the_player_on_the_horse()
-                self.game_actions.zoom_out()
-                self.game_actions.remove_dangon_items_from_inv()
-                self.switch_state(DangeonState.ENTER_THE_DANGEON)
-                continue
-
-            if self.state == DangeonState.DEBUG:
-
-                self.osk_window.mouse_move(690,93)
-
-                time.sleep(0.2)
-                for x in range(0, 1000):
-                    self.osk_window.mouse_right_click()
-                    time.sleep(random.randint(5,10)/150)
-                    #time.sleep(0.01)
-                #self.game_actions.remove_dangon_items_from_inv()
-                # while True:
-                #     print("YES CHECK")
-                #     self.game_actions.tp_to_dangeon()
-                    # time.sleep(1)
-                    # print("OK CHECK")
-                    # self.game_actions.check_if_you_cannot_tp_to_dangeon()
-                    # time.sleep(1)
-                # time.sleep(0.03)
-                # self.game_actions.open_inventory()
-
-                # self.game_actions.close_inventory()
-                # if not self.game_actions.check_if_equipment_is_on():  
-                #     self.osk_window.open_inventory()
-
-                # time.sleep(0.3)
-
-                # if self.game_actions.check_if_equipment_is_on():
-                #     self.osk_window.open_inventory()
-                #self.osk_window.rotate_up_max_mouse()
-                # if self.game_actions.check_if_equipment_is_on():
-                #     print("WOAA")
-                    #self.osk_window.close_inventory()
-                #self.vision.SIFT_FEATURES_DETECTION(self.get_screenshot_info())
-                # self.game_actions.get_the_player_on_the_horse()
-                # time.sleep(3)
-                #self.game_actions.calibrate_view("first_arena")
-                #self.stats.notify_via_telegram("JEJ")
-                time.sleep(5)
-                self.switch_state(DangeonState.DEBUG)
-                continue
-                
-            if self.state == DangeonState.LOGGING:
-                self.game_actions.check_if_player_is_logged_out()
-                time.sleep(0.1)
-                continue
-
-            if self.state == DangeonState.ENTER_THE_DANGEON:
-                self.dangeon_actions.enter_the_dangeon()
-                continue
-
-            if self.state == DangeonState.FIRST_ARENA:
-                self.dangeon_actions.first_arena()
-                continue
-
-            if self.state == DangeonState.KILL_MOBS:
-                self.dangeon_actions.kill_mobs()
-                continue
-
-            if self.state == DangeonState.KILL_METINS:
-                self.dangeon_actions.kill_metins()
-                continue
-
-            if self.state == DangeonState.KILL_MINI_BOSS:
-                self.dangeon_actions.kill_mini_boss()
-                continue
-
-            if self.state == DangeonState.SECOND_ARENA:
-                self.dangeon_actions.second_arena()
-                continue
-
-            if self.state == DangeonState.GATHER_ITEMS:
-                self.dangeon_actions.gather_items()
-                continue
-
-            if self.state == DangeonState.SECOND_METINS:
-                self.dangeon_actions.second_metins()
-                continue
-
-            if self.state == DangeonState.SECOND_MINI_BOSS:
-                self.dangeon_actions.second_mini_boss()
-                continue
-            
-            if self.state == DangeonState.END_BOSS:
-                self.dangeon_actions.end_boss()
-                continue
+        if False:
+            time.sleep(100)
+        else:
+            self.state_order.execute_actions_by_state(self)
     
     def brief_detection(self, label):
         time.sleep(0.07)
         try:
             if self.screenshot is not None and self.detection_time is not None:
-                if self.detection_result is None or (self.detection_result is not None and (self.detection_result['labels'][0] != label \
-                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
-                                                        or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
+                # if self.detection_result is None or (self.detection_result is not None and (self.detection_result['labels'][0] != label \
+                #                                       or self.get_top_center_position('first_arena', 0.65) is None \
+                #                                         or self.get_top_center_position('second_arena', 0.7) is None)):
+                if self.get_top_center_position(label, 0.1) is None:
                     self.game_actions.rotate_view(False, True)
                     return False
                 else:
@@ -250,9 +153,12 @@ class MetinBot:
             if self.screenshot is not None and self.detection_time is not None and \
                             self.detection_time > self.time_of_new_screen + 0.06:
                 #If no matches were found
-                if self.detection_result is None or (self.detection_result is not None and  (self.detection_result['labels'][0] != label \
-                                                      or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
-                                                        or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
+                # if self.detection_result is None or (self.detection_result is not None and  (self.detection_result['labels'][0] != label \
+                #                                       or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
+                #                                         or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
+                center_click_pos = self.get_top_center_position(label, 0.1)
+                if label == "metin": center_click_pos = self.get_top_center_position(label, 0.67)
+                if center_click_pos is None:
                     self.put_info_text('No metin found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
@@ -267,7 +173,7 @@ class MetinBot:
                     return False
                 else:
                     saved_click_pos = copy.deepcopy(self.detection_result['click_pos'])
-                    x, y = saved_click_pos
+                    x, y = center_click_pos
 
                     if x >= 875 and y <= 300:
                         x = 865
@@ -289,6 +195,11 @@ class MetinBot:
                         x = x - 30 
                         self.metin_window.mouse_move(x,y)
                         
+                    if label == "first_arena_middlepoint":
+                        y = y + 95
+                        x = abs(x - 85) + 5
+                        self.metin_window.mouse_move(x,y)
+
                     else:
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
                         self.metin_window.mouse_move(x, y)
@@ -311,13 +222,21 @@ class MetinBot:
             print(e)
             return False
             
+    def get_top_center_position(self, _label, _score):
+        if self.detection_result is None:
+            return None
+        for  score, label, center in zip(self.detection_result['scores'], self.detection_result['labels'], self.detection_result['center_positions']):
+            if score >= _score and label == _label:
+                return center
+        return None
+
     def check_match_after_detection(self, label):
         detection_success = False
         match_loc = None
         if label=="guard":
             time.sleep(0.15)
             text = self.game_actions.get_text_from_current_cursor_position()
-            if "Stra" in text or "Myr" in text or "Dol" in text:
+            if "Stra" in text or "Myr" in text or "Dol" in text or "Piek" in text or "Kat" in text:
                 detection_success = True
         else:
             time.sleep(0.07)
@@ -425,7 +344,7 @@ class MetinBot:
         #self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or (result is not None and result[1] < 100) or time.time() - self.started_hitting_time >= 4.5:
+        if result is None or (result is not None and result[1] < 100) or time.time() - self.started_hitting_time >= 7.5:
             
 
             logging.debug("Metin has been killed")
@@ -438,7 +357,7 @@ class MetinBot:
             self.last_metin_time = total
 
             return False
-        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 3:
+        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 5:
             self.game_actions.get_the_player_on_the_horse()
             return True
         return True
@@ -500,13 +419,13 @@ class MetinBot:
         self.info_lock.release()
         return screenshot
 
-    def set_first_state(self, state):
+    def set_first_state(self):
          self.state_lock.acquire()
 
          self.time_entered_state = time.time()
          self.time_of_new_screen = time.time()
 
-         self.state = state
+         self.state = self.state_order.get_first_state()
 
          self.state_lock.release()
          self.put_info_text()
@@ -525,7 +444,7 @@ class MetinBot:
         self.put_info_text()
        
 
-    def increment_state(self, stop_thread=True, time_of_next_acion=time.time()):
+    def increment_state(self, stop_thread=True, time_of_next_action=time.time()):
         
         if stop_thread:
             self.stop()
@@ -535,14 +454,14 @@ class MetinBot:
         if hasattr(self.state, "name"):
             self.stats.add_window_foreground_time_in_state(self.state.name, self.time_of_foreground_window_in_state)
             self.stats.add_state_time(self.state.name, time.time() - self.time_entered_state )
-        if self.state != DangeonState.DEBUG and self.state != DangeonState.END_BOSS:
-            self.state = DangeonState(self.state.value + 1)
-        elif self.state == DangeonState.END_BOSS:
-            self.state = DangeonState(0)
+        if self.state != self.state_order.get_last_state_from_iteration():
+            self.state = self.state_order.get_next_state(self.state)
+        elif self.state == self.state_order.get_last_state_from_iteration():
+            self.state = self.state_order.get_first_state()
         self.time_of_foreground_window_in_state = 0
         self.time_of_window_run = time.time()
         self.time_entered_state = time.time()
-        self.time_of_next_action = time_of_next_acion
+        self.time_of_next_action = time_of_next_action
         self.state_lock.release()
         self.put_info_text()
         

@@ -24,7 +24,8 @@ class CaptureAndDetect:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # print(device)
         # self.model = torch.hub.load(r'C:\Users\Filip\Desktop\tob2tm\Metin2-Bot-main\yolov5', 'custom', path=r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\upgraded.pt', source='local',force_reload=True )
-        self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\v8.pt').to(device)
+        #self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\v8.pt').to(device)
+        self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\dang75_yolov8n.pt').to(device)
         self.screenshot = None
         self.screenshot_time = None
 
@@ -111,14 +112,14 @@ class CaptureAndDetect:
                         boxes.append(x.xyxy.numpy())
                         output_scores.append(x.conf.numpy())
                         labels.append(x.cls.numpy())
-                        
-                
-                # Flatten the lists of boxes, scores, and labels
+
+
+                    # Flatten the lists of boxes, scores, and labels
                     flat_boxes = np.concatenate(boxes)
                     flat_scores = np.concatenate(output_scores)
                     flat_labels = np.concatenate(labels)
 
-                    mask = flat_scores >= 0.57
+                    mask = (flat_scores > 0.45) | (flat_labels == 2)
                     filtered_boxes = flat_boxes[mask]
                     filtered_scores = flat_scores[mask]
                     filtered_labels = flat_labels[mask]
@@ -143,7 +144,8 @@ class CaptureAndDetect:
                         detection = {
                             'rectangles': sorted_rectangles,
                             'scores': sorted_scores,
-                            'labels': sorted_labels
+                            'labels': sorted_labels,
+                            'center_positions': []
                         }
                         #print(detection)
                         #print(detection)
@@ -156,17 +158,22 @@ class CaptureAndDetect:
                         best_box = detection['rectangles'][0]
                         best_score = detection['scores'][0]
                         best_label = detection['labels'][0]
-
-                        for box, score, label in zip(detection['rectangles'][:6], detection['scores'][:6], detection['labels'][:6]):
+                        x = 0
+                        for box, score, label in zip(detection['rectangles'][:8], detection['scores'][:8], detection['labels'][:8]):
+                           
                             if score > 0.02:
                                 self.vision.draw_rectangle_xmin_ymin_xmax_ymax(detection_image,box, (255,0,0))
                                 top_left = (int(box[0]), int(box[1]))
                                 bottom_right = (int(box[2]), int(box[3]))
+                                detection['center_positions'].append((int((box[0] + box[2]) / 2), int((box[1] + box[3])/2)))
                                 # Put the probability on the image
                                 #label = f"{score:.2f}"
                                 detection_image = cv.putText(detection_image, label + " " + str(score), (top_left[0], top_left[1] - 10),
                                                             cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv.LINE_AA)
-                        
+                            
+                            x+=1
+                            
+
                         # Highlighting the best box in a different color (optional)
                         top_left = (int(best_box[0]), int(best_box[1]))
                         bottom_right = (int(best_box[2]), int(best_box[3]))

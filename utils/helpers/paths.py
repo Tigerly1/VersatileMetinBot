@@ -65,3 +65,8 @@ ERVELIA_DANG30_IMAGE_PATHS = {
     'red_dragon': get_absolute_path('utils/images/ervelia/dang_30_items/red_dragon.png'),
     # Add more images here
 }
+
+ERVELIA_DANG75_IMAGE_PATHS = {
+    "dangeon_item": get_absolute_path('utils/images/ervelia/dang_75_items/dangeon_item.png'),
+
+}

@@ -10,8 +10,6 @@ from threading import Thread, Lock
 import datetime
 import pytesseract
 import re
-
-from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
 from utils.helpers.music_player import play_music
 from utils.helpers.paths import ERVELIA_DANG30_IMAGE_PATHS, get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
 
@@ -30,12 +28,12 @@ class GameActions:
         time.sleep(zooming_time)
         self.metin_bot.osk_window.stop_zooming_in()
 
-    def zoom_in_out(self, in_time=1.0, out_time=0.6):
+    def zoom_in_out(self, in_time=1.0, out_time=0.45):
         self.zoom_in(in_time)
         time.sleep(0.05)
         self.zoom_out(out_time)
 
-    def calibrate_view(self, calibration_type="guard"):
+    def calibrate_view(self, calibration_type="guard", ):
         #self.metin_bot.metin_window.activate()
         # Camera option: Near, Perspective all the way to the right
         self.metin_bot.osk_window.start_rotating_up()
@@ -45,21 +43,23 @@ class GameActions:
         self.metin_bot.osk_window.start_rotating_down()
         #time.sleep(random.uniform(0.58, 0.63))
         if calibration_type == "first_arena":
-            time.sleep(0.68)
+            time.sleep(0.85)
+        elif calibration_type == 'first_arena_middlepoint':
+            time.sleep(0.79)
         elif calibration_type == "second_arena":
             time.sleep(0.7)
         else:
             time.sleep(random.uniform(0.62, 0.7))
         self.metin_bot.osk_window.stop_rotating_down()
         time.sleep(0.1)
-        # if calibration_type != "first_arena":
-        #     self.metin_bot.osk_window.start_zooming_out()
-        #     time.sleep(0.6)
-        #     self.metin_bot.osk_window.stop_zooming_out()
-        # #self.osk_window.start_zooming_in()
-        # #time.sleep(0.07)
-        # else:
-        #     self.zoom_in_out()
+        if calibration_type != "first_arena_middlepoint":
+            self.metin_bot.osk_window.start_zooming_out()
+            time.sleep(0.6)
+            self.metin_bot.osk_window.stop_zooming_out()
+        #self.osk_window.start_zooming_in()
+        #time.sleep(0.07)
+        else:
+            self.zoom_in_out()
         time.sleep(0.07)
         #self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
@@ -226,7 +226,7 @@ class GameActions:
             self.metin_bot.login_time = time.time()
             self.metin_bot.login_state = True
             time.sleep(0.4)
-            self.metin_bot.switch_state(DangeonState.LOGGING)
+            self.metin_bot.switch_state(self.metin_bot.state_order.get_logging_state())
             return
 
         #######
@@ -251,7 +251,7 @@ class GameActions:
             self.metin_bot.dangeon_actions.change_channel = True
             self.metin_bot.health_checks_bool = True
             self.metin_bot.login_state = False
-            self.metin_bot.switch_state(DangeonState.INITIALIZING)
+            self.metin_bot.switch_state(self.metin_bot.state_order.get_initializing_state())
             return
         # self.check_if_player_is_logged_out()
 
@@ -437,7 +437,7 @@ class GameActions:
             self.metin_bot.dangeon_actions.tp_to_dangeon = True
             self.metin_bot.dangeon_actions.change_channel = True
             self.metin_bot.health_checks_bool = True
-            self.metin_bot.switch_state(DangeonState.INITIALIZING)
+            self.metin_bot.switch_state(self.metin_bot.state_order.get_initializing_state())
 
     def check_if_equipment_is_on(self):
         top_left = (840, 80)

@@ -181,7 +181,7 @@ class InterceptionInput(Window):
         if small_rotation:
             interception.move_relative(-random.randint(2, 5), 0)
         elif large_rotation:
-            interception.move_relative(random.randint(25, 35), 0)
+            interception.move_relative(random.randint(35, 45), 0)
         else:
             interception.move_relative(random.randint(17, 27), 0)
         sleep(0.05)
@@ -257,3 +257,9 @@ class InterceptionInput(Window):
 
     def escape_key(self):
         interception.press("esc")
+
+    def hold_key(self, key):
+        interception.key_down(key)
+
+    def free_key(self, key):
+        interception.key_up(key)

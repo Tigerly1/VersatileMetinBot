@@ -5,7 +5,6 @@ from pathlib import Path
 import threading
 import time
 from bot.core_loop import MetinBot
-from bot.scheduler.bot_scheduler import BotScheduler
 from detectors.yolo.capture_and_detect import CaptureAndDetect
 from utils.helpers.vision import Vision
 
@@ -33,7 +32,7 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.windows_count = 6
+        self.windows_count = 1
         self.server_name = "Ervelia"
         
         self.window_names = []
@@ -104,10 +103,6 @@ class MainLoop():
                     #print("time before stopped thread {}".format(time.time()))
                     current_instance['bot'].wait_for_thread_to_terminate()
                     self.change_window = False
-                    #print("time of stopped thread {}".format(time.time()))
-                    # Stop current bot and capture // update dont stop as it is always stopped
-                    #current_instance['bot'].stop(swap_window=False)
-                    #print("time of stopped thread {}".format(time.time()))
                     # Move to next instance
                     time.sleep(0.01)
                     #if time.time() - self.handler.get_next_instance_last_run_time() > self.seconds_between_same_runs:
@@ -126,11 +121,7 @@ class MainLoop():
                                 #time.sleep(0.03)
 
                                 self.capt_detect.change_window_of_detection(new_instance['window'])
-                                #Vision().SIFT_FEATURES_DETECTION(detection_image)
-                                # Display image
-                                # current_instance['window'].move_window(0,0)
-                                #current_instance['window'].activate()
-                                #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + "window is being changed")
+
 
                                 while True:
                                     screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
@@ -151,9 +142,6 @@ class MainLoop():
                                 #Vision().SIFT_FEATURES_DETECTION(detection_image)
                                 # Display image
                                 cv.imshow('Matches', detection_image)
-                            #print(str(datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]) + " window has been changed")
-                            #time.sleep(0.05)
-                            #change the window in the capt_detect 
                             new_instance['bot'].start()
                             current_instance = new_instance
                             #print("time of started thread {}".format(time.time()))
@@ -180,16 +168,11 @@ class MainLoop():
                 if detection_image is None:
                     continue
 
-                # Draw bot state on image
                 overlay_image = current_instance['bot'].get_overlay_image() 
                 detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
-                
-                #Vision().SIFT_FEATURES_DETECTION(detection_image)
-                # Display image
+
                 cv.imshow('Matches', detection_image)
 
-                # press 'q' with the output window focused to exit.
-                # waits 1 ms every loop to process key presses
             if self.stop_loop: ## w as wait
                 self.capt_detect.stop()
                 current_instance['bot'].stop(swap_window=False)
@@ -207,25 +190,8 @@ class MainLoop():
 
     def listen_for_ctrl_w(self, interception):
         while True:
-            #interceptionModule.capture_keyboard()
-            # print("XDD")
-            # interception.wait(interceptionModule.inputs.keyboard)
-           
-            # stroke = interception.receive(interceptionModule.inputs.keyboard)
-            # print(stroke.code)
-            # time.sleep(0.1)
-            # # Check for Ctrl key press or release
-            # if stroke.code in [KEYBOARD_MAPPING['ctrlleft'], KEYBOARD_MAPPING['ctrlright']]:
-            #     ctrl_pressed = stroke.state == 1  # state 1 for key down, 0 for key up
-
-            # # Check for W key press with Ctrl pressed
-            # if stroke.code == KEYBOARD_MAPPING['w'] and stroke.state == 1 and ctrl_pressed:
-            #     self.stop_loop = True  # Set the flag to stop the main loop
-            #     print('wow')
             context = Interception()
             context.set_filter(context.is_keyboard, FilterKeyState.FILTER_KEY_ALL)
-
-            #print("Listenting to keyboard, press ESC to quit.")
             ctrl_clicked = False
             try:
                 while True:
@@ -252,9 +218,8 @@ class MainLoop():
                         print("ESC pressed, exited.")
                         #return device
 
-                    #print(f"Received stroke {stroke} on keyboard device {device}")
+
                     context.send(device, stroke)
             finally:
                 context._destroy_context()
                 
-            #interception.send(interceptionModule.inputs.keyboard, stroke)

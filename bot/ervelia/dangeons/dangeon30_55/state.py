@@ -11,7 +11,7 @@ class DangeonState(enum.Enum):
     SECOND_METINS = 7
     SECOND_MINI_BOSS = 8
     END_BOSS = 9
-    DEBUG = 10
-    LOGGING = 11
-    INITIALIZING = 999
+    DEBUG = 700
+    LOGGING = 701
+    INITIALIZING = 9999
     

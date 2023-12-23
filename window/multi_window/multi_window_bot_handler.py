@@ -1,6 +1,8 @@
 from threading import Lock
 import time
 from bot.core_loop import MetinBot
+from bot.ervelia.dangeons.dangeon30_55.state_order import Dangeon30StateOrder
+from bot.ervelia.dangeons.dangeon75_95.state_order import Dangeon75StateOrder
 from detectors.yolo.capture_and_detect import CaptureAndDetect
 
 from window.metin.metin_window import MetinWindow
@@ -24,7 +26,7 @@ class MultiWindowBotHandler:
                 instance = {
                     'window': metin_window,
                     'capt_detect': self.capture_and_detect,
-                    'bot': MetinBot(metin_window, self.counter, self.main_loop),
+                    'bot': MetinBot(metin_window, Dangeon75StateOrder(), self.counter, self.main_loop),
                     'window_name': window_name,  # Store window_name within the instance
                     'last_run_time': time.time()
                 }
