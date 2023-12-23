@@ -19005,3 +19005,42 @@
 2023-12-23 15:16:06,560 - DEBUG - Creating converter from 5 to 7
 2023-12-23 15:16:06,560 - DEBUG - Creating converter from 7 to 5
 2023-12-23 15:16:06,560 - DEBUG - Creating converter from 5 to 7
+2023-12-23 15:16:10,389 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:16:10,525 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:17:10,394 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:17:10,503 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:18:10,408 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:18:10,522 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:18:48,466 - DEBUG - Metin has been killed
+2023-12-23 15:19:10,420 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:19:10,524 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:19:20,131 - DEBUG - Metin has been killed
+2023-12-23 15:20:10,430 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:20:10,538 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:21:10,455 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:21:10,669 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:22:10,478 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:22:10,629 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:23:10,511 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:23:10,618 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:23:58,994 - DEBUG - Metin has been killed
+2023-12-23 15:24:10,526 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:24:10,623 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:25:10,543 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:25:10,683 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:25:52,310 - DEBUG - ACTION RESTARTED WITH BUG IN END_BOSS
+2023-12-23 15:26:10,551 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:26:10,686 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:27:10,590 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:27:10,728 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:44:18,165 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-12-23 15:44:18,170 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-12-23 15:44:18,172 - DEBUG - interactive is False
+2023-12-23 15:44:18,172 - DEBUG - platform is win32
+2023-12-23 15:44:18,237 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-12-23 15:44:18,241 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-12-23 15:44:23,684 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-12-23 15:44:23,914 - DEBUG - Creating converter from 7 to 5
+2023-12-23 15:44:23,914 - DEBUG - Creating converter from 5 to 7
+2023-12-23 15:44:23,914 - DEBUG - Creating converter from 7 to 5
+2023-12-23 15:44:23,914 - DEBUG - Creating converter from 5 to 7

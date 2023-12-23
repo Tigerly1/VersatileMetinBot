@@ -26,7 +26,7 @@ class Actions:
         self.metins_killed = 0
         self.picture_for_comparison = None
         self.gather_items_time = 102
-        self.last_inventory_page_used = 2
+        self.last_inventory_page_used = 1
         self.gather_items_stones_click = []
         self.items_gathered = 0
         self.inventory_page = 1
@@ -377,9 +377,7 @@ class Actions:
                 return True
 
         elif self.metins_rotation > self.max_metins_rotations:
-            
-            self.start_of_the_action_time = None
-            self.restart_after_action_not_changed()
+        
             return False
 
     def click_items(self, image_of_item):
