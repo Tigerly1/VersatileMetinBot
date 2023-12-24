@@ -225,10 +225,27 @@ class MetinBot:
     def get_top_center_position(self, _label, _score):
         if self.detection_result is None:
             return None
-        for  score, label, center in zip(self.detection_result['scores'], self.detection_result['labels'], self.detection_result['center_positions']):
+        
+        max_area = 0
+        max_area_center = None
+
+
+        for  score, label, center, box in zip(self.detection_result['scores'],
+                                              self.detection_result['labels'],
+                                              self.detection_result['center_positions'],
+                                              self.detection_result['rectangles']):
+            
             if score >= _score and label == _label:
-                return center
-        return None
+                top_left = (int(box[0]), int(box[1]))
+                bottom_right = (int(box[2]), int(box[3]))
+                area = (bottom_right[0] - top_left[0]) * (bottom_right[1] - top_left[1])
+
+                # If this object is larger than the current largest object, update the maximum area and the position
+                if area > max_area:
+                    max_area = area
+                    max_area_center = center
+
+        return max_area_center
 
     def check_match_after_detection(self, label):
         detection_success = False

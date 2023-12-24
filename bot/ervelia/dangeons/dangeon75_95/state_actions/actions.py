@@ -46,7 +46,6 @@ class Actions:
 
     def enter_the_dangeon(self):
        
-
         if self.metin_bot.dangeon_end_time > time.time() - 20 and self.metin_bot.dangeons_count > 0 and self.tp_to_dangeon == False:
             self.metin_bot.game_actions.tp_to_dangeon_again()
             self.metin_bot.dangeon_entered_time = time.time()
@@ -100,14 +99,12 @@ class Actions:
 
     def enter_arena(self, arena):
         if self.start_of_the_action_time is None:
+            
             if arena == "first_arena":
                 if self.metin_bot.game_actions.check_if_you_cannot_tp_to_dangeon():
                     self.start_of_the_action_time = None
                     self.restart_after_action_not_changed()
                     return
-
-
-
                 
             self.start_of_the_action_time = time.time()
 
@@ -242,10 +239,9 @@ class Actions:
                 return
             
         elif self.metins_rotation > self.max_metins_rotations:
-           
-            
-            self.start_of_the_action_time = None
-            self.restart_after_action_not_changed()
+            if self.metins_killed < number_of_metins - 1:
+                self.start_of_the_action_time = None
+                self.restart_after_action_not_changed()
 
         else:
 
