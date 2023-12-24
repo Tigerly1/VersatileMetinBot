@@ -19044,3 +19044,20 @@
 2023-12-23 15:44:23,914 - DEBUG - Creating converter from 5 to 7
 2023-12-23 15:44:23,914 - DEBUG - Creating converter from 7 to 5
 2023-12-23 15:44:23,914 - DEBUG - Creating converter from 5 to 7
+2023-12-23 15:44:28,165 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:44:28,333 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:45:28,209 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:45:28,341 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:46:28,217 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:46:28,318 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:46:36,299 - DEBUG - Metin has been killed
+2023-12-23 15:47:28,235 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:47:28,366 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:48:28,248 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:48:28,368 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:49:28,250 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:49:28,394 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:50:25,692 - DEBUG - ACTION RESTARTED WITH BUG IN SECOND_CLICK_ITEMS
+2023-12-23 15:50:28,253 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-23 15:50:28,360 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-23 15:50:31,068 - DEBUG - ACTION RESTARTED WITH BUG IN INITIALIZING

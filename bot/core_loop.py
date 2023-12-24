@@ -137,7 +137,8 @@ class MetinBot:
                 #                                       or self.get_top_center_position('first_arena', 0.65) is None \
                 #                                         or self.get_top_center_position('second_arena', 0.7) is None)):
                 if self.get_top_center_position(label, 0.1) is None:
-                    self.game_actions.rotate_view(False, True)
+                    #self.game_actions.rotate_view(False, True)
+                    self.game_actions.rotate_view(True, False)
                     return False
                 else:
                     return True
