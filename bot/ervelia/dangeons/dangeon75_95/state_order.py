@@ -40,7 +40,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
             context.health_checks_iterations = (context.health_checks_iterations + 1) % 50
 
             if context.health_checks_iterations == 45 or context.health_checks_bool:
-                context.game_actions.health_checks()
+                context.game_actions.health_checks(960)
                 context.health_checks_bool = False
                 continue 
             
@@ -94,7 +94,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.SECOND_METINS:
-                self.dangeon_actions.kill_metins(4, True)
+                self.dangeon_actions.kill_metins(4, True, 0.55)
                 continue
 
             if context.state == DangeonState.SECOND_CLICK_ITEMS:
@@ -109,12 +109,12 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 self.dangeon_actions.kill_mobs(64)
                 continue
             if context.state == DangeonState.THIRD_METINS:
-                self.dangeon_actions.kill_metins(6, True)
+                self.dangeon_actions.kill_metins(6, True, 0.55)
                 continue
             if context.state == DangeonState.THIRD_KILL_MINI_BOSS:
                 self.dangeon_actions.kill_mini_boss(12)
                 continue
             
             if context.state == DangeonState.END_BOSS:
-                self.dangeon_actions.end_boss(45)
+                self.dangeon_actions.end_boss(95)
                 continue

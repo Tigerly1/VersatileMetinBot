@@ -165,7 +165,7 @@ class InterceptionInput(Window):
         sleep(0.02)
         interception.mouse_up('right')
 
-    def rotate_with_mouse(self, small_rotation=False, large_rotation=False):
+    def rotate_with_mouse(self, small_rotation=False, large_rotation=False, rotate_right=False):
         
         self.mouse_move(random.randint(300, 400), random.randint(400, 500))
         sleep(0.05)
@@ -176,17 +176,18 @@ class InterceptionInput(Window):
         #     #self.mouse_move(x+random.randint(30, 50), y)
 
         #sleep(0.1)
+        direction = -1 if rotate_right else 1
         interception.mouse_down('right')
         sleep(0.06)
         if small_rotation:
-            interception.move_relative(-random.randint(2, 5), 0)
+            interception.move_relative(direction * random.randint(3, 10), 0)
         elif large_rotation:
-            interception.move_relative(random.randint(35, 45), 0)
+            interception.move_relative(direction * random.randint(35, 45), 0)
         else:
-            interception.move_relative(random.randint(17, 27), 0)
+            interception.move_relative(direction * random.randint(14, 27), 0)
         sleep(0.05)
         interception.mouse_up('right')
-        sleep(0.1)
+        sleep(0.07)
     def start_rotating_down(self):
         interception.key_down("t")
 

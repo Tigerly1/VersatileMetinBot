@@ -28,7 +28,7 @@ class GameActions:
         time.sleep(zooming_time)
         self.metin_bot.osk_window.stop_zooming_in()
 
-    def zoom_in_out(self, in_time=1.0, out_time=0.45):
+    def zoom_in_out(self, in_time=1.0, out_time=0.6):
         self.zoom_in(in_time)
         time.sleep(0.05)
         self.zoom_out(out_time)
@@ -36,22 +36,6 @@ class GameActions:
     def calibrate_view(self, calibration_type="guard", ):
         #self.metin_bot.metin_window.activate()
         # Camera option: Near, Perspective all the way to the right
-        self.metin_bot.osk_window.start_rotating_up()
-        time.sleep(1.1)
-        self.metin_bot.osk_window.stop_rotating_up()
-        time.sleep(0.15)
-        self.metin_bot.osk_window.start_rotating_down()
-        #time.sleep(random.uniform(0.58, 0.63))
-        if calibration_type == "first_arena":
-            time.sleep(0.85)
-        elif calibration_type == 'first_arena_middlepoint':
-            time.sleep(0.79)
-        elif calibration_type == "second_arena":
-            time.sleep(0.7)
-        else:
-            time.sleep(random.uniform(0.62, 0.7))
-        self.metin_bot.osk_window.stop_rotating_down()
-        time.sleep(0.1)
         if calibration_type != "first_arena_middlepoint":
             self.metin_bot.osk_window.start_zooming_out()
             time.sleep(0.6)
@@ -61,6 +45,23 @@ class GameActions:
         else:
             self.zoom_in_out()
         time.sleep(0.07)
+        self.metin_bot.osk_window.start_rotating_up()
+        time.sleep(1.1)
+        self.metin_bot.osk_window.stop_rotating_up()
+        time.sleep(0.15)
+        self.metin_bot.osk_window.start_rotating_down()
+        #time.sleep(random.uniform(0.58, 0.63))
+        if calibration_type == "first_arena":
+            time.sleep(0.73)
+        elif calibration_type == 'first_arena_middlepoint':
+            time.sleep(0.62)
+        elif calibration_type == "second_arena":
+            time.sleep(0.7)
+        else:
+            time.sleep(random.uniform(0.62, 0.7))
+        self.metin_bot.osk_window.stop_rotating_down()
+        time.sleep(0.1)
+        
         #self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
         #self.osk_window.stop_zooming_in()
@@ -81,8 +82,8 @@ class GameActions:
         time.sleep(0.08)
         self.metin_bot.osk_window.stop_zooming_in()
 
-    def rotate_view(self, small_rotation=False, big_rotation=False):
-        self.metin_bot.osk_window.rotate_with_mouse(small_rotation, big_rotation)
+    def rotate_view(self, small_rotation=False, big_rotation=False, rotate_right=False):
+        self.metin_bot.osk_window.rotate_with_mouse(small_rotation, big_rotation, rotate_right)
         #self.osk_window.move_with_camera_rotation()
 
     def rotate_view_async(self, stop=False):
@@ -179,10 +180,11 @@ class GameActions:
         try:
             logged_out_info = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
-            logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
+            #logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
             logged_out_info = pytesseract.image_to_string(logged_out_info)
             possible_logged_out_info = ["ZALOG", "TNOGUI"]
-            if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or self.metin_bot.login_state:
+            #print(logged_out_info)
+            if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or "TALDGIL!" in logged_out_info or self.metin_bot.login_state:
                 # self.metin_bot.set_object_detector_state(False)
                 
                 #self.metin_bot.dangeon_actions.restart_class_props()
@@ -246,9 +248,9 @@ class GameActions:
         
         if time.time() - self.metin_bot.login_time > 25:
             
-            self.metin_bot.dangeon_actions.restart_class_props()
-            self.metin_bot.dangeon_actions.tp_to_dangeon = True
-            self.metin_bot.dangeon_actions.change_channel = True
+            self.metin_bot.state_order.dangeon_actions.restart_class_props()
+            self.metin_bot.state_order.dangeon_actions.tp_to_dangeon = True
+            self.metin_bot.state_order.dangeon_actions.change_channel = True
             self.metin_bot.health_checks_bool = True
             self.metin_bot.login_state = False
             self.metin_bot.switch_state(self.metin_bot.state_order.get_initializing_state())
@@ -432,10 +434,10 @@ class GameActions:
     def check_if_bot_is_stuck_in_dangeon(self, time_in_seconds):
         if time.time() - self.metin_bot.dangeon_entered_time > time_in_seconds:
             print("Bugged in dangeon while in: " + str(self.metin_bot.get_state().name) + " state" )
-            self.metin_bot.dangeon_actions.restart_class_props()
+            self.metin_bot.state_order.dangeon_actions.restart_class_props()
             self.metin_bot.dangeon_entered_time = time.time()
-            self.metin_bot.dangeon_actions.tp_to_dangeon = True
-            self.metin_bot.dangeon_actions.change_channel = True
+            self.metin_bot.state_order.dangeon_actions.tp_to_dangeon = True
+            self.metin_bot.state_order.dangeon_actions.change_channel = True
             self.metin_bot.health_checks_bool = True
             self.metin_bot.switch_state(self.metin_bot.state_order.get_initializing_state())
 
@@ -529,12 +531,14 @@ class GameActions:
             self.metin_bot.osk_window.un_mount()
             time.sleep(0.4)
 
-    def health_checks(self):
+    def health_checks(self, max_time_in_dang=600):
         try:
-            self.check_if_player_is_logged_out()
+            self.check_if_bot_is_stuck_in_dangeon(max_time_in_dang)
             self.respawn_if_dead()
-            self.check_if_bot_is_stuck_in_dangeon(600)
-        except:
+            self.check_if_player_is_logged_out()
+           
+        except Exception as e:
+            print(e)
             print("health checks needs image first")
 
     def detect_gm(self):
