@@ -242,16 +242,17 @@ class Actions:
 
         if first_assumption or second_assumption:
             if second_assumption and not first_assumption:
-                 self.metin_bot.osk_window.activate_flag()
+                 #self.metin_bot.osk_window.activate_flag()
+                 self.metin_bot.osk_window.activate_horse_dodge()
             time.sleep(0.01)
             is_clicked = self.metin_bot.detect_and_click('metin', metin_acc=detection_acc)
             self.metins_rotation += 1
             if is_clicked:
                 if enemy_after_kill:
                     self.metin_bot.osk_window.activate_horse_dodge()
-                if self.metins_killed == 0:
+                if self.metins_killed < 2:
                     self.metin_bot.osk_window.activate_horse_dodge()
-                    self.metin_bot.osk_window.activate_flag()
+                    #self.metin_bot.osk_window.activate_flag()
                     time.sleep(0.1)
                 self.metin_is_getting_killed = True
                 self.metins_rotation = 0
@@ -342,7 +343,7 @@ class Actions:
     def kill_metin(self):
 
         
-        first_assumption = self.metins_rotation <= self.max_metins_rotations
+        first_assumption = self.metins_rotation <= (self.max_metins_rotations - 10)
         second_assumption = self.metin_bot.get_top_center_position('metin', 0.1) is not None
 
         if first_assumption or second_assumption:
@@ -364,7 +365,7 @@ class Actions:
                 self.metin_bot.stop(True, time.time()+7)
                 return True
 
-        elif self.metins_rotation > self.max_metins_rotations+5:
+        elif not first_assumption:
             self.start_of_the_action_time = None
             self.restart_after_action_not_changed()
             return True
@@ -393,7 +394,8 @@ class Actions:
                     kill_metins_time = time.time() + 5
                     while not self.kill_metin() and time.time() < kill_metins_time:
                         time.sleep(0.001)
-                    self.start_of_the_action_time = None   
+                    self.start_of_the_action_time = None
+                    
                     return
                 
             else:

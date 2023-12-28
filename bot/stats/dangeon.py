@@ -34,7 +34,7 @@ class DungeonBotStatistics:
     def add_dungeon_completed(self, time_spent):
         self.dungeons_completed += 1
         self.total_dungeon_time += time_spent
-        if self.dungeons_completed % 50 == 0:
+        if self.dungeons_completed % 5 == 0:
             self.notify_via_telegram("{} dungeons completed!".format(self.dungeons_completed))
 
     def add_bug_encountered(self):

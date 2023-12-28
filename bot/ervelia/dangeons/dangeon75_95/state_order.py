@@ -74,7 +74,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_MOBS:
-                self.dangeon_actions.kill_mobs(70)
+                self.dangeon_actions.kill_mobs(80)
                 continue
 
             if context.state == DangeonState.KILL_METINS:

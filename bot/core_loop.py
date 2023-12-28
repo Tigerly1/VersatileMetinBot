@@ -120,7 +120,7 @@ class MetinBot:
 
         self.set_first_state()
 
-        #self.state = DangeonState.FIRST_ARENA
+        #self.state = DangeonState.SECOND_CLICK_ITEMS
 
 
     def run(self):
@@ -204,6 +204,10 @@ class MetinBot:
                         x = abs(x - 85) + 5
                         self.metin_window.mouse_move(x,y)
 
+                    if label == "third_arena":
+                        x = x + 45 
+                        self.metin_window.mouse_move(x,y)
+
                     else:
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
                         self.metin_window.mouse_move(x, y)
@@ -211,6 +215,8 @@ class MetinBot:
                     if label == "second_arena":
                         self.osk_window.activate_flag()
                         time.sleep(0.2)
+
+                    
 
                     time.sleep(0.03)
                     if not check_match:

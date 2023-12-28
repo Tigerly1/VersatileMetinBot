@@ -20862,3 +20862,196 @@
 2023-12-28 18:00:34,532 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
 2023-12-28 18:01:34,426 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
 2023-12-28 18:01:34,542 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:44:12,098 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-12-28 18:44:12,110 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-12-28 18:44:12,112 - DEBUG - interactive is False
+2023-12-28 18:44:12,112 - DEBUG - platform is win32
+2023-12-28 18:44:12,184 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-12-28 18:44:12,194 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-12-28 18:44:26,391 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-12-28 18:44:27,000 - DEBUG - Creating converter from 7 to 5
+2023-12-28 18:44:27,001 - DEBUG - Creating converter from 5 to 7
+2023-12-28 18:44:27,001 - DEBUG - Creating converter from 7 to 5
+2023-12-28 18:44:27,001 - DEBUG - Creating converter from 5 to 7
+2023-12-28 18:44:36,079 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:44:36,226 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:45:36,107 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:45:36,246 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:46:36,132 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:46:36,251 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:47:36,169 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:47:36,287 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:48:36,182 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:48:36,283 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:49:36,213 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:49:36,356 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:50:36,227 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:50:36,369 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:51:36,237 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:51:36,356 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:52:02,796 - DEBUG - Metin has been killed
+2023-12-28 18:52:16,426 - DEBUG - Metin has been killed
+2023-12-28 18:52:30,320 - DEBUG - Metin has been killed
+2023-12-28 18:52:36,265 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:52:36,420 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:52:37,631 - DEBUG - Metin has been killed
+2023-12-28 18:52:44,666 - DEBUG - Metin has been killed
+2023-12-28 18:53:03,954 - DEBUG - Metin has been killed
+2023-12-28 18:53:21,590 - DEBUG - Metin has been killed
+2023-12-28 18:53:32,596 - DEBUG - Metin has been killed
+2023-12-28 18:53:36,252 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:53:36,370 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:54:36,264 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:54:36,385 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:55:36,284 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:55:36,413 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:56:36,297 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:56:36,416 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:57:12,542 - DEBUG - Metin has been killed
+2023-12-28 18:57:25,375 - DEBUG - Metin has been killed
+2023-12-28 18:57:36,303 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:57:36,465 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:58:36,315 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:58:36,429 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 18:59:36,335 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 18:59:36,501 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:00:10,916 - DEBUG - Metin has been killed
+2023-12-28 19:00:36,349 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:00:36,455 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:01:20,577 - DEBUG - Metin has been killed
+2023-12-28 19:01:36,393 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:01:36,527 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:01:59,999 - DEBUG - Metin has been killed
+2023-12-28 19:02:36,408 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:02:36,529 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:02:59,828 - DEBUG - Metin has been killed
+2023-12-28 19:03:20,693 - DEBUG - Metin has been killed
+2023-12-28 19:03:36,442 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:03:36,597 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:03:51,294 - DEBUG - Metin has been killed
+2023-12-28 19:04:08,926 - DEBUG - Metin has been killed
+2023-12-28 19:04:36,460 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:04:36,592 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:05:07,292 - DEBUG - Metin has been killed
+2023-12-28 19:05:36,471 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:05:36,600 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:06:36,502 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:06:36,646 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:07:36,503 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:07:36,616 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:08:36,507 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:08:36,624 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:09:04,288 - DEBUG - Metin has been killed
+2023-12-28 19:09:17,559 - DEBUG - Metin has been killed
+2023-12-28 19:09:36,519 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:09:36,623 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:10:36,523 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:10:36,662 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:11:18,503 - DEBUG - Metin has been killed
+2023-12-28 19:11:25,133 - DEBUG - Metin has been killed
+2023-12-28 19:11:36,552 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:11:36,673 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:11:46,025 - DEBUG - Metin has been killed
+2023-12-28 19:12:36,579 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:12:36,683 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:13:36,605 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:13:36,755 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:13:53,919 - DEBUG - Metin has been killed
+2023-12-28 19:14:25,667 - DEBUG - Metin has been killed
+2023-12-28 19:14:36,627 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:14:36,736 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:14:49,269 - DEBUG - Metin has been killed
+2023-12-28 19:15:09,166 - DEBUG - Metin has been killed
+2023-12-28 19:15:22,921 - DEBUG - Metin has been killed
+2023-12-28 19:15:36,648 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:15:36,762 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:16:36,655 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:16:36,784 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:17:36,671 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:17:36,802 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:18:36,711 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:18:36,870 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:19:30,889 - DEBUG - Metin has been killed
+2023-12-28 19:19:36,735 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:19:36,857 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:20:36,759 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:20:36,884 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:20:51,445 - DEBUG - Metin has been killed
+2023-12-28 19:21:17,714 - DEBUG - Metin has been killed
+2023-12-28 19:21:36,782 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:21:36,902 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:22:36,818 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:22:36,965 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:23:08,362 - DEBUG - Metin has been killed
+2023-12-28 19:23:36,837 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:23:36,981 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:23:50,534 - DEBUG - Metin has been killed
+2023-12-28 19:23:57,296 - DEBUG - Metin has been killed
+2023-12-28 19:24:03,892 - DEBUG - Metin has been killed
+2023-12-28 19:24:17,696 - DEBUG - Metin has been killed
+2023-12-28 19:24:36,848 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:24:36,966 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:25:36,850 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:25:36,999 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:26:36,859 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:26:36,991 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:27:36,867 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:27:36,991 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:28:14,670 - DEBUG - Metin has been killed
+2023-12-28 19:28:21,276 - DEBUG - Metin has been killed
+2023-12-28 19:28:36,886 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:28:37,025 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:29:36,897 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:29:37,028 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:30:36,915 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:30:37,061 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:30:43,136 - DEBUG - Metin has been killed
+2023-12-28 19:30:47,950 - DEBUG - Metin has been killed
+2023-12-28 19:31:36,923 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:31:37,032 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:31:47,574 - DEBUG - Metin has been killed
+2023-12-28 19:31:54,235 - DEBUG - Metin has been killed
+2023-12-28 19:32:11,422 - DEBUG - Metin has been killed
+2023-12-28 19:32:36,937 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:32:37,053 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:33:18,898 - DEBUG - Metin has been killed
+2023-12-28 19:33:36,939 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:33:37,068 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:34:36,953 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:34:37,101 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:35:22,765 - DEBUG - ACTION RESTARTED WITH BUG IN FIRST_ARENA
+2023-12-28 19:35:36,980 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:35:37,100 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:36:37,007 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:36:37,112 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:37:22,223 - DEBUG - Metin has been killed
+2023-12-28 19:37:37,031 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:37:37,163 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:38:37,038 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:38:37,171 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:39:37,058 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:39:37,188 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:40:37,091 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:40:37,210 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:41:37,124 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:41:37,236 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:42:37,155 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:42:37,295 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:43:37,168 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:43:37,310 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:44:37,197 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:44:37,340 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:59:29,521 - DEBUG - matplotlib data path: C:\Users\Filip\AppData\Local\Programs\Python\Python311\Lib\site-packages\matplotlib\mpl-data
+2023-12-28 19:59:29,529 - DEBUG - CONFIGDIR=C:\Users\Filip\.matplotlib
+2023-12-28 19:59:29,532 - DEBUG - interactive is False
+2023-12-28 19:59:29,532 - DEBUG - platform is win32
+2023-12-28 19:59:29,619 - DEBUG - CACHEDIR=C:\Users\Filip\.matplotlib
+2023-12-28 19:59:29,624 - DEBUG - Using fontManager instance from C:\Users\Filip\.matplotlib\fontlist-v330.json
+2023-12-28 19:59:35,960 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-12-28 19:59:36,238 - DEBUG - Creating converter from 7 to 5
+2023-12-28 19:59:36,238 - DEBUG - Creating converter from 5 to 7
+2023-12-28 19:59:36,238 - DEBUG - Creating converter from 7 to 5
+2023-12-28 19:59:36,238 - DEBUG - Creating converter from 5 to 7
+2023-12-28 19:59:41,509 - DEBUG - Starting new HTTPS connection (1): www.google-analytics.com:443
+2023-12-28 19:59:41,646 - DEBUG - https://www.google-analytics.com:443 "POST /mp/collect?measurement_id=G-X8NCJYTQXM&api_secret=QLQrATrNSwGRFRLE-cbHJw HTTP/1.1" 204 0
+2023-12-28 19:59:59,764 - DEBUG - ACTION RESTARTED WITH BUG IN SECOND_CLICK_ITEMS
