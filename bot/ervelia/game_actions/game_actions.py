@@ -184,7 +184,7 @@ class GameActions:
             logged_out_info = pytesseract.image_to_string(logged_out_info)
             possible_logged_out_info = ["ZALOG", "TNOGUI"]
             #print(logged_out_info)
-            if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or "TALDGIL!" in logged_out_info or self.metin_bot.login_state:
+            if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or "TALDGIL!" in logged_out_info or "TAUDGILI SIE" in logged_out_info or self.metin_bot.login_state:
                 # self.metin_bot.set_object_detector_state(False)
                 
                 #self.metin_bot.dangeon_actions.restart_class_props()
@@ -407,7 +407,7 @@ class GameActions:
             self.teleport_to_next_metin_respawn(self.metin_bot.current_metin_respawn)
             self.metin_bot.metin_teleports_passed += 1
 
-    def respawn_if_dead(self):
+    def check_if_dead(self):
         respawn_text = self.get_clicked_place_info((65,70),(238,88))
         possible_texts = ["Rozpocenij tutaj", "tutaj", "Rozpocenij", "Rozpocznij"]
 
@@ -416,20 +416,25 @@ class GameActions:
             for text in possible_texts:
                 if text in respawn_text:
                     respawn = True
-            
-            if respawn == True:
-                #time.sleep(10)
-                time.sleep(0.2)
-                self.metin_bot.metin_window.mouse_move(156,80)
-                time.sleep(0.04)
-                self.metin_bot.metin_window.mouse_click()
-                time.sleep(0.5)
-                self.metin_bot.osk_window.heal_yourself()
-                time.sleep(0.1)
-                self.metin_bot.osk_window.heal_yourself()
-                time.sleep(0.2)
-                self.metin_bot.osk_window.un_mount()
-                time.sleep(0.4)
+            return respawn
+        else: return False
+
+    def respawn_if_dead(self):
+        if self.check_if_dead():
+            #time.sleep(10)
+            time.sleep(0.2)
+            self.metin_bot.metin_window.mouse_move(156,80)
+            time.sleep(0.04)
+            self.metin_bot.metin_window.mouse_click()
+            time.sleep(0.5)
+            self.metin_bot.osk_window.heal_yourself()
+            time.sleep(0.1)
+            self.metin_bot.osk_window.heal_yourself()
+            time.sleep(0.2)
+            self.metin_bot.osk_window.un_mount()
+            time.sleep(0.4)
+            return True
+        return False
 
     def check_if_bot_is_stuck_in_dangeon(self, time_in_seconds):
         if time.time() - self.metin_bot.dangeon_entered_time > time_in_seconds:
@@ -558,6 +563,21 @@ class GameActions:
         # print("DETECTION OF GM STOP")
         # print(time.time())
 
+    def is_player_hitting_enemy(self):
+        if self.metin_bot.started_moving_time is None:
+            self.metin_bot.started_moving_time = time.time()
+            self.metin_bot.moving_to_enemy_flag_clicked = False
+
+        result = self.get_mob_info()
+        #print(result[0])
+        if result is not None and result[1] < 1000:
+            self.metin_bot.started_moving_time = None
+            return True
+        elif time.time() - self.metin_bot.started_moving_time < 4.5:
+            return self.is_player_hitting_enemy()
+        else:
+            self.metin_bot.started_moving_time = None
+            return True
     
     def remove_dangon_items_from_inv(self):
 

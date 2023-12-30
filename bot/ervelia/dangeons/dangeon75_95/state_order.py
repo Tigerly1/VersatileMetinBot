@@ -39,6 +39,16 @@ class Dangeon75StateOrder(DangeonStateStrategy):
             ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
             context.health_checks_iterations = (context.health_checks_iterations + 1) % 50
 
+            ## check if dead every 10 iterations and if dead then fight back iterate
+            if context.health_checks_iterations % 10 == 0:
+                if context.game_actions.respawn_if_dead():
+                    time.sleep(0.1)
+                    context.osk_window.start_hitting()
+                    time.sleep(0.09)
+                    context.osk_window.pull_mobs()
+                    time.sleep(0.15)
+                continue
+
             if context.health_checks_iterations == 45 or context.health_checks_bool:
                 context.game_actions.health_checks(960)
                 context.health_checks_bool = False
@@ -74,7 +84,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_MOBS:
-                self.dangeon_actions.kill_mobs(80)
+                self.dangeon_actions.kill_mobs(88)
                 continue
 
             if context.state == DangeonState.KILL_METINS:
@@ -82,7 +92,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_MINI_BOSS:
-                self.dangeon_actions.kill_mini_boss(10)
+                self.dangeon_actions.kill_mini_boss(7)
                 continue
 
             if context.state == DangeonState.SECOND_ARENA:
@@ -90,7 +100,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.SECOND_KILL_MOBS:
-                self.dangeon_actions.kill_mobs(54)
+                self.dangeon_actions.kill_mobs(66)
                 continue
 
             if context.state == DangeonState.SECOND_METINS:
@@ -106,13 +116,13 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.THIRD_KILL_MOBS:
-                self.dangeon_actions.kill_mobs(64)
+                self.dangeon_actions.kill_mobs(76)
                 continue
             if context.state == DangeonState.THIRD_METINS:
                 self.dangeon_actions.kill_metins(6, True, 0.55)
                 continue
             if context.state == DangeonState.THIRD_KILL_MINI_BOSS:
-                self.dangeon_actions.kill_mini_boss(12)
+                self.dangeon_actions.kill_mini_boss(10)
                 continue
             
             if context.state == DangeonState.END_BOSS:

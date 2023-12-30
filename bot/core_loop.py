@@ -198,14 +198,18 @@ class MetinBot:
                         self.metin_window.mouse_move(x,y)
                         
                     if label == "first_arena_middlepoint":
-                        if x < 55:
+                        if x < 75:
+                            self.game_actions.rotate_view()
                             return False
                         y = y + 95
                         x = abs(x - 85) + 5
                         self.metin_window.mouse_move(x,y)
 
                     if label == "third_arena":
-                        x = x + 45 
+                        if  x > 780:
+                            self.game_actions.rotate_view()
+                            return False
+                        x = x + 75 
                         self.metin_window.mouse_move(x,y)
 
                     else:
@@ -218,7 +222,7 @@ class MetinBot:
 
                     
 
-                    time.sleep(0.03)
+                    time.sleep(0.08)
                     if not check_match:
                         self.metin_window.mouse_click(lowDelay=True)
                         time.sleep(0.02)
@@ -329,10 +333,11 @@ class MetinBot:
     def moving_to_enemy(self):
         if self.started_moving_time is None:
             self.started_moving_time = time.time()
+            self.moving_to_enemy_flag_clicked = False
 
         result = self.game_actions.get_mob_info()
         #print(result[0])
-        if result is not None and result[1] < 1000:
+        if result is not None and result[1] < 950:
             self.moving_to_enemy_flag_clicked = False
             self.started_moving_time = None
             self.move_fail_count = 0
@@ -350,13 +355,15 @@ class MetinBot:
         #     return None
         #     #self.osk_window.pick_up()
         #     #self.metin_count += 1
-        elif result is not None and result[1] == 1000 and not self.moving_to_enemy_flag_clicked:
-            self.osk_window.activate_horse_dodge()
+        #elif result is not None and result[1] > 900 and result[1] <= 1000 and not self.moving_to_enemy_flag_clicked:
+        elif result is not None and result[1] > 950 and result[1] <= 1000 and not self.moving_to_enemy_flag_clicked:
+            self.osk_window.start_hitting()
+            #self.osk_window.activate_horse_dodge()
             self.osk_window.activate_flag()
             self.moving_to_enemy_flag_clicked = True
-            time.sleep(2.5)
-            self.moving_to_enemy()
+        
         else:
+             self.moving_to_enemy_flag_clicked = False
              return False
 
         return True
@@ -372,7 +379,7 @@ class MetinBot:
         #self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or (result is not None and result[1] < 100) or time.time() - self.started_hitting_time >= 6.5:
+        if result is None or (result is not None and result[1] < 100) or time.time() - self.started_hitting_time >= 8.5:
             
 
             logging.debug("Metin has been killed")
@@ -385,7 +392,7 @@ class MetinBot:
             self.last_metin_time = total
 
             return False
-        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 4:
+        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 6:
             self.game_actions.get_the_player_on_the_horse()
             return True
         return True
