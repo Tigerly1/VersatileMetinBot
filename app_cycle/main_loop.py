@@ -101,14 +101,15 @@ class MainLoop():
                 if self.change_window:
                     
                     #print("time before stopped thread {}".format(time.time()))
+                    #print("time of start changing window {}".format(time.time()))
                     current_instance['bot'].wait_for_thread_to_terminate()
                     self.change_window = False
                     # Move to next instance
-                    time.sleep(0.01)
+                    ##time.sleep(0.01)
                     #if time.time() - self.handler.get_next_instance_last_run_time() > self.seconds_between_same_runs:
                     #print("window is being changed")
                     new_instance = self.handler.get_next_instance()
-                    time.sleep(0.01)
+                    ##time.sleep(0.01)
                     if new_instance is not None and ((current_instance['bot'].thread is not None and not current_instance['bot'].thread.is_alive()) \
                                                      or current_instance['bot'].thread is None):
                         
@@ -122,19 +123,24 @@ class MainLoop():
 
                                 self.capt_detect.change_window_of_detection(new_instance['window'])
 
+                                if new_instance['bot'].does_it_need_newest_window_detections_after_swap:
+                                    while new_instance['bot'].does_it_need_newest_window_detections_after_swap:
+                                        screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
+                            
+                                        if hwnd_of_ss == new_instance['bot'].metin_window.hwnd:
+                                            time.sleep(0.002)
+                                            new_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
+                                            break
+                                        # Update bot with new image
+                                    
 
-                                while True:
+                                else:
                                     screenshot, screenshot_time, detection, detection_time, detection_image, hwnd_of_ss = self.capt_detect.get_info()
-                        
-                                    if hwnd_of_ss == new_instance['bot'].metin_window.hwnd:
-                                        time.sleep(0.002)
-                                        new_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
-                                        break
-                                    # Update bot with new image
-                                if detection_image is None:
-                                    self.swap_window()
-                                    continue
+                                    new_instance['bot'].detection_info_update(screenshot, screenshot_time, detection, detection_time)
 
+                                if detection_image is None:
+                                        self.swap_window()
+                                        continue
                                 # Draw bot state on image
                                 overlay_image = current_instance['bot'].get_overlay_image() 
                                 detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
@@ -148,6 +154,7 @@ class MainLoop():
                             self.handler.set_current_instance_last_run_time()
 
                             self.last_switch_time = time.time()
+                            #print("time on end of changing window {}".format(time.time()))
                         except Exception as e:
                             #print(e)
                             self.swap_window()
@@ -172,6 +179,7 @@ class MainLoop():
                 detection_image = cv.addWeighted(detection_image, 1, overlay_image, 1, 0)
 
                 cv.imshow('Matches', detection_image)
+                #print("time of iteration {}".format(time.time()))
 
             if self.stop_loop: ## w as wait
                 self.capt_detect.stop()

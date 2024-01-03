@@ -33,14 +33,14 @@ class Dangeon75StateOrder(DangeonStateStrategy):
         return DangeonState.INITIALIZING
     
     def execute_actions_by_state(self, context: "MetinBot"):
-        time.sleep(0.02)
+        time.sleep(0.002)
         while not context.stopped:
 
             ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
             context.health_checks_iterations = (context.health_checks_iterations + 1) % 50
 
             ## check if dead every 10 iterations and if dead then fight back iterate
-            if context.health_checks_iterations % 10 == 0:
+            if context.does_it_need_newest_window_detections_after_swap and context.health_checks_iterations % 20 == 0:
                 if context.game_actions.respawn_if_dead():
                     time.sleep(0.1)
                     context.osk_window.start_hitting()
@@ -65,8 +65,8 @@ class Dangeon75StateOrder(DangeonStateStrategy):
 
             if context.state == DangeonState.DEBUG:
 
-                context.osk_window.mouse_move(690,93)
-                time.sleep(5)
+                # context.osk_window.mouse_move(690,93)
+                # time.sleep(5)
                 context.switch_state(DangeonState.DEBUG)
                 continue
                 

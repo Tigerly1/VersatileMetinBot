@@ -143,9 +143,24 @@ class GameActions:
         mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-        mob_info_text = pytesseract.image_to_string(mob_info_box, lang='pol')
+        mob_info_text = pytesseract.image_to_string(mob_info_box)
 
         return self.process_metin_info(mob_info_text)
+
+    def get_mob_health(self):
+        top_left = (550, 35)
+        bottom_right = (700, 60)
+
+        mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
+
+        mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
+        mob_info_text = pytesseract.image_to_string(mob_info_box)
+
+        results = self.process_metin_info(mob_info_text)
+        if results is not None:
+            return results[1]
+        else:
+            return None
 
     def get_clicked_place_info(self, top_left, bottom_right):
         # top_left = (300, 21)

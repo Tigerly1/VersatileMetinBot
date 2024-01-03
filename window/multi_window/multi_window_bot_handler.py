@@ -51,22 +51,38 @@ class MultiWindowBotHandler:
         keys = list(self.instances.keys())
         if not keys:
             return None
-        if not hasattr(self, 'current_key') or self.current_key is None:
-            self.current_key = keys[0]
-        else:
-            current_index = keys.index(self.current_key)
-                # Find the next instance that is ready based on wait_time
-            for offset in range(1, len(keys) + 1):
-                next_index = (current_index + offset) % len(keys)
-                next_key = keys[next_index]
-                next_instance = self.instances[next_key]
-                elapsed_time = time.time() - next_instance['bot'].time_of_next_action
-                if elapsed_time >= 0:  # Use the wait time of the bot
-                    if with_setting_key:
-                        self.current_key = next_key
-                    return next_instance
+
+        # Start from the current key, or from the beginning if there is no current key
+        current_index = keys.index(self.current_key) if hasattr(self, 'current_key') and self.current_key is not None else -1
+
+        highest_priority_instance = None
+        highest_priority_value = -1  # Assuming priority is always non-negative
+
+        # Iterate over the instances starting from the current index
+        for offset in range(1, len(keys) + 1):
+            next_index = (current_index + offset) % len(keys)
+            next_key = keys[next_index]
+            next_instance = self.instances[next_key]
+            elapsed_time = time.time() - next_instance['bot'].time_of_next_action
+
+            if elapsed_time >= 0:  # Instance is ready
+                # Get the priority of this instance, default to 0 if not set
+                priority = getattr(next_instance['bot'], 'priority', 0)
+
+                # Check if this instance has the highest priority so far
+                if priority > highest_priority_value:
+                    highest_priority_value = priority
+                    highest_priority_instance = (next_key, next_instance)
+
+        # If no ready instance is found, return None
+        if highest_priority_instance is None:
             return None
-        return self.instances[self.current_key]
+
+        # If a highest priority instance was found, update the current key and return it
+        if with_setting_key:
+            self.current_key = highest_priority_instance[0]
+
+        return highest_priority_instance[1]
     
     def set_current_instance_last_run_time(self):
         self.instances[self.current_key]["last_run_time"] = time.time()

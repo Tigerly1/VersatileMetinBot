@@ -15,9 +15,9 @@ import pygetwindow as gw
 
 def windows_swap_fix():
     interception.move_to(1440,1059)
-    sleep(0.03)
-    interception.left_click(1)
-    sleep(0.03)
+    sleep(0.001)
+    # interception.left_click(1)
+    # sleep(0.03)
 
 class Window:
     def __init__(self, window_name, hwnd=None):

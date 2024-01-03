@@ -117,10 +117,12 @@ class MetinBot:
         self.login_time = None
 
         self.time_of_next_action = time.time()
+        self.priority = 0
+        self.does_it_need_newest_window_detections_after_swap = True
 
         self.set_first_state()
 
-        #self.state = DangeonState.SECOND_CLICK_ITEMS
+        #self.state = DangeonState.KILL_METINS
 
 
     def run(self):
@@ -184,8 +186,6 @@ class MetinBot:
                             return False
                         
                     self.rotate_count = 0
-                    if rotate_before_click:
-                        self.game_actions.rotate_using_space_before_click()
 
                     if label == "metin":
                         if x < 14 or x > 1010:
@@ -199,7 +199,7 @@ class MetinBot:
                         
                     if label == "first_arena_middlepoint":
                         if x < 75:
-                            self.game_actions.rotate_view()
+                            self.game_actions.rotate_view(rotate_right=True)
                             return False
                         y = y + 95
                         x = abs(x - 85) + 5
@@ -215,10 +215,14 @@ class MetinBot:
                     else:
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
                         self.metin_window.mouse_move(x, y)
+                    if rotate_before_click:
+                        self.game_actions.rotate_using_space_before_click()
+
+                   
                     
-                    if label == "second_arena":
-                        self.osk_window.activate_flag()
-                        time.sleep(0.2)
+                    # if label == "second_arena":
+                    #     self.osk_window.activate_flag()
+                    #     time.sleep(0.2)
 
                     
 
@@ -334,14 +338,16 @@ class MetinBot:
         if self.started_moving_time is None:
             self.started_moving_time = time.time()
             self.moving_to_enemy_flag_clicked = False
-
-        result = self.game_actions.get_mob_info()
+        #print("time of health checking start to enemy {}".format(time.time()))
+        # +- 0.3 s
+        health = self.game_actions.get_mob_health()
+        #print("time after health checking {}".format(time.time()))
         #print(result[0])
-        if result is not None and result[1] < 950:
+        if health is not None and health < 950:
             self.moving_to_enemy_flag_clicked = False
             self.started_moving_time = None
             self.move_fail_count = 0
-            self.put_info_text(f'Started hitting {result[0]}')
+            #self.put_info_text(f'Started hitting {result[0]}')
             self.started_hitting_time = None
             is_hitting_enemy = True
             while is_hitting_enemy:
@@ -356,7 +362,7 @@ class MetinBot:
         #     #self.osk_window.pick_up()
         #     #self.metin_count += 1
         #elif result is not None and result[1] > 900 and result[1] <= 1000 and not self.moving_to_enemy_flag_clicked:
-        elif result is not None and result[1] > 950 and result[1] <= 1000 and not self.moving_to_enemy_flag_clicked:
+        elif health is not None and health > 950 and health <= 1000 and not self.moving_to_enemy_flag_clicked:
             self.osk_window.start_hitting()
             #self.osk_window.activate_horse_dodge()
             self.osk_window.activate_flag()
@@ -423,10 +429,11 @@ class MetinBot:
         if self.thread is not None and self.thread.is_alive():
             self.thread.join()  
 
-    def stop(self, swap_window=True, time_of_next_action=time.time()):
+    def stop(self, swap_window=True, time_of_next_action=time.time(), priority=0, newest_detection_needed=True):
         self.state_lock.acquire()
-       
+        self.priority = priority
         self.time_of_next_action = time_of_next_action
+        self.does_it_need_newest_window_detections_after_swap = newest_detection_needed
         self.time_of_foreground_window_in_state += (time.time() - self.time_of_window_run)
         self.stopped = True
         if swap_window:
@@ -479,10 +486,10 @@ class MetinBot:
         self.put_info_text()
        
 
-    def increment_state(self, stop_thread=True, time_of_next_action=time.time()):
+    def increment_state(self, stop_thread=True, time_of_next_action=time.time(), priority=0, newest_detection_needed=True):
         
         if stop_thread:
-            self.stop()
+            self.stop(priority=priority, newest_detection_needed=newest_detection_needed)
         elif not stop_thread:
             self.time_of_foreground_window_in_state += (time.time() - self.time_of_window_run)
         self.state_lock.acquire()
