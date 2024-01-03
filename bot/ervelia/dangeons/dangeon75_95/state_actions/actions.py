@@ -520,7 +520,7 @@ class Actions:
 
             self.stats.log_statistics()
 
-            self.metin_bot.game_actions.collect_the_event_card_drop()
+            #self.metin_bot.game_actions.collect_the_event_card_drop()
 
             x, y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_end_image(), 0.9)
             if x is None:
