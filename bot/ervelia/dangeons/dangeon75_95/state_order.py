@@ -41,7 +41,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
 
             ## check if dead every 10 iterations and if dead then fight back iterate
             if context.does_it_need_newest_window_detections_after_swap and context.health_checks_iterations % 20 == 0:
-                if context.last_turn_alchemy_time + 23*60*60+20*60 < time.time():
+                if context.last_turn_alchemy_time + 23*60*60 < time.time():
                     context.game_actions.renew_alchemy()
                     context.last_turn_alchemy_time = time.time()
 
@@ -55,7 +55,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.health_checks_iterations == 45 or context.health_checks_bool:
-                context.game_actions.health_checks(960)
+                context.game_actions.health_checks(820)
                 context.health_checks_bool = False
                 continue 
             

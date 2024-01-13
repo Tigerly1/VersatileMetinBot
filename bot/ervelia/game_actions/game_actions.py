@@ -333,11 +333,11 @@ class GameActions:
         if not only_potions:
             time.sleep(0.05)
             self.metin_bot.osk_window.un_mount()
-            time.sleep(0.7)
+            time.sleep(0.8)
             self.metin_bot.osk_window.activate_aura()
             #time.sleep(2)
             #self.osk_window.activate_berserk()
-            time.sleep(0.25)
+            time.sleep(0.35)
             self.metin_bot.osk_window.un_mount()
             time.sleep(0.04)
         self.metin_bot.osk_window.activate_buffs()

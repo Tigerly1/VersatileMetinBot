@@ -198,10 +198,10 @@ class Actions:
                 self.horse_dodge_after_entering_arena = True
                 #self.metin_bot.osk_window.activate_horse_dodge()
             elif arena == "third_arena":
-                time_for_entering_the_middle = 0.6
-                #time.sleep(0.5)
-                self.horse_dodge_after_entering_arena = True
-                #self.metin_bot.osk_window.activate_horse_dodge()
+                time_for_entering_the_middle = 2.6
+                time.sleep(0.3)
+                #self.horse_dodge_after_entering_arena = True
+                self.metin_bot.osk_window.activate_horse_dodge()
                 #time.sleep(2.0)
             # else:
                 #time.sleep(3.5)
@@ -216,6 +216,7 @@ class Actions:
             self.metin_bot.osk_window.activate_horse_dodge()
             self.horse_dodge_after_entering_arena = False
             self.metin_bot.stop(True, time.time()+2, priority=5, newest_detection_needed=False)
+            return
 
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
@@ -260,7 +261,7 @@ class Actions:
             # self.metin_bot.osk_window.pull_mobs()
             # time.sleep(0.15)
             self.metin_have_been_killed = False
-            self.metin_bot.stop(True, time.time()+1.5)
+            self.metin_bot.stop(True, time.time()+2.5)
             return
         
         
@@ -274,8 +275,9 @@ class Actions:
             self.metin_bot.stop(True, time.time()+8)
             return
        
+        look_for_less_metins = 1 if enemy_after_kill else 0
         
-        first_assumption = (self.metins_killed < (number_of_metins-1)  and self.metins_rotation <= self.max_metins_rotations)
+        first_assumption = (self.metins_killed < (number_of_metins-look_for_less_metins)  and self.metins_rotation <= self.max_metins_rotations)
         second_assumption = self.metin_bot.get_top_center_position('metin', 0.5) is not None and self.metins_killed < 2 * number_of_metins
         third_assumption = self.min_metins_rotations >= self.metins_rotation
 
@@ -305,7 +307,7 @@ class Actions:
             #if second_assumption and not first_assumption:
                  #self.metin_bot.osk_window.activate_flag()
                  #self.metin_bot.osk_window.activate_horse_dodge()
-            time.sleep(0.04)
+            time.sleep(0.05)
 
             chose_random_metin = False
             if random_choice and self.metins_killed > number_of_metins:
@@ -337,7 +339,7 @@ class Actions:
                     self.metins_rotation = 0
                     self.metins_killed += 1
                 
-                    self.metin_bot.stop(True, time.time()+3)
+                    self.metin_bot.stop(True, time.time()+5.5)
                 
                 return
 
@@ -541,7 +543,7 @@ class Actions:
                 self.metin_bot.dangeons_count += 1
                 self.stats.add_dungeon_completed(self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time)
                 self.restart_class_props(False)
-                self.metin_bot.increment_state(False)
+                self.metin_bot.increment_state(True, time.time()+3)
             
         else:
             self.metin_bot.stop(True, time.time()+12)
