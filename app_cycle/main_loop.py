@@ -32,7 +32,7 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.windows_count = 5
+        self.windows_count = 6
         self.server_name = "Ervelia"
         
         self.window_names = []

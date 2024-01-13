@@ -12,6 +12,7 @@ import pytesseract
 import re
 from utils.helpers.music_player import play_music
 from utils.helpers.paths import ERVELIA_DANG30_IMAGE_PATHS, get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
+from utils.helpers.tesseract_texts import TEXTS_FOR_ACTION, check_if_text_from_image_includes_the_text
 
 
 class GameActions:
@@ -197,18 +198,22 @@ class GameActions:
 
             #logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
             logged_out_info = pytesseract.image_to_string(logged_out_info)
-            possible_logged_out_info = ["ZALOG", "TNOGUI"]
+            #possible_logged_out_info = ["ZALOG", "TNOGUI"]
             #print(logged_out_info)
-            if "ZALOG" in logged_out_info or "TNOGUI" in logged_out_info or "TALDGIL!" in logged_out_info or "TAUDGILI SIE" in logged_out_info or self.metin_bot.login_state:
+            if check_if_text_from_image_includes_the_text(logged_out_info, TEXTS_FOR_ACTION['login']) or self.metin_bot.login_state:
                 # self.metin_bot.set_object_detector_state(False)
                 
                 #self.metin_bot.dangeon_actions.restart_class_props()
                 print(logged_out_info)
                 self.login_user()
+                return True
             else:
-                return "user is logged in"
-        except:
+                return False
+                #return "user is logged in"
+        except Exception as e:
+            print(e)
             print("error z logowaniem ale essa")
+            return False
         #return logged_out_info
 
     def click_inventory_stash_x(self, inventory_number):
@@ -460,6 +465,8 @@ class GameActions:
             self.metin_bot.state_order.dangeon_actions.change_channel = True
             self.metin_bot.health_checks_bool = True
             self.metin_bot.switch_state(self.metin_bot.state_order.get_initializing_state())
+            return True
+        return False
 
     def check_if_equipment_is_on(self):
         top_left = (840, 80)
@@ -553,9 +560,12 @@ class GameActions:
 
     def health_checks(self, max_time_in_dang=600):
         try:
-            self.check_if_bot_is_stuck_in_dangeon(max_time_in_dang)
-            self.respawn_if_dead()
-            self.check_if_player_is_logged_out()
+            if self.respawn_if_dead():
+                return
+            if self.check_if_bot_is_stuck_in_dangeon(max_time_in_dang):
+                return
+            if self.check_if_player_is_logged_out():
+                return
            
         except Exception as e:
             print(e)
@@ -593,8 +603,27 @@ class GameActions:
         else:
             self.metin_bot.started_moving_time = None
             return True
+
+    def renew_alchemy(self):
+        time.sleep(0.2)
+        self.metin_bot.osk_window.open_alchemy()
+        time.sleep(0.1)
+        self.metin_bot.metin_window.mouse_move(622,172)
+        time.sleep(0.12)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.1)
+        self.metin_bot.metin_window.mouse_move(474,409)
+        time.sleep(0.12)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(1)
+        self.metin_bot.metin_window.mouse_move(505,409)
+        time.sleep(0.12)
+        self.metin_bot.metin_window.mouse_click()
+        time.sleep(0.2)
+        self.metin_bot.osk_window.open_alchemy()
+        time.sleep(0.1)
     
-    def remove_dangon_items_from_inv(self):
+    def remove_dangon_items_from_inv(self, images_path=ERVELIA_DANG30_IMAGE_PATHS):
 
         time.sleep(0.1)
         self.open_inventory()
@@ -618,7 +647,7 @@ class GameActions:
             bottom_right = (1017, 685)
             image_cuted_for_detection = self.metin_bot.vision.extract_section(image, top_left, bottom_right)
 
-            for path in ERVELIA_DANG30_IMAGE_PATHS.values():
+            for path in images_path.values():
                 centers = self.metin_bot.vision.find_image(image_cuted_for_detection, path, 0.7, 30)
                 centers = sorted(centers, key=lambda center: center[1])
                 if len(centers) > 0:

@@ -264,3 +264,6 @@ class InterceptionInput(Window):
 
     def free_key(self, key):
         interception.key_up(key)
+
+    def open_alchemy(self):
+        interception.press("o")

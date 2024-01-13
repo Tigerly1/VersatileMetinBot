@@ -41,12 +41,17 @@ class Dangeon75StateOrder(DangeonStateStrategy):
 
             ## check if dead every 10 iterations and if dead then fight back iterate
             if context.does_it_need_newest_window_detections_after_swap and context.health_checks_iterations % 20 == 0:
+                if context.last_turn_alchemy_time + 23*60*60+20*60 < time.time():
+                    context.game_actions.renew_alchemy()
+                    context.last_turn_alchemy_time = time.time()
+
                 if context.game_actions.respawn_if_dead():
                     time.sleep(0.1)
                     context.osk_window.start_hitting()
                     time.sleep(0.09)
                     context.osk_window.pull_mobs()
                     time.sleep(0.15)
+                    context.stop(True, time.time() + 6, 0)
                 continue
 
             if context.health_checks_iterations == 45 or context.health_checks_bool:
@@ -67,6 +72,9 @@ class Dangeon75StateOrder(DangeonStateStrategy):
 
                 # context.osk_window.mouse_move(690,93)
                 # time.sleep(5)
+                # context.game_actions.remove_dangon_items_from_inv(images_path=ERVELIA_DANG75_IMAGE_PATHS)
+                context.game_actions.renew_alchemy()
+                time.sleep(2)
                 context.switch_state(DangeonState.DEBUG)
                 continue
                 
@@ -88,6 +96,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_METINS:
+               
                 self.dangeon_actions.kill_metins(8)
                 continue
 
@@ -119,7 +128,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 self.dangeon_actions.kill_mobs(76)
                 continue
             if context.state == DangeonState.THIRD_METINS:
-                self.dangeon_actions.kill_metins(6, True, 0.55)
+                self.dangeon_actions.kill_metins(6, True, 0.55, True)
                 continue
             if context.state == DangeonState.THIRD_KILL_MINI_BOSS:
                 self.dangeon_actions.kill_mini_boss(10)

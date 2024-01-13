@@ -92,7 +92,7 @@ class MetinBot:
 
         self.is_object_detector_enabled = True
 
-
+        self.last_turn_alchemy_time = time.time()
         self.buff_interval = 76
         self.default_killing_mobs_time = 52
         self.killing_mobs_time = 0
@@ -122,7 +122,7 @@ class MetinBot:
 
         self.set_first_state()
 
-        #self.state = DangeonState.KILL_METINS
+        #self.state = DangeonState.DEBUG
 
 
     def run(self):
@@ -151,7 +151,7 @@ class MetinBot:
             print(e)
             return False
            
-    def detect_and_click(self, label, check_match=False, rotate_before_click=False, small_rotation=False, metin_acc=0.62):
+    def detect_and_click(self, label, check_match=False, rotate_before_click=False, small_rotation=False, metin_acc=0.62, chose_random=False):
         try:
             if self.screenshot is not None and self.detection_time is not None and \
                             self.detection_time > self.time_of_new_screen + 0.07:
@@ -160,7 +160,12 @@ class MetinBot:
                 #                                       or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
                 #                                         or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
                 center_click_pos = self.get_top_center_position(label, 0.1)
-                if label == "metin": center_click_pos = self.get_top_center_position(label, metin_acc)
+                if label == "metin": 
+                    if chose_random:
+                        center_click_pos = self.get_random_center_position(label, metin_acc)
+                    else:
+                        center_click_pos = self.get_top_center_position(label, metin_acc)
+
                 if center_click_pos is None:
                     self.put_info_text('No metin found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
@@ -209,7 +214,7 @@ class MetinBot:
                         if  x > 780:
                             self.game_actions.rotate_view()
                             return False
-                        x = x + 75 
+                        x = x + 65 
                         self.metin_window.mouse_move(x,y)
 
                     else:
@@ -240,30 +245,65 @@ class MetinBot:
             print(e)
             return False
             
-    def get_top_center_position(self, _label, _score):
+    def get_top_center_position(self, _label, _score, return_most_centered=True):
         if self.detection_result is None:
             return None
-        
+
+        screen_center = (1024 / 2, 768 / 2)  # Center of the screen
         max_area = 0
         max_area_center = None
+        min_center_distance = float('inf')
+        most_centered = None
 
+        for score, label, center, box in zip(self.detection_result['scores'],
+                                            self.detection_result['labels'],
+                                            self.detection_result['center_positions'],
+                                            self.detection_result['rectangles']):
 
-        for  score, label, center, box in zip(self.detection_result['scores'],
-                                              self.detection_result['labels'],
-                                              self.detection_result['center_positions'],
-                                              self.detection_result['rectangles']):
-            
             if score >= _score and label == _label:
                 top_left = (int(box[0]), int(box[1]))
                 bottom_right = (int(box[2]), int(box[3]))
                 area = (bottom_right[0] - top_left[0]) * (bottom_right[1] - top_left[1])
 
-                # If this object is larger than the current largest object, update the maximum area and the position
                 if area > max_area:
                     max_area = area
                     max_area_center = center
 
-        return max_area_center
+                center_distance = ((center[0] - screen_center[0]) ** 2 + (center[1] - screen_center[1]) ** 2) ** 0.5
+                if center_distance < min_center_distance:
+                    min_center_distance = center_distance
+                    most_centered = center
+
+        return most_centered if return_most_centered else max_area_center
+
+
+
+    def get_random_center_position(self, _label, _score):
+        if self.detection_result is None:
+            return None
+        multiple_detection_centers = []
+
+        for score, label, center, box in zip(self.detection_result['scores'],
+                                            self.detection_result['labels'],
+                                            self.detection_result['center_positions'],
+                                            self.detection_result['rectangles']):
+
+            if score >= _score and label == _label:
+                multiple_detection_centers.append(center)
+
+        if len(multiple_detection_centers) > 0:
+            return random.choice(multiple_detection_centers)
+        else:
+            return None
+
+                
+                
+                
+                
+                
+        
+
+    
 
     def check_match_after_detection(self, label):
         detection_success = False

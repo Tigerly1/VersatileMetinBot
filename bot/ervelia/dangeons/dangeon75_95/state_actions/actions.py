@@ -88,6 +88,7 @@ class Actions:
                 if random.random() < 0.01:
                     self.tp_to_dangeon = True
                     self.start_of_the_action_time = None
+                    self.metin_bot.health_checks_bool = True
                     self.metin_bot.stop()
                     return
 
@@ -197,8 +198,8 @@ class Actions:
                 self.horse_dodge_after_entering_arena = True
                 #self.metin_bot.osk_window.activate_horse_dodge()
             elif arena == "third_arena":
-                time_for_entering_the_middle = 0.8
-                #time.sleep(0.7)
+                time_for_entering_the_middle = 0.6
+                #time.sleep(0.5)
                 self.horse_dodge_after_entering_arena = True
                 #self.metin_bot.osk_window.activate_horse_dodge()
                 #time.sleep(2.0)
@@ -211,9 +212,10 @@ class Actions:
 
     def kill_mobs(self, time_to_kill=11, time_of_pull_stop=5, increment_state=True):
         if self.horse_dodge_after_entering_arena == True:
+            time.sleep(0.02)
             self.metin_bot.osk_window.activate_horse_dodge()
             self.horse_dodge_after_entering_arena = False
-            self.metin_bot.stop(True, time.time()+2, priority=4, newest_detection_needed=False)
+            self.metin_bot.stop(True, time.time()+2, priority=5, newest_detection_needed=False)
 
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
@@ -243,7 +245,7 @@ class Actions:
         else:
             self.metin_bot.stop(True, time.time()+13, newest_detection_needed=False)
     
-    def kill_metins(self, number_of_metins, enemy_after_kill=False, detection_acc = 0.67):
+    def kill_metins(self, number_of_metins, enemy_after_kill=False, detection_acc = 0.67, random_choice=False):
 
         if self.start_of_the_action_time is None:
             self.start_of_the_action_time = time.time()
@@ -304,7 +306,14 @@ class Actions:
                  #self.metin_bot.osk_window.activate_flag()
                  #self.metin_bot.osk_window.activate_horse_dodge()
             time.sleep(0.04)
-            is_clicked = self.metin_bot.detect_and_click('metin', metin_acc=detection_acc, check_match=check_match)
+
+            chose_random_metin = False
+            if random_choice and self.metins_killed > number_of_metins:
+                self.metin_bot.osk_window.rotate_with_mouse(False,True)
+                time.sleep(0.12)
+                chose_random_metin = True
+
+            is_clicked = self.metin_bot.detect_and_click('metin', metin_acc=detection_acc, check_match=check_match, chose_random=chose_random_metin)
             self.metins_rotation += 1
             if is_clicked:
                 
