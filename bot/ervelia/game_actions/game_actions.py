@@ -13,55 +13,105 @@ import re
 from utils.helpers.music_player import play_music
 from utils.helpers.paths import ERVELIA_DANG30_IMAGE_PATHS, get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
 from utils.helpers.tesseract_texts import TEXTS_FOR_ACTION, check_if_text_from_image_includes_the_text
+from window.window import windows_swap_fix
 
 
 class GameActions:
     def __init__(self, metin_bot):
         self.metin_bot = metin_bot
+        self.calibration_step = 0
 
-    def zoom_out(self, zooming_time=1.0):
+    def zoom_out(self, zooming_time=1.0, accurate=True):
         self.metin_bot.osk_window.start_zooming_out()
-        time.sleep(zooming_time)
+        if accurate:
+            time.sleep(zooming_time)
+        else:
+            time.sleep(0.05)
+            windows_swap_fix(True)
+        #time.sleep(zooming_time)
         self.metin_bot.osk_window.stop_zooming_out()
 
-    def zoom_in(self, zooming_time=1.0):
+    def zoom_in(self, zooming_time=1.0, accurate=True):
         self.metin_bot.osk_window.start_zooming_in()
-        time.sleep(zooming_time)
+        if accurate:
+            time.sleep(zooming_time)
+        else:
+            time.sleep(0.05)
+            windows_swap_fix(True)
+        #time.sleep(zooming_time)
         self.metin_bot.osk_window.stop_zooming_in()
 
     def zoom_in_out(self, in_time=1.0, out_time=0.6):
-        self.zoom_in(in_time)
-        time.sleep(0.05)
-        self.zoom_out(out_time)
+        if self.calibration_step == 0:
+            self.zoom_in(in_time, False)
+            self.calibration_step = 1
+            time.sleep(0.05)
+            self.metin_bot.stop(True, time.time()+in_time, 0, False)
+            return
+        elif self.calibration_step == 1:
+            self.zoom_out(out_time)
+            self.calibration_step = 2
+            time.sleep(0.05)
+            self.metin_bot.stop(True, time.time(), 0, False)
+            return
+        # time.sleep(0.05)
+        # self.zoom_out(out_time)
 
     def calibrate_view(self, calibration_type="guard", ):
         #self.metin_bot.metin_window.activate()
+        if self.calibration_step == 0:
+            self.calibration_type = calibration_type
+            self.metin_bot.is_calibrating = True
         # Camera option: Near, Perspective all the way to the right
-        if calibration_type != "first_arena_middlepoint":
+
+        if self.calibration_type != "first_arena_middlepoint" and self.calibration_step == 0:
+            time.sleep(0.05)
             self.metin_bot.osk_window.start_zooming_out()
             time.sleep(0.6)
             self.metin_bot.osk_window.stop_zooming_out()
+            time.sleep(0.1)
+            self.calibration_step = 2
+            self.metin_bot.stop(True, time.time(), 0, False)
+            return
         #self.osk_window.start_zooming_in()
+        #self.calibration_step = 1
         #time.sleep(0.07)
-        else:
+        elif self.calibration_step == 0 or self.calibration_step == 1:
+            time.sleep(0.05)
             self.zoom_in_out()
-        time.sleep(0.07)
-        self.metin_bot.osk_window.start_rotating_up()
-        time.sleep(1.1)
-        self.metin_bot.osk_window.stop_rotating_up()
-        time.sleep(0.15)
-        self.metin_bot.osk_window.start_rotating_down()
-        #time.sleep(random.uniform(0.58, 0.63))
-        if calibration_type == "first_arena":
-            time.sleep(0.73)
-        elif calibration_type == 'first_arena_middlepoint':
-            time.sleep(0.62)
-        elif calibration_type == "second_arena":
-            time.sleep(0.7)
-        else:
-            time.sleep(random.uniform(0.62, 0.7))
-        self.metin_bot.osk_window.stop_rotating_down()
-        time.sleep(0.1)
+            return
+        
+        #time.sleep(0.07)
+        if self.calibration_step == 2:
+            time.sleep(0.05)
+            self.metin_bot.osk_window.start_rotating_up()
+            #time.sleep(1.1)
+            time.sleep(0.05)
+            windows_swap_fix(True)
+            self.metin_bot.osk_window.stop_rotating_up()
+            time.sleep(0.04)
+            self.calibration_step = 3
+            self.metin_bot.stop(True, time.time()+1.1, 0, False)
+            return
+        
+        if self.calibration_step == 3:
+            time.sleep(0.05)
+            self.metin_bot.osk_window.start_rotating_down()
+            #time.sleep(random.uniform(0.58, 0.63))
+            if self.calibration_type == "first_arena":
+                time.sleep(0.73)
+            elif self.calibration_type == 'first_arena_middlepoint':
+                time.sleep(0.62)
+            elif self.calibration_type == "second_arena":
+                time.sleep(0.7)
+            else:
+                time.sleep(random.uniform(0.62, 0.7))
+            self.metin_bot.osk_window.stop_rotating_down()
+            time.sleep(0.14)
+            self.calibration_step = 0
+            self.metin_bot.is_calibrating = False
+            self.metin_bot.stop(True, time.time(), 0, True)
+            return
         
         #self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)

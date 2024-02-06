@@ -55,6 +55,7 @@ class MetinBot:
         self.detected_zero_percent = 0
         self.move_fail_count = 0
 
+        self.is_calibrating = False
         self.calibrate_count = 0
         self.calibrate_threshold = 0
         self.rotate_count = 0
@@ -154,7 +155,7 @@ class MetinBot:
     def detect_and_click(self, label, check_match=False, rotate_before_click=False, small_rotation=False, metin_acc=0.62, chose_random=False):
         try:
             if self.screenshot is not None and self.detection_time is not None and \
-                            self.detection_time > self.time_of_new_screen + 0.07:
+                            self.detection_time > self.time_of_new_screen + 0.10:
                 #If no matches were found
                 # if self.detection_result is None or (self.detection_result is not None and  (self.detection_result['labels'][0] != label \
                 #                                       or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
@@ -172,7 +173,7 @@ class MetinBot:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
                         self.calibrate_count += 1
                         self.rotate_count = 0
-                        self.game_actions.calibrate_view("guard")
+                        #self.game_actions.calibrate_view("guard")
                         self.time_of_new_screen = time.time()
                     else:
                         self.rotate_count += 1
@@ -207,7 +208,7 @@ class MetinBot:
                             self.game_actions.rotate_view(rotate_right=True)
                             return False
                         y = y + 95
-                        x = abs(x - 85) + 5
+                        x = abs(x - 85) + 10
                         self.metin_window.mouse_move(x,y)
 
                     if label == "third_arena":
@@ -215,6 +216,7 @@ class MetinBot:
                             self.game_actions.rotate_view()
                             return False
                         x = x + 65 
+                        y = y - 40
                         self.metin_window.mouse_move(x,y)
 
                     else:

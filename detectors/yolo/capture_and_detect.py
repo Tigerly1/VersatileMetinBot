@@ -25,7 +25,7 @@ class CaptureAndDetect:
         # print(device)
         # self.model = torch.hub.load(r'C:\Users\Filip\Desktop\tob2tm\Metin2-Bot-main\yolov5', 'custom', path=r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\upgraded.pt', source='local',force_reload=True )
         #self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\v8.pt').to(device)
-        self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\dang75_yolov8n.pt').to(device)
+        self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\dang75_yolov8n_3.pt').to(device)
         self.screenshot = None
         self.screenshot_time = None
 

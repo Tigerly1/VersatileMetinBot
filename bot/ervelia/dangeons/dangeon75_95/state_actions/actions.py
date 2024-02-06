@@ -41,10 +41,11 @@ class Actions:
         self.horse_dodge_after_entering_arena = False
         self.metin_start_hitting_time = None
         self.pick_up_stop = False
-        self.max_metins_rotations = 25
-        self.min_metins_rotations = 7
+        self.max_metins_rotations = 14
+        self.min_metins_rotations = 6
         self.metins_rotation = 0
         self.guard_clicked = False
+        self.first_arena_key_holded = False
 
         self.stats = DungeonBotStatistics()
 
@@ -91,6 +92,11 @@ class Actions:
                     self.metin_bot.health_checks_bool = True
                     self.metin_bot.stop()
                     return
+                
+                if random.random() < 0.01:
+                   if self.metin_bot.game_actions.check_if_you_cannot_tp_to_dangeon():
+                        self.start_of_the_action_time = None
+                        self.metin_bot.stop()
 
                 if time.time() - self.start_of_the_action_time > 1:
                     self.start_of_the_action_time = None
@@ -111,14 +117,17 @@ class Actions:
         if self.start_of_the_action_time is None:
             self.enter_arena_calibration = False
             if arena == "first_arena":
-                self.metin_bot.game_actions.calibrate_view("first_arena_middlepoint")
-                #self.arena_middlepoint = True
                 if self.metin_bot.game_actions.check_if_you_cannot_tp_to_dangeon():
                     self.start_of_the_action_time = None
                     self.restart_after_action_not_changed()
                     return
                 
+                self.metin_bot.game_actions.calibrate_view("first_arena_middlepoint")
+                #self.arena_middlepoint = True
+                self.metin_bot.stop(True, time.time())
+                
             self.start_of_the_action_time = time.time()
+            return 
 
         if arena == "first_arena":
             if self.arena_middlepoint is None or self.arena_middlepoint == False:
@@ -130,19 +139,22 @@ class Actions:
                     return
             else:
                 self.metin_bot.osk_window.hold_key("t")
+                if self.first_arena_key_holded == False:
+                    time.sleep(0.4)
+                    self.first_arena_key_holded = True
 
-        if time.time() - self.start_of_the_action_time > 120:
+        if time.time() - self.start_of_the_action_time > 180:
             self.start_of_the_action_time = None
             self.restart_after_action_not_changed()
             return
 
-        if time.time() - self.start_of_the_action_time > 40 and not self.enter_arena_calibration:
+        if time.time() - self.start_of_the_action_time > 120 and not self.enter_arena_calibration:
             if arena == "first_arena":
                 self.metin_bot.osk_window.free_key("t") 
-                if time.time() - self.start_of_the_action_time > 80:
-                    self.metin_bot.game_actions.calibrate_view(arena)
-            else:
-                self.metin_bot.game_actions.calibrate_view(arena)
+                # if time.time() - self.start_of_the_action_time > 80:
+                #     self.metin_bot.game_actions.calibrate_view(arena)
+            # else:
+            #     self.metin_bot.game_actions.calibrate_view(arena)
             self.enter_arena_calibration = True
             self.metin_bot.stop(True, time.time())
             return
@@ -153,7 +165,7 @@ class Actions:
 
         while time.time() - self.rotate_start_time  < 1:
             if arena == "first_arena":
-                small_rotation = True if time.time() - self.start_of_the_action_time <= 65 else False
+                small_rotation = True if time.time() - self.start_of_the_action_time <= 90 else False
                 result = self.metin_bot.brief_detection(arena, small_rotation=small_rotation, rotate_right=True)
             else:
                 result = self.metin_bot.brief_detection(arena)
@@ -170,7 +182,7 @@ class Actions:
             #if arena == "first_arena":
                 #self.metin_bot.osk_window.free_key(" t")
             for x in range(0, 2):
-                time.sleep(0.07)
+                time.sleep(0.14)
                 new_click = self.metin_bot.detect_and_click(arena, rotate_before_click=True, small_rotation=True)
                 if new_click:
                     break
@@ -190,18 +202,21 @@ class Actions:
             time_for_entering_the_middle = 3.5
             if arena == "first_arena":
                 self.metin_bot.osk_window.free_key("t")
-                
                 time.sleep(0.4)
                 #self.metin_bot.game_actions.calibrate_view("second_arena")
-                self.metin_bot.game_actions.zoom_out()
+                self.metin_bot.game_actions.zoom_out(zooming_time=0.4)
                 time_for_entering_the_middle = 1.8
                 self.horse_dodge_after_entering_arena = True
                 #self.metin_bot.osk_window.activate_horse_dodge()
+            elif arena == "second_arena":
+                time_for_entering_the_middle = 1.3
+                self.horse_dodge_after_entering_arena = True
+                time.sleep(0.1)
             elif arena == "third_arena":
                 time_for_entering_the_middle = 2.6
-                time.sleep(0.3)
+                time.sleep(0.6)
                 #self.horse_dodge_after_entering_arena = True
-                self.metin_bot.osk_window.activate_horse_dodge()
+                #self.metin_bot.osk_window.activate_horse_dodge()
                 #time.sleep(2.0)
             # else:
                 #time.sleep(3.5)
@@ -212,7 +227,7 @@ class Actions:
 
     def kill_mobs(self, time_to_kill=11, time_of_pull_stop=5, increment_state=True):
         if self.horse_dodge_after_entering_arena == True:
-            time.sleep(0.02)
+            time.sleep(0.14)
             self.metin_bot.osk_window.activate_horse_dodge()
             self.horse_dodge_after_entering_arena = False
             self.metin_bot.stop(True, time.time()+2, priority=5, newest_detection_needed=False)
@@ -281,7 +296,7 @@ class Actions:
         second_assumption = self.metin_bot.get_top_center_position('metin', 0.5) is not None and self.metins_killed < 2 * number_of_metins
         third_assumption = self.min_metins_rotations >= self.metins_rotation
 
-        check_match = True if enemy_after_kill else False
+        check_match = True if enemy_after_kill and not random_choice else False
 
         #if self.metins_killed > 0:
         if self.metin_is_getting_killed:
@@ -566,6 +581,7 @@ class Actions:
         self.metins_rotation = 0
         self.pick_up_stop = False
         self.guard_clicked = False
+        self.first_arena_key_holded = False
         self.gather_items_stones_click = []
         if bug:
             print("ACTION RESTARTED WITH BUG IN {}".format(self.metin_bot.state.name))

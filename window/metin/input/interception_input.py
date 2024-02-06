@@ -180,11 +180,11 @@ class InterceptionInput(Window):
         interception.mouse_down('right')
         sleep(0.06)
         if small_rotation:
-            interception.move_relative(direction * random.randint(3, 10), 0)
+            interception.move_relative(direction * random.randint(10, 14), 0)
         elif large_rotation:
-            interception.move_relative(direction * random.randint(35, 45), 0)
+            interception.move_relative(direction * random.randint(102, 154), 0)
         else:
-            interception.move_relative(direction * random.randint(14, 27), 0)
+            interception.move_relative(direction * random.randint(29, 48), 0)
         sleep(0.05)
         interception.mouse_up('right')
         sleep(0.07)
