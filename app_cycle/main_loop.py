@@ -32,7 +32,7 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.windows_count = 8
+        self.windows_count = 6
         self.server_name = "Ervelia"
         
         self.window_names = []
@@ -148,6 +148,9 @@ class MainLoop():
                                 #Vision().SIFT_FEATURES_DETECTION(detection_image)
                                 # Display image
                                 cv.imshow('Matches', detection_image)
+
+                            new_instance['window'].set_window_foreground()
+                            time.sleep(0.03)
                             new_instance['bot'].start()
                             current_instance = new_instance
                             #print("time of started thread {}".format(time.time()))

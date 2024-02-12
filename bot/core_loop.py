@@ -212,12 +212,16 @@ class MetinBot:
                         self.metin_window.mouse_move(x,y)
 
                     if label == "third_arena":
-                        if  x > 780:
-                            self.game_actions.rotate_view()
+                        if  x > 650:
+                            self.game_actions.rotate_view(small_rotation=True)
                             return False
-                        x = x + 65 
-                        y = y - 40
-                        self.metin_window.mouse_move(x,y)
+                        elif x < 270:
+                            self.game_actions.rotate_view(small_rotation=True, rotate_right=True)
+                            return False
+                        # x = x + 65 
+                        # y = y - 40
+                        # self.metin_window.mouse_move(x,y)
+                        #return True
 
                     else:
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
@@ -225,7 +229,7 @@ class MetinBot:
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
 
-                   
+                    
                     
                     # if label == "second_arena":
                     #     self.osk_window.activate_flag()
@@ -234,6 +238,10 @@ class MetinBot:
                     
 
                     time.sleep(0.08)
+
+                    if label == "third_arena":
+                        return True
+
                     if not check_match:
                         self.metin_window.mouse_click(lowDelay=True)
                         time.sleep(0.02)

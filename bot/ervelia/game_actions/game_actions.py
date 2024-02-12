@@ -38,6 +38,7 @@ class GameActions:
         else:
             time.sleep(0.05)
             windows_swap_fix(True)
+            
         #time.sleep(zooming_time)
         self.metin_bot.osk_window.stop_zooming_in()
 
@@ -46,7 +47,7 @@ class GameActions:
             self.zoom_in(in_time, False)
             self.calibration_step = 1
             time.sleep(0.05)
-            self.metin_bot.stop(True, time.time()+in_time, 0, False)
+            self.metin_bot.stop(True, time.time()+1.3, 0, False)
             return
         elif self.calibration_step == 1:
             self.zoom_out(out_time)
@@ -57,6 +58,9 @@ class GameActions:
         # time.sleep(0.05)
         # self.zoom_out(out_time)
 
+
+
+    ### CALIBRATION STOPS STATE ITSELF NOW YOU SHOULD NOT STOP THE STATE NOW AFTER THE CALIBRATION
     def calibrate_view(self, calibration_type="guard", ):
         #self.metin_bot.metin_window.activate()
         if self.calibration_step == 0:
@@ -91,7 +95,7 @@ class GameActions:
             self.metin_bot.osk_window.stop_rotating_up()
             time.sleep(0.04)
             self.calibration_step = 3
-            self.metin_bot.stop(True, time.time()+1.1, 0, False)
+            self.metin_bot.stop(True, time.time()+1.3, 0, False)
             return
         
         if self.calibration_step == 3:
@@ -107,7 +111,7 @@ class GameActions:
             else:
                 time.sleep(random.uniform(0.62, 0.7))
             self.metin_bot.osk_window.stop_rotating_down()
-            time.sleep(0.14)
+            time.sleep(0.04)
             self.calibration_step = 0
             self.metin_bot.is_calibrating = False
             self.metin_bot.stop(True, time.time(), 0, True)
@@ -284,7 +288,7 @@ class GameActions:
 
     def login_user(self):
         #time.sleep(11)
-        account_save_button = [(870,363),(870,400),(870,437),(870,474),(870,501),(870,538)]
+        account_save_button = [(870,363),(870,400),(870,437),(870,474),(870,501),(870,538), (870, 575), (870, 612)]
 
         if self.metin_bot.login_state == False:
             self.metin_bot.metin_window.mouse_move(511,405)
@@ -387,9 +391,9 @@ class GameActions:
             self.metin_bot.osk_window.activate_aura()
             #time.sleep(2)
             #self.osk_window.activate_berserk()
-            time.sleep(0.35)
+            time.sleep(0.32)
             self.metin_bot.osk_window.un_mount()
-            time.sleep(0.04)
+            time.sleep(0.08)
         self.metin_bot.osk_window.activate_buffs()
 
     # def send_telegram_message(self, msg):

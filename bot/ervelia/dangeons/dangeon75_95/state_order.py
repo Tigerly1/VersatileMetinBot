@@ -76,12 +76,13 @@ class Dangeon75StateOrder(DangeonStateStrategy):
 
                 # context.osk_window.mouse_move(690,93)
                 # time.sleep(5)
-                context.osk_window.rotate_with_mouse(True, False, False)
-                context.osk_window.rotate_with_mouse(False, True, False)
-                context.osk_window.rotate_with_mouse(False, False, True)
-                #context.game_actions.remove_dangon_items_from_inv(images_path=ERVELIA_DANG75_IMAGE_PATHS)
-                # context.game_actions.renew_alchemy()
-                time.sleep(2)
+                # context.game_actions.calibrate_view("first_arena_middlepoint")
+                # context.osk_window.rotate_with_mouse(True, False, False)
+                # context.osk_window.rotate_with_mouse(False, True, False)
+                # context.osk_window.rotate_with_mouse(False, False, True)
+                context.game_actions.remove_dangon_items_from_inv(images_path=ERVELIA_DANG75_IMAGE_PATHS)
+                context.game_actions.renew_alchemy()
+                #time.sleep(12)
                 context.switch_state(DangeonState.DEBUG)
                 continue
                 
@@ -133,13 +134,13 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.THIRD_KILL_MOBS:
-                self.dangeon_actions.kill_mobs(110)
+                self.dangeon_actions.kill_mobs(76)
                 continue
             if context.state == DangeonState.THIRD_METINS:
                 self.dangeon_actions.kill_metins(6, True, 0.55, True)
                 continue
             if context.state == DangeonState.THIRD_KILL_MINI_BOSS:
-                self.dangeon_actions.kill_mini_boss(10)
+                self.dangeon_actions.kill_mini_boss(15)
                 continue
             
             if context.state == DangeonState.END_BOSS:
