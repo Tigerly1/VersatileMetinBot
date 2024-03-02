@@ -37,6 +37,13 @@ class InterceptionInput(Window):
         interception.key_up("w")
         sleep(0.1)
 
+    def rotate_backward(self):
+        sleep(0.03)
+        interception.key_down("s")
+        sleep(1.2)
+        interception.key_up("s")
+        sleep(0.1)
+
     def press_enter(self):
         interception.press('enter', 2)
         sleep(0.3)

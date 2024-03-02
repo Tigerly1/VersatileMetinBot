@@ -282,14 +282,15 @@ class Actions:
         if not result:
             self.metin_bot.stop(True, time.time())
             return
+        
+        self.metin_bot.osk_window.activate_flag()
         time.sleep(0.02)
         new_click = self.metin_bot.detect_and_click('second_arena')
-       
-        
-       
+
         if not new_click:
             self.metin_bot.stop(True, time.time()+6)
             return
+            
 
         self.start_of_the_action_time = None
         self.metin_bot.increment_state(True, time.time()+5)

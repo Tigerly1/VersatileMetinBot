@@ -26,7 +26,7 @@ class MultiWindowBotHandler:
                 instance = {
                     'window': metin_window,
                     'capt_detect': self.capture_and_detect,
-                    'bot': MetinBot(metin_window, Dangeon75StateOrder(), self.counter, self.main_loop),
+                    'bot': MetinBot(metin_window, Dangeon30StateOrder(), self.counter, self.main_loop),
                     'window_name': window_name,  # Store window_name within the instance
                     'last_run_time': time.time()
                 }

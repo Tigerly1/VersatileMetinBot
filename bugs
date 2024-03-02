@@ -3,3 +3,14 @@
 - podzielic kalibracje na partie
 - maksymalny czas zadania sekunda aby bot nie padał na piętrze gdzie podjezdza
 - 
+
+nowe bugi
+
+- ostatnie pietro mobki blokuja
+- jak jest przerwa techniczna to zeby nie wykrywalo jako bicie metina oraz zeby usuwalo
+- jak sie klient buguje to wylaczyc i wykrywac to jakos
+- automatyczne logowanie
+- wykrywanie kiedy wywali 6 klientów i odpowiednio wylaczanie i wlaczenia patchera
+- wykrywanie czy alchemia jest wylaczona
+- odnawianie zlota
+- punkty bohatera

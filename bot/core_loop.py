@@ -111,7 +111,7 @@ class MetinBot:
         self.time_of_new_screen = None
         self.time_entered_state = time.time()
         self.health_checks_iterations = 0
-        self.health_checks_bool = False
+        self.health_checks_bool = True
         self.state = None
         
         self.login_state = False
@@ -123,7 +123,7 @@ class MetinBot:
 
         self.set_first_state()
 
-        #self.state = DangeonState.DEBUG
+        #self.state = DangeonState.LOGGING
 
 
     def run(self):
@@ -185,10 +185,12 @@ class MetinBot:
                     saved_click_pos = copy.deepcopy(self.detection_result['click_pos'])
                     x, y = center_click_pos
 
+                    ## DEFAULT SETTING
                     if x >= 875 and y <= 300:
                         x = 865
                         if label == "metin":
                             self.game_actions.rotate_view()
+                            self.time_of_new_screen = time.time()
                             return False
                         
                     self.rotate_count = 0
@@ -196,51 +198,22 @@ class MetinBot:
                     if label == "metin":
                         if x < 14 or x > 1010:
                             self.game_actions.rotate_view()
+                            self.time_of_new_screen = time.time()
                             return False
 
-                    if label == "first_arena":
-                        y = y + 45
-                        x = x - 30 
-                        self.metin_window.mouse_move(x,y)
-                        
-                    if label == "first_arena_middlepoint":
-                        if x < 75:
-                            self.game_actions.rotate_view(rotate_right=True)
-                            return False
-                        y = y + 95
-                        x = abs(x - 85) + 10
-                        self.metin_window.mouse_move(x,y)
 
-                    if label == "third_arena":
-                        if  x > 650:
-                            self.game_actions.rotate_view(small_rotation=True)
+                    if hasattr(self.state_order, 'detect_and_click_custom_workflow_before_click'):
+                        x, y = self.state_order.detect_and_click_custom_workflow_before_click(self, label, x, y, saved_click_pos)
+                        if x is False and y is False:
                             return False
-                        elif x < 270:
-                            self.game_actions.rotate_view(small_rotation=True, rotate_right=True)
-                            return False
-                        # x = x + 65 
-                        # y = y - 40
-                        # self.metin_window.mouse_move(x,y)
-                        #return True
-
-                    else:
+                    
                     # self.put_info_text(f'Best match width: {self.detection_result["best_rectangle"][2]}')
-                        self.metin_window.mouse_move(x, y)
+                    self.metin_window.mouse_move(x, y)
+
                     if rotate_before_click:
                         self.game_actions.rotate_using_space_before_click()
 
-                    
-                    
-                    # if label == "second_arena":
-                    #     self.osk_window.activate_flag()
-                    #     time.sleep(0.2)
-
-                    
-
                     time.sleep(0.08)
-
-                    if label == "third_arena":
-                        return True
 
                     if not check_match:
                         self.metin_window.mouse_click(lowDelay=True)
@@ -435,7 +408,7 @@ class MetinBot:
         #self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or (result is not None and result[1] < 100) or time.time() - self.started_hitting_time >= 8.5:
+        if result is None or time.time() - self.started_hitting_time >= 8.5:
             
 
             logging.debug("Metin has been killed")
@@ -507,7 +480,7 @@ class MetinBot:
 
     def get_screenshot_info(self):
         self.info_lock.acquire()
-        screenshot = self.screenshot
+        screenshot = copy.deepcopy(self.screenshot)
         self.info_lock.release()
         return screenshot
 

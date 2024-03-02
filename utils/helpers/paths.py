@@ -71,3 +71,7 @@ ERVELIA_DANG75_IMAGE_PATHS = {
     'brecelet': get_absolute_path('utils/images/ervelia/dang_75_items/bracelet.png'),
     'red_dragon': get_absolute_path('utils/images/ervelia/dang_75_items/red_dragon.png'),
 }
+
+LOGGING_IMAGE_PATHS = {
+    "champion_select_start": get_absolute_path('utils/images/ervelia/login/champion_select.png'),
+}

@@ -30,6 +30,25 @@ class Dangeon30StateOrder(DangeonStateStrategy):
     def get_initializing_state(self):
         return DangeonState.INITIALIZING
     
+    def detect_and_click_custom_workflow_before_click(self, context: "MetinBot", label, x, y, saved_click_pos): 
+        if label == "first_arena":
+            y = y + 45
+            if x > 30:
+                x = x - 30 
+            context.metin_window.mouse_move(x,y)
+            
+        if label == "second_arena":
+            if  x > 650:
+                context.game_actions.rotate_view(small_rotation=True)
+                self.time_of_new_screen = time.time()
+                return False, False
+            elif x < 270:
+                context.game_actions.rotate_view(small_rotation=True, rotate_right=True)
+                context.time_of_new_screen = time.time()
+                return False, False
+
+        return x, y
+
     def execute_actions_by_state(self, context: "MetinBot"):
         time.sleep(0.02)
         while not context.stopped:

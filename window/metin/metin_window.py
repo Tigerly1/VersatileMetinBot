@@ -108,7 +108,7 @@ class MetinWindow(Window):
         if not patcher_hwnd:
             
             ctypes.windll.shell32.ShellExecuteW(None, "runas", game_path, None, game_dir, 1)
-            time.sleep(2)
+            time.sleep(13)
         
         print("XXXXXXXXX")
         interception.move_to(1440,1059)
@@ -138,11 +138,16 @@ class MetinWindow(Window):
         game_dir = r"C:\Users\Filip\Desktop\Ervelia_official_011\Ervelia.pl"
         # Request UAC elevation
         patcher_hwnd = win32gui.FindWindow(None, "Ervelia Patcher")
-
+        
         if not patcher_hwnd:
             ctypes.windll.shell32.ShellExecuteW(None, "runas", game_path, None, game_dir, 1)
+            time.sleep(13)
             return
         
+        win32gui.ShowWindow(patcher_hwnd, 5)
+        self.shell = win32com.client.Dispatch("WScript.Shell")
+        self.shell.SendKeys('%')
+        win32gui.SetForegroundWindow(patcher_hwnd)
         if self.window_open_click_time == None:
             interception.move_to(1440,1059)
             sleep(0.03)

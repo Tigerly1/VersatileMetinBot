@@ -32,6 +32,39 @@ class Dangeon75StateOrder(DangeonStateStrategy):
     def get_initializing_state(self):
         return DangeonState.INITIALIZING
     
+    def detect_and_click_custom_workflow_before_click(self, context: "MetinBot", label, x, y, saved_click_pos): 
+        if label == "first_arena":
+            y = y + 45
+            if x > 30:
+                x = x - 30 
+            context.metin_window.mouse_move(x,y)
+            
+        if label == "first_arena_middlepoint":
+            if x < 75:
+                context.game_actions.rotate_view(rotate_right=True)
+                self.time_of_new_screen = time.time()
+                return False, False
+            y = y + 95
+            x = abs(x - 85) + 10
+            context.metin_window.mouse_move(x,y)
+
+
+
+        if label == "third_arena"  or label == "second_arena":
+            if  x > 650:
+                context.game_actions.rotate_view(small_rotation=True)
+                self.time_of_new_screen = time.time()
+                return False, False
+            elif x < 270:
+                context.game_actions.rotate_view(small_rotation=True, rotate_right=True)
+                context.time_of_new_screen = time.time()
+                return False, False
+            if label == "third_arena":
+                x = x + 60
+                y = y + 20
+
+        return x, y
+    
     def execute_actions_by_state(self, context: "MetinBot"):
         time.sleep(0.002)
         while not context.stopped:
@@ -42,7 +75,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 context.game_actions.calibrate_view()
                 continue
 
-            context.health_checks_iterations = (context.health_checks_iterations + 1) % 50
+            context.health_checks_iterations = (context.health_checks_iterations + 1) % 40
             ## check if dead every 10 iterations and if dead then fight back iterate
             if context.does_it_need_newest_window_detections_after_swap and context.health_checks_iterations % 20 == 0:
                 if context.last_turn_alchemy_time + 23*60*60 < time.time():
@@ -58,9 +91,9 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                     context.stop(True, time.time() + 6, 0)
                 continue
 
-            if context.health_checks_iterations == 45 or context.health_checks_bool:
-                context.game_actions.health_checks(820)
+            if context.health_checks_iterations == 35 or context.health_checks_bool:
                 context.health_checks_bool = False
+                context.game_actions.health_checks(820)
                 continue 
             
             if context.state == DangeonState.INITIALIZING:
@@ -80,10 +113,13 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 # context.osk_window.rotate_with_mouse(True, False, False)
                 # context.osk_window.rotate_with_mouse(False, True, False)
                 # context.osk_window.rotate_with_mouse(False, False, True)
+                context.game_actions.check_if_player_is_logged_out()
                 context.game_actions.remove_dangon_items_from_inv(images_path=ERVELIA_DANG75_IMAGE_PATHS)
                 context.game_actions.renew_alchemy()
+                context.game_actions.change_channel(context.current_channel)
+
                 #time.sleep(12)
-                context.switch_state(DangeonState.DEBUG)
+                context.switch_state(DangeonState.INITIALIZING)
                 continue
                 
             if context.state == DangeonState.LOGGING:
@@ -100,7 +136,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_MOBS:
-                self.dangeon_actions.kill_mobs(88)
+                self.dangeon_actions.kill_mobs(68)
                 continue
 
             if context.state == DangeonState.KILL_METINS:
@@ -117,7 +153,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.SECOND_KILL_MOBS:
-                self.dangeon_actions.kill_mobs(66)
+                self.dangeon_actions.kill_mobs(63)
                 continue
 
             if context.state == DangeonState.SECOND_METINS:
@@ -134,7 +170,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.THIRD_KILL_MOBS:
-                self.dangeon_actions.kill_mobs(76)
+                self.dangeon_actions.kill_mobs(60)
                 continue
             if context.state == DangeonState.THIRD_METINS:
                 self.dangeon_actions.kill_metins(6, True, 0.55, True)

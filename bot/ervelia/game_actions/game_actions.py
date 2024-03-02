@@ -10,10 +10,13 @@ from threading import Thread, Lock
 import datetime
 import pytesseract
 import re
+from PIL import Image
+
 from utils.helpers.music_player import play_music
-from utils.helpers.paths import ERVELIA_DANG30_IMAGE_PATHS, get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
+from utils.helpers.paths import ERVELIA_DANG30_IMAGE_PATHS, LOGGING_IMAGE_PATHS, get_dangeon_enter_the_dangeon_button, get_dangeon_you_cannot_enter_the_dangeon_button, get_empty_mount_image, get_eq_ervelia_stripe, gm_icon_image
 from utils.helpers.tesseract_texts import TEXTS_FOR_ACTION, check_if_text_from_image_includes_the_text
 from window.window import windows_swap_fix
+import tesserocr
 
 
 class GameActions:
@@ -198,20 +201,33 @@ class GameActions:
         mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-        mob_info_text = pytesseract.image_to_string(mob_info_box)
+        #mob_info_text = pytesseract.image_to_string(mob_info_box)
+        mob_info_box_gray = cv.cvtColor(mob_info_box, cv.COLOR_BGR2GRAY)
+        mob_info_box = Image.fromarray(mob_info_box_gray)
+        with tesserocr.PyTessBaseAPI(path=r'C:\Program Files\Tesseract-OCR\tessdata') as api:
+            api.SetImage(mob_info_box)
+            mob_info_text = api.GetUTF8Text()
 
         return self.process_metin_info(mob_info_text)
 
     def get_mob_health(self):
         top_left = (550, 35)
         bottom_right = (700, 60)
-
+        #print("time after health checking 1 {}".format(time.time()))
         mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
-
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-        mob_info_text = pytesseract.image_to_string(mob_info_box)
-
+       
+        #mob_info_text = pytesseract.image_to_string(mob_info_box)
+        # For example, if mob_info_box is a numpy array, you could convert it using Image.fromarray(mob_info_box)
+        # Use tesserocr to extract text
+        mob_info_box_gray = cv.cvtColor(mob_info_box, cv.COLOR_BGR2GRAY)
+        mob_info_box = Image.fromarray(mob_info_box_gray)
+        with tesserocr.PyTessBaseAPI(path=r'C:\Program Files\Tesseract-OCR\tessdata') as api:
+            api.SetImage(mob_info_box)
+            mob_info_text = api.GetUTF8Text()
+        #print("time after health checking 2 {}".format(time.time()))
         results = self.process_metin_info(mob_info_text)
+
         if results is not None:
             return results[1]
         else:
@@ -224,7 +240,12 @@ class GameActions:
         mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-        mob_info_text = pytesseract.image_to_string(mob_info_box)
+        #mob_info_text = pytesseract.image_to_string(mob_info_box)
+        mob_info_box_gray = cv.cvtColor(mob_info_box, cv.COLOR_BGR2GRAY)
+        mob_info_box = Image.fromarray(mob_info_box_gray)
+        with tesserocr.PyTessBaseAPI(path=r'C:\Program Files\Tesseract-OCR\tessdata') as api:
+            api.SetImage(mob_info_box)
+            mob_info_text = api.GetUTF8Text()
 
         return mob_info_text
     
@@ -251,10 +272,39 @@ class GameActions:
             logged_out_info = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
 
             #logged_out_info = self.metin_bot.vision.apply_hsv_filter(logged_out_info, hsv_filter=self.metin_bot.mob_info_hsv_filter)
-            logged_out_info = pytesseract.image_to_string(logged_out_info)
-            #possible_logged_out_info = ["ZALOG", "TNOGUI"]
-            #print(logged_out_info)
-            if check_if_text_from_image_includes_the_text(logged_out_info, TEXTS_FOR_ACTION['login']) or self.metin_bot.login_state:
+            #logged_out_info = pytesseract.image_to_string(logged_out_info)
+            logged_out_info = cv.cvtColor(logged_out_info, cv.COLOR_BGR2GRAY)
+            logged_out_info = Image.fromarray(logged_out_info)
+            with tesserocr.PyTessBaseAPI(path=r'C:\Program Files\Tesseract-OCR\tessdata') as api:
+                api.SetImage(logged_out_info)
+                logged_out_info = api.GetUTF8Text()
+                print(logged_out_info)
+
+            
+
+            # 
+            # champion_select_info = cv.cvtColor(champion_select_info, cv.COLOR_BGR2GRAY)
+            # cv.imwrite("champion_select_info.png", champion_select_info)
+            # champion_select_info = Image.fromarray(champion_select_info)
+            
+            # with tesserocr.PyTessBaseAPI(path=r'C:\Program Files\Tesseract-OCR\tessdata') as api:
+            #     api.SetImage(champion_select_info)
+            #     champion_select_info = api.GetUTF8Text()
+            #     print(champion_select_info)
+            top_left2 = (184, 600)
+            bottom_right2 = (288, 626)
+
+            champion_select_info = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left2, bottom_right2)
+            x,y = self.metin_bot.vision.find_image(champion_select_info, LOGGING_IMAGE_PATHS["champion_select_start"], 0.90)
+            if x is not None:
+                # x = x + top_left2[0]
+                # y = y + top_left2[1]
+
+                self.metin_bot.login_time = time.time() - 20
+                self.metin_bot.login_state = True
+                self.login_user()
+                return True
+            elif check_if_text_from_image_includes_the_text(logged_out_info, TEXTS_FOR_ACTION['login']) or self.metin_bot.login_state:
                 # self.metin_bot.set_object_detector_state(False)
                 
                 #self.metin_bot.dangeon_actions.restart_class_props()
@@ -278,11 +328,14 @@ class GameActions:
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
 
-    def rotate_using_space_before_click(self):
+    def rotate_using_space_before_click(self, backward=False):
         time.sleep(0.05)
         self.metin_bot.osk_window.start_hitting()
         time.sleep(0.2)
-        self.metin_bot.osk_window.rotate_forward()
+        if backward: 
+            self.metin_bot.osk_window.rotate_backward()
+        else:
+            self.metin_bot.osk_window.rotate_forward()
         time.sleep(0.1)
         self.metin_bot.osk_window.stop_hitting()
 
@@ -634,7 +687,13 @@ class GameActions:
         top_left = (161, 17)
         bottom_right = (820, 255)
         image_cuted_for_detection = self.metin_bot.vision.extract_section(image, top_left, bottom_right)
-        text = pytesseract.image_to_string(image_cuted_for_detection).lower()
+        #text = pytesseract.image_to_string(image_cuted_for_detection).lower()
+        image_cuted_for_detection = cv.cvtColor(image_cuted_for_detection, cv.COLOR_BGR2GRAY)
+        image_cuted_for_detection = Image.fromarray(image_cuted_for_detection)
+        with tesserocr.PyTessBaseAPI(path=r'C:\Program Files\Tesseract-OCR\tessdata') as api:
+            api.SetImage(image_cuted_for_detection)
+            text = api.GetUTF8Text()
+
         does_screen_contain_text = 'napisz' in text or "admin" in text or "wykryto" in text
         if x is not None or does_screen_contain_text:
             print("GM DETECTED MUSIC IS PLAYING")
