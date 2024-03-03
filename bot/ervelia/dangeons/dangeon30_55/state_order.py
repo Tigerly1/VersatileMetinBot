@@ -37,43 +37,68 @@ class Dangeon30StateOrder(DangeonStateStrategy):
                 x = x - 30 
             context.metin_window.mouse_move(x,y)
             
-        if label == "second_arena":
-            if  x > 650:
-                context.game_actions.rotate_view(small_rotation=True)
-                self.time_of_new_screen = time.time()
-                return False, False
-            elif x < 270:
-                context.game_actions.rotate_view(small_rotation=True, rotate_right=True)
-                context.time_of_new_screen = time.time()
-                return False, False
+        # if label == "second_arena":
+        #     if  x > 650:
+        #         context.game_actions.rotate_view(small_rotation=True)
+        #         self.time_of_new_screen = time.time()
+        #         return False, False
+        #     elif x < 270:
+        #         context.game_actions.rotate_view(small_rotation=True, rotate_right=True)
+        #         context.time_of_new_screen = time.time()
+        #         return False, False
 
         return x, y
 
     def execute_actions_by_state(self, context: "MetinBot"):
-        time.sleep(0.02)
+        time.sleep(0.002)
         while not context.stopped:
+            
+            
+            # if context.is_calibrating:
+            #     context.game_actions.calibrate_view()
+            #     continue
 
-            ## DO THE HEALTH CHECKS IN SEPERATE THREAD ALSO TO NOT BLOCK THE CLICKING
-            context.health_checks_iterations = (context.health_checks_iterations + 1) % 50
+            context.health_checks_iterations = (context.health_checks_iterations + 1) % 40
+            ## check if dead every 10 iterations and if dead then fight back iterate
+            # if context.does_it_need_newest_window_detections_after_swap and context.health_checks_iterations % 20 == 0:
+            #     if context.last_turn_alchemy_time + 23*60*60 < time.time():
+            #         context.game_actions.renew_alchemy()
+            #         context.last_turn_alchemy_time = time.time()
 
-            if context.health_checks_iterations == 45 or context.health_checks_bool:
-                context.game_actions.health_checks()
-                context.health_checks_bool = False
-                continue 
+            #     if context.game_actions.respawn_if_dead():
+            #         time.sleep(0.1)
+            #         context.osk_window.start_hitting()
+            #         time.sleep(0.09)
+            #         context.osk_window.pull_mobs()
+            #         time.sleep(0.15)
+            #         context.stop(True, time.time() + 6, 0)
+            #     continue
+
+            # if context.health_checks_iterations == 35 or context.health_checks_bool:
+            #     context.health_checks_bool = False
+            #     context.game_actions.health_checks(820)
             
             if context.state == DangeonState.INITIALIZING:
                 context.metin_window.activate()
-                context.game_actions.calibrate_view("guard")
+                context.game_actions.calibrate_view_dang30("guard")
                 context.game_actions.get_the_player_on_the_horse()
                 context.game_actions.zoom_out()
-                context.game_actions.remove_dangon_items_from_inv()
+                #context.game_actions.remove_dangon_items_from_inv()
                 context.switch_state(DangeonState.ENTER_THE_DANGEON)
                 continue
 
             if context.state == DangeonState.DEBUG:
-
-                context.osk_window.mouse_move(690,93)
-                time.sleep(5)
+                context.osk_window.start_hitting()
+                time.sleep(0.1)
+                context.osk_window.pull_mobs()
+                time.sleep(0.1)
+                context.osk_window.start_pick_up()
+                time.sleep(1)
+                context.osk_window.end_pick_up()
+                # context.osk_window.mouse_move(690,93)
+                time.sleep(2)
+                context.game_actions.turn_on_buffs(True)
+                time.sleep(0.1)
                 context.switch_state(DangeonState.DEBUG)
                 continue
                 
@@ -95,7 +120,7 @@ class Dangeon30StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_METINS:
-                self.dangeon_actions.kill_metins()
+                self.dangeon_actions.kill_metins(4)
                 continue
 
             if context.state == DangeonState.KILL_MINI_BOSS:
@@ -111,7 +136,7 @@ class Dangeon30StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.SECOND_METINS:
-                self.dangeon_actions.second_metins()
+                self.dangeon_actions.kill_metins(4)
                 continue
 
             if context.state == DangeonState.SECOND_MINI_BOSS:

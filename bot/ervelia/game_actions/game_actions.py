@@ -123,6 +123,21 @@ class GameActions:
         #self.zoom_out()
         # self.metin_bot.osk_window.calibrate_with_mouse(calibration_type)
         #self.osk_window.stop_zooming_in()
+    def calibrate_view_dang30(self, calibration_type="guard"):
+        self.metin_bot.osk_window.start_rotating_up()
+        time.sleep(1.1)
+        self.metin_bot.osk_window.stop_rotating_up()
+        time.sleep(0.15)
+        self.metin_bot.osk_window.start_rotating_down()
+        if calibration_type == "first_arena":
+            time.sleep(0.68)
+        elif calibration_type == "second_arena":
+            time.sleep(0.7)
+        else:
+            time.sleep(random.uniform(0.62, 0.7))
+        self.metin_bot.osk_window.stop_rotating_down()
+        time.sleep(0.1)
+        time.sleep(0.07)
 
     def calibrate_view_after_dangeon(self):
         self.metin_bot.metin_window.activate()

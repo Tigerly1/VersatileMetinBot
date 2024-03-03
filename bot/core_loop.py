@@ -8,7 +8,9 @@ import numpy as np
 import enum
 from threading import Thread, Lock
 import datetime
-from bot.ervelia.dangeons.dangeon75_95.state import DangeonState
+#from bot.ervelia.dangeons.dangeon75_95.state import DangeonState
+from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
+
 from bot.ervelia.game_actions.game_actions import GameActions
 from bot.interfaces.dungeon_strategy_interface import DangeonStateStrategy
 from bot.stats.dangeon import DungeonBotStatistics
@@ -123,7 +125,7 @@ class MetinBot:
 
         self.set_first_state()
 
-        #self.state = DangeonState.LOGGING
+        self.state = DangeonState.DEBUG
 
 
     def run(self):
@@ -132,14 +134,14 @@ class MetinBot:
         else:
             self.state_order.execute_actions_by_state(self)
     
-    def brief_detection(self, label,  small_rotation=False, long_rotation=False, rotate_right=False):
+    def brief_detection(self, label,  small_rotation=False, long_rotation=False, rotate_right=False, detection_acc=0.1):
         time.sleep(0.01)
         try:
             if self.screenshot is not None and self.detection_time is not None:
                 # if self.detection_result is None or (self.detection_result is not None and (self.detection_result['labels'][0] != label \
                 #                                       or self.get_top_center_position('first_arena', 0.65) is None \
                 #                                         or self.get_top_center_position('second_arena', 0.7) is None)):
-                if self.get_top_center_position(label, 0.1) is None:
+                if self.get_top_center_position(label, detection_acc) is None:
                     #self.game_actions.rotate_view(False, True)
                     self.game_actions.rotate_view(small_rotation, long_rotation, rotate_right)
                     return False
@@ -152,7 +154,7 @@ class MetinBot:
             print(e)
             return False
            
-    def detect_and_click(self, label, check_match=False, rotate_before_click=False, small_rotation=False, metin_acc=0.62, chose_random=False):
+    def detect_and_click(self, label, check_match=False, rotate_before_click=False, small_rotation=False, metin_acc=0.62, chose_random=False, detection_acc = 0.1):
         try:
             if self.screenshot is not None and self.detection_time is not None and \
                             self.detection_time > self.time_of_new_screen + 0.10:
@@ -160,7 +162,7 @@ class MetinBot:
                 # if self.detection_result is None or (self.detection_result is not None and  (self.detection_result['labels'][0] != label \
                 #                                       or self.detection_result['labels'][0] == "first_arena" and self.detection_result['scores'][0] < 0.65 \
                 #                                         or self.detection_result['labels'][0] == "second_arena" and self.detection_result['scores'][0] < 0.7)):
-                center_click_pos = self.get_top_center_position(label, 0.1)
+                center_click_pos = self.get_top_center_position(label, detection_acc)
                 if label == "metin": 
                     if chose_random:
                         center_click_pos = self.get_random_center_position(label, metin_acc)
@@ -376,6 +378,7 @@ class MetinBot:
             while is_hitting_enemy:
                 is_hitting_enemy = self.hitting_enemy()
                 if not is_hitting_enemy:
+                    time.sleep(0.3)
                     return False
             
 
@@ -393,6 +396,7 @@ class MetinBot:
         
         else:
              self.moving_to_enemy_flag_clicked = False
+             time.sleep(0.3)
              return False
 
         return True
