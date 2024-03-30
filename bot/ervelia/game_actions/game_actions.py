@@ -376,7 +376,7 @@ class GameActions:
         #######
         elif self.metin_bot.login_state == True and time.time() - self.metin_bot.login_time > 10:
             time.sleep(0.1)
-            self.metin_bot.osk_window.pick_x_champion_in_champion_select("2")
+            self.metin_bot.osk_window.pick_x_champion_in_champion_select("1")
             time.sleep(0.2)
             self.metin_bot.metin_window.mouse_move(239,616)
             time.sleep(0.07)
@@ -452,7 +452,7 @@ class GameActions:
     def turn_on_buffs(self, only_potions=False):
         #self.metin_bot.metin_window.activate()
         self.metin_bot.last_buff = time.time()
-        if not only_potions:
+        if not only_potions and self.metin_bot.bot_id == 0:
             time.sleep(0.05)
             self.metin_bot.osk_window.un_mount()
             time.sleep(0.8)

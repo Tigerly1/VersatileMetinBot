@@ -8,8 +8,8 @@ import numpy as np
 import enum
 from threading import Thread, Lock
 import datetime
-#from bot.ervelia.dangeons.dangeon75_95.state import DangeonState
-from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
+from bot.ervelia.dangeons.dangeon75_95.state import DangeonState
+#from bot.ervelia.dangeons.dangeon30_55.state import DangeonState
 
 from bot.ervelia.game_actions.game_actions import GameActions
 from bot.interfaces.dungeon_strategy_interface import DangeonStateStrategy
@@ -36,7 +36,7 @@ class MetinBot:
 
     def __init__(self, metin_window: MetinWindow, state_order: DangeonStateStrategy,  bot_id, main_loop):
         self.metin_window = metin_window
-        self.bot_id = bot_id
+        self.bot_id = bot_id ## enumerates from 0
         self.main_loop = main_loop
         self.state_order = state_order
         self.state_order.init_actions_passing_variables(self)
@@ -125,7 +125,7 @@ class MetinBot:
 
         self.set_first_state()
 
-        self.state = DangeonState.DEBUG
+        #self.state = DangeonState.DEBUG
 
 
     def run(self):
@@ -235,15 +235,30 @@ class MetinBot:
             return None
 
         screen_center = (1024 / 2, 768 / 2)  # Center of the screen
+        screen_height = 768
+
         max_area = 0
         max_area_center = None
         min_center_distance = float('inf')
         most_centered = None
 
+        middle_area_bounds = {
+            'x_min': screen_center[0] - 35,
+            'x_max': screen_center[0] + 35,
+            'y_min': screen_center[1] - 35,
+            'y_max': screen_center[1] + 35,
+        }
+
+
         for score, label, center, box in zip(self.detection_result['scores'],
                                             self.detection_result['labels'],
                                             self.detection_result['center_positions'],
                                             self.detection_result['rectangles']):
+
+
+            if (middle_area_bounds['x_min'] < center[0] < middle_area_bounds['x_max']) and \
+                    (middle_area_bounds['y_min'] < center[1] < middle_area_bounds['y_max']) and label == "metin":
+                continue
 
             if score >= _score and label == _label:
                 top_left = (int(box[0]), int(box[1]))
@@ -254,7 +269,8 @@ class MetinBot:
                     max_area = area
                     max_area_center = center
 
-                center_distance = ((center[0] - screen_center[0]) ** 2 + (center[1] - screen_center[1]) ** 2) ** 0.5
+                y_bias = (center[1] - screen_center[1]) / screen_height  # Normalize Y difference to screen height
+                center_distance = ((center[0] - screen_center[0]) ** 2 + (center[1] - screen_center[1]) ** 2 * (1 + y_bias)) ** 0.5
                 if center_distance < min_center_distance:
                     min_center_distance = center_distance
                     most_centered = center
@@ -378,7 +394,7 @@ class MetinBot:
             while is_hitting_enemy:
                 is_hitting_enemy = self.hitting_enemy()
                 if not is_hitting_enemy:
-                    time.sleep(0.3)
+                    #time.sleep(0.3)
                     return False
             
 
@@ -396,7 +412,7 @@ class MetinBot:
         
         else:
              self.moving_to_enemy_flag_clicked = False
-             time.sleep(0.3)
+             #time.sleep(0.3)
              return False
 
         return True
@@ -412,7 +428,7 @@ class MetinBot:
         #self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or time.time() - self.started_hitting_time >= 8.5:
+        if result is None or (result is not None and result[1] < 80) or time.time() - self.started_hitting_time >= 5.5:
             
 
             logging.debug("Metin has been killed")
@@ -425,7 +441,7 @@ class MetinBot:
             self.last_metin_time = total
 
             return False
-        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 6:
+        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 4.5:
             self.game_actions.get_the_player_on_the_horse()
             return True
         return True

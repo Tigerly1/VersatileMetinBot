@@ -124,7 +124,6 @@ class Actions:
                     self.restart_after_action_not_changed()
                     return
                 
-                self.metin_bot.game_actions.turn_on_buffs(True)
                 self.metin_bot.game_actions.calibrate_view("first_arena_middlepoint")
                 
             self.start_of_the_action_time = time.time()
@@ -206,18 +205,21 @@ class Actions:
             time_for_entering_the_middle = 3.5
             if arena == "first_arena":
                 self.metin_bot.osk_window.free_key("t")
-                time.sleep(1.2)
+                time.sleep(1.3)
+                self.metin_bot.game_actions.turn_on_buffs(True)
                 #self.metin_bot.game_actions.calibrate_view("second_arena")
                 
                 time_for_entering_the_middle = 3
                 self.metin_bot.osk_window.activate_horse_dodge()
                 time.sleep(0.02)
                 self.metin_bot.osk_window.activate_horse_dodge()
+                time.sleep(0.03)
                 #self.horse_dodge_after_entering_arena = True
                 #self.metin_bot.osk_window.activate_horse_dodge()
             elif arena == "second_arena":
                 time_for_entering_the_middle = 3.2
                 #self.horse_dodge_after_entering_arena = True
+                #time.sleep(1.2)
                 self.metin_bot.osk_window.activate_horse_dodge()
                 time.sleep(0.02)
                 self.metin_bot.osk_window.activate_horse_dodge()
@@ -229,6 +231,7 @@ class Actions:
                 self.metin_bot.osk_window.activate_horse_dodge()
                 time.sleep(0.02)
                 self.metin_bot.osk_window.activate_horse_dodge()
+                time.sleep(0.03)
                 #time.sleep(2.0)
             # else:
                 #time.sleep(3.5)
@@ -263,6 +266,7 @@ class Actions:
             time.sleep(0.15)
             self.metin_bot.osk_window.pull_mobs_different_version()
             time.sleep(0.04)
+
             self.metin_bot.stop(True, time.time()+time_of_pull_stop, newest_detection_needed=False)
             return
         
@@ -271,6 +275,9 @@ class Actions:
         time.sleep(0.01)
         self.metin_bot.osk_window.pull_mobs()
         time.sleep(0.15)
+        self.metin_bot.osk_window.start_pick_up()
+        time.sleep(0.2)
+        self.metin_bot.osk_window.end_pick_up()
 
         if time.time() - self.start_of_the_action_time > time_to_kill:   
             self.metin_bot.osk_window.stop_hitting()
@@ -280,7 +287,10 @@ class Actions:
             else:
                 self.metin_bot.stop()
         else:
-            self.metin_bot.stop(True, time.time()+8, newest_detection_needed=False)
+            if time.time() - self.start_of_the_action_time > time_to_kill-9:
+                 self.metin_bot.stop(True, time_to_kill + self.start_of_the_action_time , newest_detection_needed=False)
+            else:
+                self.metin_bot.stop(True, time.time()+8, newest_detection_needed=False)
     
     def kill_metins(self, number_of_metins, enemy_after_kill=False, detection_acc = 0.67, random_choice=False):
 
@@ -297,7 +307,7 @@ class Actions:
             # self.metin_bot.osk_window.pull_mobs()
             # time.sleep(0.15)
             self.metin_have_been_killed = False
-            self.metin_bot.stop(True, time.time()+3.2)
+            self.metin_bot.stop(True, time.time()+1.3)
             return
         
         
@@ -308,7 +318,7 @@ class Actions:
         if self.metin_click_delayed:
             self.metin_click_delayed = False
             #self.metins_killed += 1
-            self.metin_bot.stop(True, time.time()+8)
+            self.metin_bot.stop(True, time.time()+2)
             return
        
         look_for_less_metins = 1 if enemy_after_kill else 0
@@ -332,7 +342,7 @@ class Actions:
                 ## metin will be probably killed there
                 self.metins_killed += 1
                 self.metin_click_delayed = True
-                self.metin_bot.stop(True, time.time()+8)
+                self.metin_bot.stop(True, time.time()+6)
                 return
 
         # if self.metins_killed > number_of_metins-1 and not second_assumption:
@@ -372,14 +382,14 @@ class Actions:
                         #self.metin_have_been_killed = True
                         #self.metin_bot.stop(True, time.time()+6.0, 2, False)
                         self.metin_is_getting_killed = True
-                        self.metin_bot.stop(True, time.time()+3.5)
+                        self.metin_bot.stop(True, time.time()+2)
                     
                 else:
                     self.metin_is_getting_killed = True
                     self.metins_rotation = 0
                     self.metins_killed += 1
                 
-                    self.metin_bot.stop(True, time.time()+3.5)
+                    self.metin_bot.stop(True, time.time()+2)
                 
                 return
 
@@ -439,9 +449,9 @@ class Actions:
             time.sleep(0.1)
             # code to attack the monster
             self.start_of_the_action_time = None
-            self.metin_bot.increment_state(True, time.time()+3)
+            self.metin_bot.increment_state(True, time.time()+1)
 
-        elif time.time() - self.start_of_the_action_time > time_to_kill-5:
+        elif time.time() - self.start_of_the_action_time > time_to_kill-8:
 
            
             ## WE DONT KNOW IF HE DIDN'T KILL THE MONSTERS ALREADY AND IT TPED HIM TO NEXT STAGE WE CANT USE PULL MOBS IN NEXT STAGE
@@ -459,10 +469,10 @@ class Actions:
                 return
             
             time.sleep(0.12)
-            self.metin_bot.stop(True, time.time()+6)
+            self.metin_bot.stop(True, time.time()+2)
 
         else:
-            self.metin_bot.stop(True, time.time()+5)
+            self.metin_bot.stop(True, time.time()+2)
 
     
     def kill_metin(self):
@@ -572,14 +582,14 @@ class Actions:
             self.start_of_the_action_time = None
             #self.metin_bot.game_actions.turn_on_buffs()
             #time.sleep(0.1)
-            self.metin_bot.increment_state(True, time.time()+3)
+            self.metin_bot.increment_state(True, time.time()+2)
 
 
     def end_boss(self, time_to_kill=25):
         
         x, y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_end_image(), 0.9)
         if x is not None:
-            self.start_of_the_action_time = time.time() - 100
+            self.start_of_the_action_time = time.time() - time_to_kill - 100
         else:
             self.metin_bot.osk_window.start_hitting()
             time.sleep(0.03)
@@ -587,7 +597,9 @@ class Actions:
             time.sleep(0.12)
             if self.start_of_the_action_time is None:
                 self.start_of_the_action_time = time.time()
-                self.metin_bot.game_actions.turn_on_buffs()
+                self.metin_bot.game_actions.turn_on_buffs(True)
+            else:
+                self.metin_bot.game_actions.turn_on_buffs(True)
                 #self.metin_bot.game_actions.calibrate_view("first_arena_middlepoint")
 
 
@@ -595,7 +607,7 @@ class Actions:
             self.metin_bot.osk_window.stop_hitting()
             self.stats.log_statistics()
 
-            #self.metin_bot.game_actions.collect_the_event_card_drop()
+            self.metin_bot.game_actions.collect_the_event_card_drop()
 
             x, y = self.metin_bot.vision.find_image(self.metin_bot.get_screenshot_info(), get_dangeon_end_image(), 0.9)
             if x is None: 
@@ -614,10 +626,10 @@ class Actions:
                 self.metin_bot.dangeons_count += 1
                 self.stats.add_dungeon_completed(self.metin_bot.dangeon_end_time - self.metin_bot.dangeon_entered_time)
                 self.restart_class_props(False)
-                self.metin_bot.increment_state(True, time.time()+3)
+                self.metin_bot.increment_state(False)
             
         else:
-            self.metin_bot.stop(True, time.time()+12)
+            self.metin_bot.stop(True, time.time()+4)
 
 
     def debug(self):

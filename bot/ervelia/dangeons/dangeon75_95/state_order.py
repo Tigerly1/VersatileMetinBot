@@ -93,7 +93,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
 
             if context.health_checks_iterations == 35 or context.health_checks_bool:
                 context.health_checks_bool = False
-                context.game_actions.health_checks(820)
+                context.game_actions.health_checks(660)
                 continue 
             
             if context.state == DangeonState.INITIALIZING:
@@ -106,20 +106,30 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.DEBUG:
-
+                context.osk_window.start_hitting()
+                time.sleep(0.1)
+                context.osk_window.pull_mobs()
+                time.sleep(0.1)
+                context.osk_window.start_pick_up()
+                time.sleep(1)
+                context.osk_window.end_pick_up()
+                # context.osk_window.mouse_move(690,93)
+                time.sleep(2)
+                context.game_actions.turn_on_buffs(True)
+                time.sleep(0.1)
                 # context.osk_window.mouse_move(690,93)
                 # time.sleep(5)
                 # context.game_actions.calibrate_view("first_arena_middlepoint")
                 # context.osk_window.rotate_with_mouse(True, False, False)
                 # context.osk_window.rotate_with_mouse(False, True, False)
                 # context.osk_window.rotate_with_mouse(False, False, True)
-                context.game_actions.check_if_player_is_logged_out()
-                context.game_actions.remove_dangon_items_from_inv(images_path=ERVELIA_DANG75_IMAGE_PATHS)
-                context.game_actions.renew_alchemy()
-                context.game_actions.change_channel(context.current_channel)
+                # context.game_actions.check_if_player_is_logged_out()
+                # context.game_actions.remove_dangon_items_from_inv(images_path=ERVELIA_DANG75_IMAGE_PATHS)
+                # context.game_actions.renew_alchemy()
+                #context.game_actions.change_channel(context.current_channel)
 
                 #time.sleep(12)
-                context.switch_state(DangeonState.INITIALIZING)
+                context.switch_state(DangeonState.DEBUG)
                 continue
                 
             if context.state == DangeonState.LOGGING:
@@ -136,7 +146,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_MOBS:
-                self.dangeon_actions.kill_mobs(68)
+                self.dangeon_actions.kill_mobs(69)
                 continue
 
             if context.state == DangeonState.KILL_METINS:
@@ -145,7 +155,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.KILL_MINI_BOSS:
-                self.dangeon_actions.kill_mini_boss(7)
+                self.dangeon_actions.kill_mini_boss(8)
                 continue
 
             if context.state == DangeonState.SECOND_ARENA:
@@ -153,7 +163,7 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.SECOND_KILL_MOBS:
-                self.dangeon_actions.kill_mobs(63)
+                self.dangeon_actions.kill_mobs(54)
                 continue
 
             if context.state == DangeonState.SECOND_METINS:
@@ -170,15 +180,15 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.THIRD_KILL_MOBS:
-                self.dangeon_actions.kill_mobs(60)
+                self.dangeon_actions.kill_mobs(62)
                 continue
             if context.state == DangeonState.THIRD_METINS:
                 self.dangeon_actions.kill_metins(6, True, 0.55, True)
                 continue
             if context.state == DangeonState.THIRD_KILL_MINI_BOSS:
-                self.dangeon_actions.kill_mini_boss(15)
+                self.dangeon_actions.kill_mini_boss(14)
                 continue
             
             if context.state == DangeonState.END_BOSS:
-                self.dangeon_actions.end_boss(95)
+                self.dangeon_actions.end_boss(110)
                 continue
