@@ -1,0 +1,17 @@
+import enum
+
+class DangeonState(enum.Enum):
+    ENTER_THE_DANGEON = 0
+    KILL_METINS = 1
+    KILL_MOBS = 2
+    KILL_SECOND_METINS = 3
+    KILL_SECOND_MOBS = 4
+    KILL_MINIBOSS = 5
+    KILL_STATUE = 6
+    KILL_THIRD_MOBS = 7
+    KILL_THIRD_METINS = 8
+    END_BOSS = 9
+    DEBUG = 700
+    LOGGING = 701
+    INITIALIZING = 9999
+    

@@ -106,17 +106,17 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 continue
 
             if context.state == DangeonState.DEBUG:
-                context.osk_window.start_hitting()
-                time.sleep(0.1)
-                context.osk_window.pull_mobs()
-                time.sleep(0.1)
-                context.osk_window.start_pick_up()
-                time.sleep(1)
-                context.osk_window.end_pick_up()
-                # context.osk_window.mouse_move(690,93)
-                time.sleep(2)
-                context.game_actions.turn_on_buffs(True)
-                time.sleep(0.1)
+                # context.osk_window.start_hitting()
+                # time.sleep(0.1)
+                # context.osk_window.pull_mobs()
+                # time.sleep(0.1)
+                # context.osk_window.start_pick_up()
+                # time.sleep(1)
+                # context.osk_window.end_pick_up()
+                # # context.osk_window.mouse_move(690,93)
+                # time.sleep(2)
+                # context.game_actions.turn_on_buffs(True)
+                # time.sleep(0.1)
                 # context.osk_window.mouse_move(690,93)
                 # time.sleep(5)
                 # context.game_actions.calibrate_view("first_arena_middlepoint")
@@ -127,7 +127,11 @@ class Dangeon75StateOrder(DangeonStateStrategy):
                 # context.game_actions.remove_dangon_items_from_inv(images_path=ERVELIA_DANG75_IMAGE_PATHS)
                 # context.game_actions.renew_alchemy()
                 #context.game_actions.change_channel(context.current_channel)
-
+                context.osk_window.mouse_move(690,65)
+                time.sleep(0.1)
+                for i in range(0, 1000):
+                    context.osk_window.mouse_right_click()
+                    time.sleep(random.randint(1,10)/100)
                 #time.sleep(12)
                 context.switch_state(DangeonState.DEBUG)
                 continue

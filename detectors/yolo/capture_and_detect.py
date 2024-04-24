@@ -25,7 +25,7 @@ class CaptureAndDetect:
         # print(device)
         # self.model = torch.hub.load(r'C:\Users\Filip\Desktop\tob2tm\Metin2-Bot-main\yolov5', 'custom', path=r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\yolo\data\upgraded.pt', source='local',force_reload=True )
         #self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\ervelia\yolo\dang30_yolov8n.pt').to(device)
-        self.model = YOLO(r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\ervelia\yolo\dang75_yolov8n_3.pt').to(device)
+        self.model = YOLO(model_path).to(device)
         self.screenshot = None
         self.screenshot_time = None
 
@@ -218,6 +218,12 @@ class CaptureAndDetect:
             else self.detection_image.copy()
         self.lock.release()
         return screenshot, screenshot_time, detection, detection_time, detection_image
+
+    def update_model_path(self, new_model_path):
+        self.lock.acquire()
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = YOLO(new_model_path).to(device)
+        self.lock.release()
 
     def set_object_detector_state(self,state):
         self.lock.acquire()

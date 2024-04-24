@@ -99,7 +99,7 @@ class MetinBot:
         self.buff_interval = 76
         self.default_killing_mobs_time = 52
         self.killing_mobs_time = 0
-        self.last_buff = time.time()
+        self.last_buff = time.time() - self.buff_interval
 
         self.dangeon_entered_time = time.time()
         self.dangeon_end_time = time.time()
@@ -170,7 +170,7 @@ class MetinBot:
                         center_click_pos = self.get_top_center_position(label, metin_acc)
 
                 if center_click_pos is None:
-                    self.put_info_text('No metin found, will rotate!')
+                    self.put_info_text(f'No {label} found, will rotate!')
                     if self.rotate_count > self.rotate_threshold:
                         self.put_info_text(f'Rotated {self.rotate_count} times -> Recalibrate!')
                         self.calibrate_count += 1
@@ -243,10 +243,10 @@ class MetinBot:
         most_centered = None
 
         middle_area_bounds = {
-            'x_min': screen_center[0] - 35,
-            'x_max': screen_center[0] + 35,
-            'y_min': screen_center[1] - 35,
-            'y_max': screen_center[1] + 35,
+            'x_min': screen_center[0] - 65,
+            'x_max': screen_center[0] + 65,
+            'y_min': screen_center[1] - 65,
+            'y_max': screen_center[1] + 65,
         }
 
 
@@ -375,7 +375,7 @@ class MetinBot:
 
 
 
-    def moving_to_enemy(self):
+    def moving_to_enemy(self, hitting_time = 5.5):
         if self.started_moving_time is None:
             self.started_moving_time = time.time()
             self.moving_to_enemy_flag_clicked = False
@@ -392,7 +392,7 @@ class MetinBot:
             self.started_hitting_time = None
             is_hitting_enemy = True
             while is_hitting_enemy:
-                is_hitting_enemy = self.hitting_enemy()
+                is_hitting_enemy = self.hitting_enemy(hitting_time)
                 if not is_hitting_enemy:
                     #time.sleep(0.3)
                     return False
@@ -417,7 +417,7 @@ class MetinBot:
 
         return True
     
-    def hitting_enemy(self):
+    def hitting_enemy(self, min_hitting_time = 5.5):
         self.rotate_count = 0
         self.calibrate_count = 0
         self.move_fail_count = 0
@@ -428,7 +428,7 @@ class MetinBot:
         #self.game_actions.respawn_if_dead()
         result = self.game_actions.get_mob_info()
         #print(result)
-        if result is None or (result is not None and result[1] < 80) or time.time() - self.started_hitting_time >= 5.5:
+        if result is None or (result is not None and result[1] < 60)  or time.time() - self.started_hitting_time >= min_hitting_time:
             
 
             logging.debug("Metin has been killed")
@@ -441,7 +441,7 @@ class MetinBot:
             self.last_metin_time = total
 
             return False
-        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= 4.5:
+        elif (result is not None and result[1] < 1000) and time.time() - self.started_hitting_time >= min_hitting_time-1:
             self.game_actions.get_the_player_on_the_horse()
             return True
         return True

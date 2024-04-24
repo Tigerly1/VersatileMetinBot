@@ -5,6 +5,8 @@ from pathlib import Path
 import threading
 import time
 from bot.core_loop import MetinBot
+from bot.ervelia.dangeons.dangeon75_95.state_order import Dangeon75StateOrder
+from bot.ervelia.dangeons.elephant_dangeon.state_order import ElephantDangeonStateOrder
 from detectors.yolo.capture_and_detect import CaptureAndDetect
 from utils.helpers.vision import Vision
 
@@ -32,24 +34,26 @@ import utils
 class MainLoop():
     def __init__(self):
 
-        self.windows_count = 2
+        self.windows_count = 1
         self.server_name = "Ervelia"
         
-        self.window_names = []
-        for x in range(0, self.windows_count):
-            self.window_names.append(self.server_name)
+        self.args = []
+        # for x in range(0, self.windows_count):
+        self.args.append([self.server_name,  ElephantDangeonStateOrder(), r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\ervelia\yolo\elephantDangDetector.pt'])
+        #self.args.append([self.server_name,  Dangeon75StateOrder(), r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\ervelia\yolo\dang75_yolov8n_3.pt'])
+
 
         #self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
         #self.window_names = ["Ervelia", "Ervelia"]
         
         self.change_window = False
 
-        self.handler = MultiWindowBotHandler(self)
+        self.botHandler = MultiWindowBotHandler(self)
 
-        for window_name in self.window_names:
-            self.handler.add_instance(window_name)
+        for args in self.args:
+            self.botHandler.add_instance(*args)
         
-        self.capt_detect = self.handler.get_capture_and_detect()
+        self.capt_detect = self.botHandler.get_capture_and_detect()
         #self.time_to_stop_for_scalene = time.time()
         self.last_switch_time = time.time()
         self.switch_interval = 8  # seconds
@@ -70,7 +74,7 @@ class MainLoop():
         
         self.capt_detect.start()
 
-        current_instance = self.handler.get_next_instance()
+        current_instance = self.botHandler.get_next_instance()
         windows_swap_fix()
         current_instance['window'].set_window_foreground()
         self.capt_detect.change_window_of_detection(current_instance['window'])
@@ -88,7 +92,7 @@ class MainLoop():
         #     self.swap_window()
         
         current_instance['bot'].start()
-        self.handler.set_current_instance_last_run_time()
+        self.botHandler.set_current_instance_last_run_time()
 
         while True:
             key = cv.waitKey(1)
@@ -108,7 +112,7 @@ class MainLoop():
                     ##time.sleep(0.01)
                     #if time.time() - self.handler.get_next_instance_last_run_time() > self.seconds_between_same_runs:
                     #print("window is being changed")
-                    new_instance = self.handler.get_next_instance()
+                    new_instance = self.botHandler.get_next_instance()
                     ##time.sleep(0.01)
                     if new_instance is not None and ((current_instance['bot'].thread is not None and not current_instance['bot'].thread.is_alive()) \
                                                      or current_instance['bot'].thread is None):
@@ -117,6 +121,8 @@ class MainLoop():
                             if new_instance != current_instance:
 
                                 windows_swap_fix()
+
+                                self.capt_detect.update_model_path(new_instance['model_path'])
 
                                 new_instance['window'].set_window_foreground()
                                 #time.sleep(0.03)
@@ -154,7 +160,7 @@ class MainLoop():
                             new_instance['bot'].start()
                             current_instance = new_instance
                             #print("time of started thread {}".format(time.time()))
-                            self.handler.set_current_instance_last_run_time()
+                            self.botHandler.set_current_instance_last_run_time()
 
                             self.last_switch_time = time.time()
                             #print("time on end of changing window {}".format(time.time()))
@@ -194,7 +200,7 @@ class MainLoop():
             if key == ord('q'):
                 self.capt_detect.stop()
                 for window_name in self.window_names:
-                    current_instance = self.handler.get_next_instance()
+                    current_instance = self.botHandler.get_next_instance()
                     current_instance['bot'].stop()
                 cv.destroyAllWindows()
                 break

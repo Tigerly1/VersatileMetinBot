@@ -30,6 +30,10 @@ def get_dangeon_item_dangeon30():
 def get_dangeon_end_image():
     return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\dangeon_end.png'
 
+def get_dangeon_start_action_wtih_time_image():
+    return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\dangeon_start_action_with_time.png'
+
+
 def get_dangeon_enter_the_dangeon_button():
     return r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\utils\images\yes_button_dang_entry.png'
 

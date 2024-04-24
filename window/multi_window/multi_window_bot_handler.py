@@ -16,19 +16,19 @@ class MultiWindowBotHandler:
         self.counter = 0  # Added counter for unique key generation
         self.main_loop = main_loop
 
-    def add_instance(self, window_name):
+    def add_instance(self, window_name, state_order, model_path):
         with self.lock:
             if len(self.instances) < self.max_instances:
                 metin_window = MetinWindow(window_name)
                 if not hasattr(self, 'capture_and_detect') or self.capture_and_detect is None:
-                    self.capture_and_detect = CaptureAndDetect(metin_window, r'C:\Users\Filip\Desktop\tob2tm\Metin2-Bot-main\metin_farm_bot\ml\data\yolo\best.pt', None)
+                    self.capture_and_detect = CaptureAndDetect(metin_window, model_path, None)
 
                 instance = {
                     'window': metin_window,
                     'capt_detect': self.capture_and_detect,
                     #'bot': MetinBot(metin_window, Dangeon30StateOrder(), self.counter, self.main_loop),
-                    'bot': MetinBot(metin_window, Dangeon75StateOrder(), self.counter, self.main_loop),
-
+                    'bot': MetinBot(metin_window, state_order, self.counter, self.main_loop),
+                    'model_path' : model_path,
                     'window_name': window_name,  # Store window_name within the instance
                     'last_run_time': time.time()
                 }

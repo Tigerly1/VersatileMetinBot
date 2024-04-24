@@ -227,7 +227,7 @@ class GameActions:
 
     def get_mob_health(self):
         top_left = (550, 35)
-        bottom_right = (700, 60)
+        bottom_right = (780, 60)
         #print("time after health checking 1 {}".format(time.time()))
         mob_info_box = self.metin_bot.vision.extract_section(self.metin_bot.get_screenshot_info(), top_left, bottom_right)
         mob_info_box = self.metin_bot.vision.apply_hsv_filter(mob_info_box, hsv_filter=self.metin_bot.mob_info_hsv_filter)
@@ -438,12 +438,10 @@ class GameActions:
         self.metin_bot.metin_window.activate()
 
         time.sleep(0.07)
-        self.metin_bot.metin_window.mouse_move(963,66)
+        self.metin_bot.metin_window.mouse_move(958+random.randint(1,10),61+random.randint(1,10))
         time.sleep(0.04)
         self.metin_bot.metin_window.mouse_click()
         time.sleep(0.1)
-        self.metin_bot.osk_window.end_pick_up()
-        time.sleep(0.2)
         
         self.metin_bot.metin_window.mouse_move(473, 403)
         time.sleep(0.04)
@@ -451,17 +449,19 @@ class GameActions:
 
     def turn_on_buffs(self, only_potions=False):
         #self.metin_bot.metin_window.activate()
-        self.metin_bot.last_buff = time.time()
-        if not only_potions and self.metin_bot.bot_id == 0:
+        
+        if not only_potions and self.metin_bot.bot_id == 0 and ((time.time() - self.metin_bot.last_buff) > self.metin_bot.buff_interval):
             time.sleep(0.05)
             self.metin_bot.osk_window.un_mount()
             time.sleep(0.8)
             self.metin_bot.osk_window.activate_aura()
             #time.sleep(2)
             #self.osk_window.activate_berserk()
+            self.metin_bot.last_buff = time.time()
             time.sleep(0.32)
             self.metin_bot.osk_window.un_mount()
             time.sleep(0.08)
+            
         self.metin_bot.osk_window.activate_buffs()
 
     # def send_telegram_message(self, msg):
