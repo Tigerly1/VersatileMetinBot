@@ -41,7 +41,7 @@ class MainLoop():
         # for x in range(0, self.windows_count):
         self.args.append([self.server_name,  ElephantDangeonStateOrder(), r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\ervelia\yolo\elephantDangDetector.pt'])
         #self.args.append([self.server_name,  Dangeon75StateOrder(), r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\ervelia\yolo\dang75_yolov8n_3.pt'])
-
+        self.args.append([self.server_name,  ElephantDangeonStateOrder(), r'C:\Users\Filip\Desktop\tob2tm\versatileMetinBot\detectors\ervelia\yolo\elephantDangDetector.pt'])
 
         #self.window_names = ["Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia", "Ervelia"]
         #self.window_names = ["Ervelia", "Ervelia"]

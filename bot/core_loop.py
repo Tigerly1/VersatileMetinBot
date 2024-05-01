@@ -96,7 +96,7 @@ class MetinBot:
         self.is_object_detector_enabled = True
 
         self.last_turn_alchemy_time = time.time()
-        self.buff_interval = 76
+        self.buff_interval = 90
         self.default_killing_mobs_time = 52
         self.killing_mobs_time = 0
         self.last_buff = time.time() - self.buff_interval
