@@ -1,7 +1,8 @@
 # VersatileMetinBot
 Yolov8 fine-tuned, multi-threaded, low level programming with a lot of computer vision game bot
 
-![S1JE7.gif](https://s11.gifyu.com/images/S1JE7.gif)
+![S1JE7.gif](https://github.com/Tigerly1/VersatileMetinBot/blob/multiwindow_tests/Animation999666.gif)
+
 ### Models that were used to detect the game object (4-8 objects depending on the games) + notebooks
 
 #### Yolo v8s Gtx1660 (30ms inference time)
