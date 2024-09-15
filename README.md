@@ -1,7 +1,7 @@
 # VersatileMetinBot
 Yolov8 fine-tuned, multi-threaded, low level programming with a lot of computer vision game bot
 
-[![S1J9H.gif](https://s11.gifyu.com/images/S1J9H.gif)](https://gifyu.com/image/S1J9H)
+[![S1JE7.gif](https://s11.gifyu.com/images/S1JE7.gif)](https://gifyu.com/image/S1JE7)
 
 ### Models that were used to detect the game object (4-8 objects depending on the games) + notebooks
 
