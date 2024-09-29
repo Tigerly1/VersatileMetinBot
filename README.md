@@ -12,3 +12,7 @@ Yolov8 fine-tuned, multi-threaded, low level programming with a lot of computer 
 #### Yolo v5 Gtx1660 (50 ms inference)
 
 [Notebook](https://colab.research.google.com/drive/1BkhNTW1-MEIkyPMl9dbWS3NoHn-h38LR?usp=sharing)
+
+Telegram notifications for detecting the issues and logging how many dungeons were made without restarting the program:
+
+![telegram notifications](https://i.ibb.co/6JJ731X/image.png)
