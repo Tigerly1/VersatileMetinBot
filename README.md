@@ -2,6 +2,12 @@
 
 Metin2 dangeon private server bot using computer vision and gpu with custom model
 
+Yolov8 fine-tuned, multi-threaded, low level programming with a lot of computer vision game bot
+
+![S1JE7.gif](https://github.com/Tigerly1/VersatileMetinBot/blob/multiwindow_tests/Animation999666.gif)
+
+<img width="551" height="460" alt="image" src="https://github.com/user-attachments/assets/50e44a5c-71a8-4087-8578-6ff33ef2d8c3" />
+
 ## How to run
 
 - install interceptor (python package for intercepting mouse driver on pc to be able to input to the game with code.
@@ -12,13 +18,6 @@ Metin2 dangeon private server bot using computer vision and gpu with custom mode
   - <img width="1150" height="458" alt="image" src="https://github.com/user-attachments/assets/8eca7ca5-9640-4097-a064-4b6eddbcc2bf" />
 - set number of windows
 - RUN :D
-
-Yolov8 fine-tuned, multi-threaded, low level programming with a lot of computer vision game bot
-
-![S1JE7.gif](https://github.com/Tigerly1/VersatileMetinBot/blob/multiwindow_tests/Animation999666.gif)
-
-<img width="551" height="460" alt="image" src="https://github.com/user-attachments/assets/50e44a5c-71a8-4087-8578-6ff33ef2d8c3" />
-
 
 ### Models that were used to detect the game object (4-8 objects depending on the games) + notebooks
 
