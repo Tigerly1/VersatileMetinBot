@@ -1,4 +1,18 @@
-# VersatileMetinBot
+## VersatileMetinBot
+
+Metin2 dangeon private server bot using computer vision and gpu with custom model
+
+## How to run
+
+- install interceptor (python package for intercepting mouse driver on pc to be able to input to the game with code.
+- install requirements
+- edit configuration
+  - set the game window name
+  - set the model (there is a code for yolov8)
+  - <img width="1150" height="458" alt="image" src="https://github.com/user-attachments/assets/8eca7ca5-9640-4097-a064-4b6eddbcc2bf" />
+- set number of windows
+- RUN :D
+
 Yolov8 fine-tuned, multi-threaded, low level programming with a lot of computer vision game bot
 
 ![S1JE7.gif](https://github.com/Tigerly1/VersatileMetinBot/blob/multiwindow_tests/Animation999666.gif)
